@@ -20,6 +20,15 @@ importers:
       '@fontsource-variable/geist-mono':
         specifier: ^5.3.0
         version: 5.3.0
+      '@fontsource-variable/google-sans':
+        specifier: ^5.3.1
+        version: 5.3.1
+      '@fontsource-variable/google-sans-code':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/google-sans-flex':
+        specifier: ^5.3.1
+        version: 5.3.1
       '@supabase/supabase-js':
         specifier: ^2.112.3
         version: 2.112.3
@@ -512,6 +521,15 @@ packages:
 
   '@fontsource-variable/geist@5.3.0':
     resolution: {integrity: sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==}
+
+  '@fontsource-variable/google-sans-code@5.3.0':
+    resolution: {integrity: sha512-etsB8s2nyLqWlBrASPpT9LvPtxNxrLjrys4RZzW0mQnt8qYoNL7m1SLzCqY5Pp1g/6LWoVOI/6jPqiwO2l5xgA==}
+
+  '@fontsource-variable/google-sans-flex@5.3.1':
+    resolution: {integrity: sha512-ItkWlFvW61+BmwOMJQfPY81KpvvslqbiTyfYKceOx+0kEFBzTcPbbMVcL9BKrmqhhqnq36kNs7YRbxonovOmNg==}
+
+  '@fontsource-variable/google-sans@5.3.1':
+    resolution: {integrity: sha512-FLB6ZktdAtYWj49W6TtmqThHb33XL5g8l6T+oKNcvmNUXou4PPdIkstt1Z/UyD6K+g/CYjiHF+j+eRMNZxYKZg==}
 
   '@hono/node-server@2.1.1':
     resolution: {integrity: sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg==}
@@ -4383,6 +4401,12 @@ snapshots:
   '@fontsource-variable/geist-mono@5.3.0': {}
 
   '@fontsource-variable/geist@5.3.0': {}
+
+  '@fontsource-variable/google-sans-code@5.3.0': {}
+
+  '@fontsource-variable/google-sans-flex@5.3.1': {}
+
+  '@fontsource-variable/google-sans@5.3.1': {}
 
   '@hono/node-server@2.1.1(hono@4.13.3)':
     dependencies:
