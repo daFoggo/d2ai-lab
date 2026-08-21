@@ -1,0 +1,37 @@
+# startcn-base Handbook
+
+This folder is the canonical documentation set for the current frontend architecture and development rules.
+
+## Reading Order
+
+| Order | Document | Purpose |
+|---|---|---|
+| 1 | `01_project_overview.md` | Product scope, frontend role, and tech stack |
+| 2 | `02_architecture.md` | App architecture, feature boundaries, route orchestration |
+| 3 | `03_feature_development.md` | How to build or refactor a feature module |
+| 4 | `04_tanstack_start_query_router.md` | TanStack Start, Router, Query, Supabase, SSR data rules |
+| 5 | `05_ui_state_patterns.md` | Loading, error, empty, compact UI, and form action states |
+| 6 | `06_quality_rules.md` | Consistency rules, checks, and review expectations |
+| 7 | `07_development_checklist.md` | Practical development and review checklist |
+| 8 | `08_zustand_best_practices.md` | Zustand client state management best practices & SSR rules |
+
+## Mandatory Agent Rule Files
+
+Automation agents and coding assistants should read `AGENTS.md` at the project root first, which points directly to this handbook.
+
+## Core Decisions
+
+- Feature modules own feature-local code; routes own cross-feature page composition.
+- Feature components receive cross-feature data and actions through props/callbacks; routes or layout containers own those dependencies.
+- `server.ts` is server-only and never exported from feature barrels.
+- Query functions return valid data or throw. Failed queries are not empty states.
+- Route loaders decide criticality: `ensureQueryData` blocks, `prefetchQuery` warms cache.
+- Critical data uses Suspense and route error boundaries.
+- Optional widgets use local `useQuery` states.
+- Supabase client access is centralized in `src/utils/supabase.ts`.
+- Auth and data mutations use the Supabase JS client, not a hand-rolled HTTP client.
+- Zustand is for synchronous client/transient UI state only; do not mirror server state in Zustand.
+- Always use atomic selectors or `useShallow` with Zustand stores to prevent unnecessary re-renders.
+- UI state handling is mandatory for every async UI surface.
+- Compact UI is allowed only when full `Alert` or empty state would break layout flow.
+- Submit-critical dependency queries must block actions while loading or errored.
