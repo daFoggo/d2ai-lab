@@ -4,13 +4,13 @@
  */
 export const SITE_CONFIG = {
 	metadata: {
-		title: "startcn-base",
+		title: "D2AI",
 		description:
 			"Production-ready web application starter built with TanStack Start, React 19, shadcn/ui, Tailwind CSS v4, and Supabase.",
 		keywords: ["startcn-base", "tanstack start", "react", "shadcn", "supabase"],
 	},
 	app: {
-		title: "startcn-base",
+		title: "D2AI",
 		slogan: "A production-ready TanStack Start starter.",
 	},
 } as const;

@@ -1,22 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { supabase } from "../utils/supabase";
 
 export const Route = createFileRoute("/")({
-	loader: async () => {
-		const { data: todos } = await supabase.from("todos").select();
-		return { todos };
-	},
 	component: Home,
 });
 
 function Home() {
-	const { todos } = Route.useLoaderData();
-
 	return (
-		<ul>
-			{todos?.map((todo) => (
-				<li key={todo.id}>{todo.name}</li>
-			))}
-		</ul>
+		<div className="flex min-h-screen items-center justify-center p-4">
+			<h1 className="text-xl font-semibold">D2AI Lab</h1>
+		</div>
 	);
 }
