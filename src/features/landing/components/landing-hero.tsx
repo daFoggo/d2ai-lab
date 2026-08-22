@@ -37,20 +37,20 @@ export function LandingHeroRoot({
 				"-=0.6",
 			);
 
-			// Subtle breathing / floating physics on accent icons
+			// Ultra-gentle, subtle breathing physics on accent icons
 			gsap.to(".hero-icon-spark", {
-				y: -8,
-				rotation: 14,
-				duration: 3.5,
+				y: -3,
+				rotation: 3,
+				duration: 4.5,
 				repeat: -1,
 				yoyo: true,
 				ease: "sine.inOut",
 			});
 
 			gsap.to(".hero-icon-highlight", {
-				y: 8,
-				rotation: -14,
-				duration: 4,
+				y: 3,
+				rotation: -3,
+				duration: 5,
 				repeat: -1,
 				yoyo: true,
 				ease: "sine.inOut",

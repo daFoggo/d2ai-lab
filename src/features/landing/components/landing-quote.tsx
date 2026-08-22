@@ -63,22 +63,28 @@ export function LandingQuoteCard({
 			if (!cardRef.current || !quoteRef.current) return;
 			if (typeof window === "undefined") return;
 
-			// Kinetic scroll-triggered text lighting: words light up once and stay bright permanently
 			const wordElements = quoteRef.current.querySelectorAll(".quote-word");
 
-			gsap.to(wordElements, {
-				scrollTrigger: {
-					trigger: cardRef.current,
-					start: "top 70%",
-					toggleActions: "play none none none",
-					once: true,
+			// Faster & more responsive scroll scrub: finishes completely while card is in main view
+			gsap.fromTo(
+				wordElements,
+				{
+					color: "rgba(255, 255, 255, 0.25)",
+					opacity: 0.25,
 				},
-				color: "#ffffff",
-				opacity: 1,
-				stagger: 0.03,
-				duration: 0.75,
-				ease: "power2.out",
-			});
+				{
+					color: "rgba(255, 255, 255, 1)",
+					opacity: 1,
+					stagger: 0.04,
+					ease: "none",
+					scrollTrigger: {
+						trigger: cardRef.current,
+						start: "top 75%",
+						end: "center 45%",
+						scrub: 0.4,
+					},
+				},
+			);
 		},
 		{ scope: cardRef },
 	);
@@ -127,7 +133,10 @@ export function LandingQuoteCard({
 			</div>
 
 			{/* Author Row with shadcn Avatar */}
-			<div className="relative z-10 mt-8 flex items-center gap-3.5 sm:mt-12">
+			<div
+				data-slot="landing-quote-author"
+				className="relative z-10 mt-8 flex items-center gap-3.5 sm:mt-12"
+			>
 				<Avatar className="size-11 sm:size-13">
 					{authorAvatar && <AvatarImage src={authorAvatar} alt={authorName} />}
 					<AvatarFallback>{authorName.charAt(0)}</AvatarFallback>
@@ -160,7 +169,7 @@ export function LandingQuotePreset({
 	authorName = "Huynh Phan Ly",
 	authorRole = "Director, D2AI Lab & Faculty of Information Technology",
 	authorAvatar,
-	bgImageSrc = "https://storage.googleapis.com/gweb-research2023-media/images/scroller-bg-2.width-1920.png",
+	bgImageSrc,
 	className,
 }: ILandingQuotePresetProps) {
 	return (

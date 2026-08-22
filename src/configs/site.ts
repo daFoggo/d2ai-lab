@@ -4,7 +4,7 @@
  */
 export const SITE_CONFIG = {
 	metadata: {
-		title: "D2AI Lab - Data To Artificial Intelligence",
+		title: "D2AI Lab",
 		description:
 			"D2AI Research Lab. Advancing Artificial Intelligence and Data Science to transform data into intelligent solutions.",
 		keywords: [
