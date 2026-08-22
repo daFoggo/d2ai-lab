@@ -109,18 +109,53 @@ pnpm typecheck
 pnpm build
 ```
 
-## Tech Stack
+## Tech Stack & Architecture
+
+```mermaid
+flowchart LR
+    subgraph Client["🎨 Client & UI"]
+        direction TB
+        UI["React 19 & Tailwind v4<br/><i>(shadcn/ui · Base UI · Tabler)</i>"]
+        Zustand["Zustand<br/><i>(Client UI State)</i>"]
+        UI <--> Zustand
+    end
+
+    subgraph Core["⚡ App & Routing"]
+        direction TB
+        Router["TanStack Router<br/><i>(Routes & Loaders)</i>"]
+        Start["TanStack Start + Nitro<br/><i>(SSR & Server Functions)</i>"]
+        Router --- Start
+    end
+
+    subgraph Data["🔄 State & Validation"]
+        direction TB
+        Query["TanStack Query<br/><i>(Cache & Server State)</i>"]
+        Zod["Zod<br/><i>(Schema Validation)</i>"]
+        Query <--> Zod
+    end
+
+    subgraph Backend["☁️ Backend Platform"]
+        direction TB
+        Supabase["Supabase<br/><i>(PostgreSQL · Auth · Storage)</i>"]
+    end
+
+    Client --> Core
+    Core --> Data
+    Data --> Backend
+```
 
 | Layer | Technology |
 |---|---|
-| App framework | TanStack Start |
+| App framework | TanStack Start (Nitro) |
 | Routing | TanStack Router |
 | Server state | TanStack Query |
-| Data platform | Supabase |
+| Client UI state | Zustand |
+| Data platform | Supabase (PostgreSQL, Auth, Storage) |
 | Validation | Zod |
-| UI | React 19, shadcn/ui, Base UI |
+| UI & Primitives | React 19, shadcn/ui, Base UI, Sonner |
 | Styling | Tailwind CSS v4 |
 | Icons | @tabler/icons-react |
+| Language & Build | TypeScript 7 (native `tsc`), Vite |
 | Testing | Vitest |
 | Format/Lint | Biome (+ ESLint / Prettier) |
 
