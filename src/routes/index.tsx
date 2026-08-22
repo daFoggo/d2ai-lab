@@ -2,6 +2,7 @@ import { IconSparkleHighlight, IconTableSpark } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { AuthButton } from "@/features/auth";
 import type {
 	TLandingDomainsData,
 	TLandingFutureItem,
@@ -179,12 +180,6 @@ function HomePage() {
 		toast(`Language selected: ${langCode === "EN" ? "English" : "Tiếng Việt"}`);
 	};
 
-	const handleLogin = () => {
-		toast("Sign In", {
-			description: "Redirecting to authentication portal...",
-		});
-	};
-
 	const handleSeePublications = () => {
 		toast.info("Navigating to Publications Archive", {
 			description: "View all peer-reviewed research papers and preprints.",
@@ -222,10 +217,10 @@ function HomePage() {
 					onSearchClick={handleSearch}
 					currentLang={currentLang}
 					onSelectLanguage={handleSelectLanguage}
-					loginLabel="Sign in"
-					onLoginClick={handleLogin}
 					items={LANDING_NAV_ITEMS}
-				/>
+				>
+					<AuthButton />
+				</LandingNavbar.Actions>
 			</LandingNavbar.Root>
 
 			{/* Main Content Sections */}

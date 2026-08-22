@@ -46,7 +46,7 @@ export function LandingFilmContent({
 			className={cn("flex flex-col justify-center", className)}
 			{...props}
 		>
-			<h2 className="font-title text-2xl leading-[1.15] font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
+			<h2 className="font-title text-2xl leading-tight font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
 				{title}
 			</h2>
 			<p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-5 sm:text-base md:max-w-xl">

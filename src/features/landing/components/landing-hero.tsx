@@ -64,7 +64,7 @@ export function LandingHeroRoot({
 			ref={containerRef}
 			data-slot="landing-hero"
 			className={cn(
-				"relative flex min-h-[90vh] w-full flex-col justify-center overflow-hidden pt-20 pb-14 sm:min-h-[94vh] sm:pt-24 sm:pb-16 lg:min-h-[96vh] lg:pt-28 lg:pb-20 xl:min-h-[98vh]",
+				"relative flex min-h-screen w-full flex-col justify-center overflow-hidden pt-20 pb-14 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20",
 				className,
 			)}
 			{...props}
@@ -114,7 +114,7 @@ export function LandingHeroTitle({
 		<h1
 			data-slot="landing-hero-title"
 			className={cn(
-				"font-title text-4xl leading-[1.08] font-normal tracking-tight text-foreground select-none sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl",
+				"font-title text-4xl leading-tight font-normal tracking-tight text-foreground select-none sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl",
 				className,
 			)}
 			{...props}

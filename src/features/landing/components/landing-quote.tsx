@@ -94,7 +94,7 @@ export function LandingQuoteCard({
 			ref={cardRef}
 			data-slot="landing-quote-card"
 			className={cn(
-				"relative flex min-h-[480px] w-full flex-col justify-between overflow-hidden rounded-3xl p-8 shadow-sm sm:min-h-[540px] sm:p-12 md:p-16 lg:min-h-[600px] lg:p-20",
+				"relative flex min-h-120 w-full flex-col justify-between overflow-hidden rounded-3xl p-8 shadow-sm sm:min-h-135 sm:p-12 md:p-16 lg:min-h-150 lg:p-20",
 				className,
 			)}
 			{...props}
@@ -110,7 +110,7 @@ export function LandingQuoteCard({
 			</picture>
 
 			{/* Contrast Overlays */}
-			<div className="pointer-events-none absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
+			<div className="pointer-events-none absolute inset-0 bg-black/45 backdrop-blur-xs" />
 			<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-black/60" />
 
 			{/* Quotation Content with Interactive Scroll Scrubbing */}
@@ -119,12 +119,9 @@ export function LandingQuoteCard({
 					ref={quoteRef}
 					className="font-title text-xl leading-snug font-normal tracking-tight text-white/30 sm:text-2xl md:text-3xl lg:text-4xl"
 				>
-					<span className="quote-word mr-[0.25em] inline-block">“</span>
+					<span className="quote-word mr-1 inline-block">“</span>
 					{wordTokens.map((token) => (
-						<span
-							key={token.id}
-							className="quote-word mr-[0.25em] inline-block"
-						>
+						<span key={token.id} className="quote-word mr-1 inline-block">
 							{token.text}
 						</span>
 					))}

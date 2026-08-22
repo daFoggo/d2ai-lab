@@ -99,7 +99,7 @@ export function LandingFooterBigText({
 			{...props}
 		>
 			{/* Bold Massive Typography */}
-			<span className="inline-block font-title text-[15vw] leading-none font-bold tracking-tighter text-foreground/90 transition-colors hover:text-foreground">
+			<span className="inline-block font-title text-6xl font-bold tracking-tighter text-foreground/90 transition-colors hover:text-foreground sm:text-7xl md:text-8xl lg:text-9xl">
 				{brandText}
 			</span>
 		</div>

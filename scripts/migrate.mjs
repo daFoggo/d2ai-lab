@@ -9,8 +9,8 @@ const DB_PASSWORD = process.env.DB_PASSWORD || "eTzbq9zGxNHDbRfO";
 
 // Tất cả các vùng AWS của Supabase Pooler
 const allPoolerRegions = [
+	"ap-southeast-2", // Sydney (primary)
 	"ap-southeast-1", // Singapore
-	"ap-southeast-2", // Sydney
 	"ap-northeast-1", // Tokyo
 	"ap-northeast-2", // Seoul
 	"ap-south-1",     // Mumbai
@@ -31,9 +31,18 @@ const allPoolerRegions = [
 ];
 
 async function runMigration() {
-	const sqlPath = path.resolve(process.cwd(), "supabase/migrations/20260821_auth_rbac.sql");
-	const sqlContent = fs.readFileSync(sqlPath, "utf-8");
-	console.log("📄 Đã nạp file SQL migration:", sqlPath);
+	const migrationsDir = path.resolve(process.cwd(), "supabase/migrations");
+	if (!fs.existsSync(migrationsDir)) {
+		console.error("❌ Không tìm thấy thư mục migrations tại:", migrationsDir);
+		process.exit(1);
+	}
+
+	const files = fs
+		.readdirSync(migrationsDir)
+		.filter((f) => f.endsWith(".sql"))
+		.sort();
+
+	console.log(`📄 Tìm thấy ${files.length} file migration:`, files);
 
 	let connectedClient = null;
 
@@ -46,15 +55,15 @@ async function runMigration() {
 			password: DB_PASSWORD,
 			database: "postgres",
 			ssl: { rejectUnauthorized: false },
-			connectionTimeoutMillis: 4000,
+			connectionTimeoutMillis: 5000,
 		});
 
 		try {
 			await client.connect();
-			console.log(`\n🎉 KẾT NỐI THÀNH CÔNG TỚI VÙNG: ${region} (${host})!`);
+			console.log(`\n🎉 KẾT NỐI THÀNH CÔNG TỚI SUPABASE DB (${region})!`);
 			connectedClient = client;
 			break;
-		} catch (err) {
+		} catch {
 			process.stdout.write(`.`);
 			await client.end().catch(() => {});
 		}
@@ -66,18 +75,17 @@ async function runMigration() {
 	}
 
 	try {
-		console.log("\n🚀 Đang thực thi toàn bộ script Migration SQL...");
-		await connectedClient.query(sqlContent);
+		for (const file of files) {
+			const filePath = path.join(migrationsDir, file);
+			console.log(`\n🚀 Đang thực thi migration: ${file}...`);
+			const sqlContent = fs.readFileSync(filePath, "utf-8");
+			await connectedClient.query(sqlContent);
+			console.log(`✅ Hoàn thành file: ${file}`);
+		}
+
 		console.log("\n🎉 ========================================================");
-		console.log("🎉 MIGRATION THÀNH CÔNG RỰC RỠ 100% TRÊN SUPABASE DATABASE!");
+		console.log("🎉 TOÀN BỘ MIGRATION ĐÃ ĐƯỢC CHẠY THÀNH CÔNG TRÊN SUPABASE!");
 		console.log("🎉 ========================================================");
-		console.log("👉 Đã tạo xong:");
-		console.log("   - Enum app_role ('user', 'researcher')");
-		console.log("   - Bảng public.user_roles");
-		console.log("   - Trigger handle_new_user_role tự động gán role khi đăng ký");
-		console.log("   - Postgres function custom_access_token_hook");
-		console.log("   - Phân quyền GRANT cho supabase_auth_admin");
-		console.log("   - Bảng và RLS policies cho research_papers");
 	} catch (error) {
 		console.error("❌ Lỗi khi thực thi SQL:", error);
 		process.exit(1);

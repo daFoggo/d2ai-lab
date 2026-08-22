@@ -370,8 +370,8 @@ export function LandingNavbarActions({
 				/>
 			)}
 
-			{/* 3. Sign In / Login Button */}
-			{onLoginClick && (
+			{/* 3. Sign In / Auth Button */}
+			{onLoginClick ? (
 				<Button
 					type="button"
 					onClick={onLoginClick}
@@ -381,9 +381,9 @@ export function LandingNavbarActions({
 				>
 					{loginLabel}
 				</Button>
+			) : (
+				children
 			)}
-
-			{children}
 
 			{/* Mobile Drawer Trigger */}
 			{items && items.length > 0 && (
@@ -406,7 +406,7 @@ export function LandingNavbarActions({
 					{mobileOpen && (
 						<div
 							data-slot="landing-mobile-drawer"
-							className="absolute top-full left-0 z-50 flex max-h-[85vh] w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2"
+							className="absolute top-full left-0 z-50 flex max-h-screen w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2"
 						>
 							{items.map((item) => {
 								if (item.items && item.items.length > 0) {
@@ -488,7 +488,7 @@ export function LandingNavbarActions({
 								</div>
 							)}
 
-							{onLoginClick && (
+							{onLoginClick ? (
 								<Button
 									type="button"
 									onClick={() => {
@@ -500,7 +500,11 @@ export function LandingNavbarActions({
 								>
 									{loginLabel}
 								</Button>
-							)}
+							) : children ? (
+								<div className="mt-2 flex w-full justify-center">
+									{children}
+								</div>
+							) : null}
 						</div>
 					)}
 				</div>

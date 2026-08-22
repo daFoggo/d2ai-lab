@@ -105,7 +105,7 @@ export function LandingProjectsHero({
 					) : (
 						<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-5">
 							<div className="flex flex-col items-center gap-1 text-center select-none">
-								<span className="font-mono text-[10px] tracking-wider text-zinc-500 uppercase">
+								<span className="font-mono text-xs tracking-wider text-zinc-500 uppercase">
 									{hero.category ?? "FEATURED APP"}
 								</span>
 								<span className="font-title text-base font-normal text-zinc-300">
@@ -120,7 +120,7 @@ export function LandingProjectsHero({
 			{/* Right Description & Action (Compact Typography) */}
 			<div className="flex flex-col justify-center md:col-span-7 md:pl-2">
 				{hero.category && (
-					<span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+					<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 						{hero.category}
 					</span>
 				)}
@@ -176,7 +176,7 @@ export function LandingProjectsItem({
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center p-2 text-center select-none">
-						<span className="font-mono text-[9px] text-zinc-500 uppercase">
+						<span className="font-mono text-xs text-zinc-500 uppercase">
 							APP
 						</span>
 					</div>
@@ -185,7 +185,7 @@ export function LandingProjectsItem({
 
 			{/* Info */}
 			<div className="flex flex-col justify-center">
-				<span className="font-mono text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
+				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 					{item.category}
 				</span>
 				<h4 className="mt-1 line-clamp-2 text-xs leading-snug font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-sm">

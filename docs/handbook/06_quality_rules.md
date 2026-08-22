@@ -25,9 +25,13 @@ Do not run expensive checks repeatedly for every tiny edit unless requested.
 
 ## Styling Rules
 
+- **Nghiêm cấm arbitrary custom values (`className-[...]`)**: Tuyệt đối không dùng các class tùy biến như `w-[460px]`, `max-w-[400px]`, `text-[10px]`, `text-[11px]`, `p-[15px]`, `gap-[10px]`, `min-h-[500px]`.
+- **Chuẩn hóa Design Tokens theo Tailwind Scale**:
+  - **Font size**: Chỉ dùng `text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl`, `text-4xl`, `text-5xl`, `text-6xl`, `text-7xl`, `text-8xl`, `text-9xl`. Giới hạn dưới tối thiểu là `text-xs` (12px), tuyệt đối không dùng font nhỏ hơn.
+  - **Spacing & Dimension**: Dùng thang chuẩn 4px (`0, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 14, 16, 20, 24...`).
+  - **Max/Min Width & Height**: Dùng scale chuẩn (`max-w-xs`, `max-w-sm`, `max-w-md`, `max-w-lg`, `max-w-xl`, `max-w-2xl`, `max-w-4xl`, `max-w-7xl`, `min-h-screen`, `min-h-120`...).
+  - **Font weight**: `font-normal` (400), `font-medium` (500), `font-semibold` (600), `font-bold` (700).
 - Do not hardcode raw colors such as `#fff`, `rgb(...)`, or `bg-[#...]`.
-- Do not hardcode custom spacing such as `p-[15px]`.
-- Do not hardcode custom font sizes such as `text-[15px]`.
 - Do not hardcode custom z-index values such as `z-[999]`.
 - Use Tailwind design tokens and project CSS variables.
 - Use @tabler/icons-react only for icons.

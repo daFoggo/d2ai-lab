@@ -78,6 +78,7 @@ Every async UI must distinguish loading, error, and valid empty data.
 ## Quality Rules
 
 - Prefer small, scoped changes that match existing code patterns.
+- **Design Tokens & Styling**: Strictly use standard Tailwind tokens (`text-xs`..`text-9xl`, `p-2`, `gap-4`, `max-w-md`...). Never use arbitrary custom classes like `className-[...]` (`text-[10px]`, `w-[450px]`, `p-[15px]`). Minimum text size is `text-xs` (12px).
 - Run checks after major multi-file work:
   - `pnpm exec biome check --write`
   - `pnpm typecheck`

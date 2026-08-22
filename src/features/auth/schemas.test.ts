@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { AppRoleSchema, LoginInputSchema, SignUpInputSchema } from "./schemas";
+import { AuthUserSchema, LoginInputSchema, SignUpInputSchema } from "./schemas";
 
-describe("Auth Schemas", () => {
-	it("should validate app roles correctly", () => {
-		expect(AppRoleSchema.safeParse("user").success).toBe(true);
-		expect(AppRoleSchema.safeParse("researcher").success).toBe(true);
-		expect(AppRoleSchema.safeParse("admin").success).toBe(false);
+describe("Auth Schemas (Native Supabase Auth)", () => {
+	it("should validate auth user schema", () => {
+		const valid = AuthUserSchema.safeParse({
+			id: "user-123",
+			email: "user@example.com",
+		});
+		expect(valid.success).toBe(true);
 	});
 
 	it("should validate login schema", () => {
@@ -28,18 +30,22 @@ describe("Auth Schemas", () => {
 		expect(shortPassword.success).toBe(false);
 	});
 
-	it("should validate signup schema with default and custom role", () => {
-		const defaultRole = SignUpInputSchema.parse({
+	it("should validate signup schema with matching passwords", () => {
+		const valid = SignUpInputSchema.safeParse({
 			email: "test@example.com",
 			password: "password123",
+			confirmPassword: "password123",
 		});
-		expect(defaultRole.role).toBe("user");
+		expect(valid.success).toBe(true);
 
-		const researcherRole = SignUpInputSchema.parse({
-			email: "researcher@example.com",
+		const mismatch = SignUpInputSchema.safeParse({
+			email: "test@example.com",
 			password: "password123",
-			role: "researcher",
+			confirmPassword: "password456",
 		});
-		expect(researcherRole.role).toBe("researcher");
+		expect(mismatch.success).toBe(false);
+		if (!mismatch.success) {
+			expect(mismatch.error.issues[0]?.message).toBe("Passwords do not match");
+		}
 	});
 });

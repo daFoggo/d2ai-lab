@@ -62,7 +62,7 @@ export function LandingDomainsBanner({
 		<div
 			data-slot="landing-domains-banner"
 			className={cn(
-				"relative flex min-h-115 w-full flex-col justify-between overflow-hidden rounded-3xl bg-zinc-950 p-8 shadow-xs sm:min-h-125 sm:p-12 md:p-16 lg:min-h-[540px] lg:p-20",
+				"relative flex min-h-115 w-full flex-col justify-between overflow-hidden rounded-3xl bg-zinc-950 p-8 shadow-xs sm:min-h-125 sm:p-12 md:p-16 lg:min-h-135 lg:p-20",
 				className,
 			)}
 			{...props}
@@ -77,7 +77,7 @@ export function LandingDomainsBanner({
 						key={tile.label}
 						className="flex flex-col justify-end rounded-2xl border border-zinc-800/80 bg-linear-to-br from-zinc-900/60 to-zinc-950/90 p-4 transition-colors"
 					>
-						<span className="font-mono text-[9px] tracking-wider text-zinc-500 uppercase">
+						<span className="font-mono text-xs tracking-wider text-zinc-500 uppercase">
 							{tile.tag}
 						</span>
 						<span className="mt-1 font-title text-xs font-medium text-zinc-400">

@@ -14,9 +14,6 @@ const badgeVariants = cva(
 				destructive:
 					"border-transparent bg-destructive/10 text-destructive border-destructive/20",
 				outline: "text-foreground",
-				researcher:
-					"border-primary/20 bg-primary/10 text-primary font-medium dark:bg-primary/20",
-				user: "border-muted-foreground/20 bg-muted text-muted-foreground font-medium",
 			},
 		},
 		defaultVariants: {

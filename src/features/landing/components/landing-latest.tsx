@@ -103,7 +103,7 @@ export function LandingLatestCard({
 					) : (
 						<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-5">
 							<div className="flex flex-col items-center gap-1 text-center select-none">
-								<span className="font-mono text-[10px] tracking-wider text-zinc-500 uppercase">
+								<span className="font-mono text-xs tracking-wider text-zinc-500 uppercase">
 									{item.category}
 								</span>
 								<span className="line-clamp-2 text-xs font-medium text-zinc-400">
@@ -117,13 +117,13 @@ export function LandingLatestCard({
 
 			{/* Meta: Category & Date */}
 			<div className="mt-3 flex items-center gap-2">
-				<span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 					{item.category}
 				</span>
 				{item.date && (
 					<>
 						<span className="text-xs text-muted-foreground/50">·</span>
-						<span className="font-mono text-[11px] text-muted-foreground uppercase">
+						<span className="font-mono text-xs text-muted-foreground uppercase">
 							{item.date}
 						</span>
 					</>
