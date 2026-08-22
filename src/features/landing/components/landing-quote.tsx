@@ -63,20 +63,21 @@ export function LandingQuoteCard({
 			if (!cardRef.current || !quoteRef.current) return;
 			if (typeof window === "undefined") return;
 
-			// Kinetic scroll-triggered text lighting: words transition from dim white/30 to bright white
+			// Kinetic scroll-triggered text lighting: words light up once and stay bright permanently
 			const wordElements = quoteRef.current.querySelectorAll(".quote-word");
 
 			gsap.to(wordElements, {
 				scrollTrigger: {
 					trigger: cardRef.current,
-					start: "top 75%",
-					end: "bottom 35%",
-					scrub: 0.5,
+					start: "top 70%",
+					toggleActions: "play none none none",
+					once: true,
 				},
 				color: "#ffffff",
 				opacity: 1,
-				stagger: 0.04,
-				ease: "power1.inOut",
+				stagger: 0.03,
+				duration: 0.75,
+				ease: "power2.out",
 			});
 		},
 		{ scope: cardRef },
