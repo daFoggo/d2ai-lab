@@ -1,17 +1,26 @@
 /**
- * Cấu hình thông tin cơ bản của website như title, description và default metadata.
- * Được sử dụng tập trung cho việc hiển thị page title và hỗ trợ SEO.
+ * Basic website configuration including title, description, and default metadata.
+ * Centralized for page titles and SEO support.
  */
 export const SITE_CONFIG = {
 	metadata: {
-		title: "D2AI",
+		title: "D2AI Lab - Data To Artificial Intelligence",
 		description:
-			"Production-ready web application starter built with TanStack Start, React 19, shadcn/ui, Tailwind CSS v4, and Supabase.",
-		keywords: ["startcn-base", "tanstack start", "react", "shadcn", "supabase"],
+			"D2AI Research Lab. Advancing Artificial Intelligence and Data Science to transform data into intelligent solutions.",
+		keywords: [
+			"D2AI",
+			"D2AI Lab",
+			"Data To Artificial Intelligence",
+			"Artificial Intelligence",
+			"Data Science",
+			"Machine Learning",
+			"Smart Data",
+			"AI Research",
+		],
 	},
 	app: {
-		title: "D2AI",
-		slogan: "A production-ready TanStack Start starter.",
+		title: "D2AI Lab",
+		slogan: "Data to Intelligence, Ideas to Impact",
 	},
 } as const;
 

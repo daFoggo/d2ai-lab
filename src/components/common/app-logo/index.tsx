@@ -8,6 +8,7 @@ interface IAppLogoProps {
 	hideTitle?: boolean;
 	size?: "xs" | "sm" | "default";
 }
+
 export const AppLogo = ({
 	className,
 	hideIcon,
