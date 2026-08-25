@@ -78,7 +78,7 @@ export function LandingFuture({
 		<section
 			data-slot="landing-future"
 			className={cn(
-				"w-full overflow-hidden py-10 sm:py-16 lg:py-20",
+				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
 				className,
 			)}
 		>

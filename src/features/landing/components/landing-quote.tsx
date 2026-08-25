@@ -69,7 +69,10 @@ export function LandingQuote({
 	return (
 		<section
 			data-slot="landing-quote"
-			className={cn("w-full overflow-hidden py-8 sm:py-12 lg:py-16", className)}
+			className={cn(
+				"w-full overflow-hidden py-12 sm:py-16 lg:py-20",
+				className,
+			)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				<div

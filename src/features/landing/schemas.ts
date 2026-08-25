@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const landingNavSubItemSchema = z.object({
 	title: z.string().min(1),
-	href: z.string().min(1),
+	href: z.string().optional(),
+	to: z.string().optional(),
 	description: z.string().optional(),
 	isExternal: z.boolean().optional(),
 });
@@ -12,6 +13,7 @@ export type TLandingNavSubItem = z.infer<typeof landingNavSubItemSchema>;
 export const landingNavItemSchema = z.object({
 	label: z.string().min(1),
 	href: z.string().optional(),
+	to: z.string().optional(),
 	isExternal: z.boolean().optional(),
 	isActive: z.boolean().optional(),
 	items: z.array(landingNavSubItemSchema).optional(),

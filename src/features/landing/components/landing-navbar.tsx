@@ -6,7 +6,7 @@ import {
 	IconSearch,
 	IconX,
 } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import type { ComponentProps, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,9 @@ export function LandingNavbarRoot({
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isOverHero, setIsOverHero] = useState(true);
 	const headerRef = useRef<HTMLElement>(null);
+	const pathname = useRouterState({
+		select: (s) => s.location.pathname,
+	});
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -63,22 +66,43 @@ export function LandingNavbarRoot({
 	// Track whether the header still overlaps the hero section so its color
 	// scheme can follow the hero while over it and switch back to the site's
 	// normal tokens once the user scrolls past it into the sections below.
+	// Re-runs on route change: isOverHero lives on a single shared header that
+	// does not remount between pages, so returning to / must re-attach to the
+	// (newly mounted) hero after the route transition.
 	useEffect(() => {
-		const heroEl = document.querySelector('[data-slot="landing-hero"]');
-		if (!heroEl) {
-			setIsOverHero(false);
-			return;
-		}
+		let observer: IntersectionObserver | undefined;
 
-		const navHeight = headerRef.current?.offsetHeight ?? 80;
-		const observer = new IntersectionObserver(
-			([entry]) => setIsOverHero(entry.isIntersecting),
-			{ rootMargin: `-${navHeight}px 0px 0px 0px`, threshold: 0 },
-		);
+		const isHome = pathname === "/" || /^\/(en|vi)\/?$/.test(pathname);
 
-		observer.observe(heroEl);
-		return () => observer.disconnect();
-	}, []);
+		const attach = () => {
+			// Only the home route renders the hero; other routes have no hero.
+			if (!isHome) {
+				setIsOverHero(false);
+				return;
+			}
+
+			const heroEl = document.querySelector('[data-slot="landing-hero"]');
+			if (!heroEl) {
+				setIsOverHero(false);
+				return;
+			}
+
+			const navHeight = headerRef.current?.offsetHeight ?? 80;
+			observer = new IntersectionObserver(
+				([entry]) => setIsOverHero(entry.isIntersecting),
+				{ rootMargin: `-${navHeight}px 0px 0px 0px`, threshold: 0 },
+			);
+			observer.observe(heroEl);
+		};
+
+		// Wait a frame so the route content (hero) is mounted before observing.
+		const raf = requestAnimationFrame(attach);
+
+		return () => {
+			cancelAnimationFrame(raf);
+			observer?.disconnect();
+		};
+	}, [pathname]);
 
 	return (
 		<header
@@ -120,6 +144,8 @@ export function LandingNavbarBrand({
 	onDropdownClick,
 	className,
 }: ILandingNavbarBrandProps) {
+	const { locale } = useI18n();
+
 	if (hasDropdown && onDropdownClick) {
 		return (
 			<button
@@ -151,10 +177,12 @@ export function LandingNavbarBrand({
 	}
 
 	return (
-		<div
+		<Link
+			to="/{-$locale}"
+			params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
 			data-slot="landing-navbar-brand"
 			className={cn(
-				"group flex shrink-0 cursor-default items-center gap-2 select-none",
+				"group flex shrink-0 items-center gap-2 select-none focus:outline-hidden",
 				className,
 			)}
 		>
@@ -169,7 +197,7 @@ export function LandingNavbarBrand({
 					</span>
 				)}
 			</div>
-		</div>
+		</Link>
 	);
 }
 
@@ -187,6 +215,8 @@ export function LandingNavbarNav({
 	className,
 	...props
 }: ILandingNavbarNavProps) {
+	const { locale } = useI18n();
+
 	return (
 		<div
 			data-slot="landing-navbar-nav"
@@ -203,23 +233,41 @@ export function LandingNavbarNav({
 										<NavigationMenuTrigger>{item.label}</NavigationMenuTrigger>
 										<NavigationMenuContent className="w-80 p-2 sm:w-96">
 											<div className="flex flex-col gap-1">
-												{item.items.map((subItem) => (
-													<NavigationMenuLink
-														key={subItem.href}
-														href={subItem.href}
-														onClick={() => onItemClick?.(item)}
-														className="group/subitem flex flex-col items-start gap-1 rounded-xl p-3 transition-colors hover:bg-muted"
-													>
-														<div className="text-sm font-medium text-foreground">
-															{subItem.title}
-														</div>
-														{subItem.description && (
-															<p className="text-xs leading-relaxed text-muted-foreground">
-																{subItem.description}
-															</p>
-														)}
-													</NavigationMenuLink>
-												))}
+												{item.items.map((subItem) => {
+													const subLinkProps = subItem.to
+														? {
+																render: (
+																	<Link
+																		to={subItem.to}
+																		params={{
+																			locale:
+																				locale === DEFAULT_LOCALE
+																					? undefined
+																					: locale,
+																		}}
+																	/>
+																),
+															}
+														: { href: subItem.href ?? "#" };
+
+													return (
+														<NavigationMenuLink
+															key={subItem.href ?? subItem.to}
+															{...subLinkProps}
+															onClick={() => onItemClick?.(item)}
+															className="group/subitem flex flex-col items-start gap-1 rounded-xl p-3 transition-colors hover:bg-muted"
+														>
+															<div className="text-sm font-medium text-foreground">
+																{subItem.title}
+															</div>
+															{subItem.description && (
+																<p className="text-xs leading-relaxed text-muted-foreground">
+																	{subItem.description}
+																</p>
+															)}
+														</NavigationMenuLink>
+													);
+												})}
 											</div>
 										</NavigationMenuContent>
 									</NavigationMenuItem>
@@ -227,19 +275,42 @@ export function LandingNavbarNav({
 							}
 
 							return (
-								<NavigationMenuItem key={item.href || item.label}>
-									<NavigationMenuLink
-										href={item.href ?? "#"}
-										className={cn(
-											navigationMenuTriggerStyle(),
-											item.isActive
-												? "font-semibold text-foreground"
-												: "text-muted-foreground",
-										)}
-										onClick={() => onItemClick?.(item)}
-									>
-										{item.label}
-									</NavigationMenuLink>
+								<NavigationMenuItem key={item.href ?? item.to ?? item.label}>
+									{item.to ? (
+										<NavigationMenuLink
+											render={
+												<Link
+													to={item.to}
+													params={{
+														locale:
+															locale === DEFAULT_LOCALE ? undefined : locale,
+													}}
+												/>
+											}
+											className={cn(
+												navigationMenuTriggerStyle(),
+												item.isActive
+													? "font-semibold text-foreground"
+													: "text-muted-foreground",
+											)}
+											onClick={() => onItemClick?.(item)}
+										>
+											{item.label}
+										</NavigationMenuLink>
+									) : (
+										<NavigationMenuLink
+											href={item.href ?? "#"}
+											className={cn(
+												navigationMenuTriggerStyle(),
+												item.isActive
+													? "font-semibold text-foreground"
+													: "text-muted-foreground",
+											)}
+											onClick={() => onItemClick?.(item)}
+										>
+											{item.label}
+										</NavigationMenuLink>
+									)}
 								</NavigationMenuItem>
 							);
 						})}
@@ -438,29 +509,78 @@ export function LandingNavbarActions({
 											<span className="px-3 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
 												{item.label}
 											</span>
-											{item.items.map((subItem) => (
-												<a
-													key={subItem.href}
-													href={subItem.href}
-													onClick={() => {
-														onItemClick?.(item);
-														setMobileOpen(false);
-													}}
-													className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-												>
-													<div className="font-medium">{subItem.title}</div>
-													{subItem.description && (
-														<p className="text-xs text-muted-foreground">
-															{subItem.description}
-														</p>
-													)}
-												</a>
-											))}
+											{item.items.map((subItem) => {
+												if (subItem.to) {
+													return (
+														<Link
+															key={subItem.to}
+															to={subItem.to}
+															params={{
+																locale:
+																	locale === DEFAULT_LOCALE
+																		? undefined
+																		: locale,
+															}}
+															onClick={() => {
+																onItemClick?.(item);
+																setMobileOpen(false);
+															}}
+															className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+														>
+															<div className="font-medium">{subItem.title}</div>
+															{subItem.description && (
+																<p className="text-xs text-muted-foreground">
+																	{subItem.description}
+																</p>
+															)}
+														</Link>
+													);
+												}
+
+												return (
+													<a
+														key={subItem.href}
+														href={subItem.href}
+														onClick={() => {
+															onItemClick?.(item);
+															setMobileOpen(false);
+														}}
+														className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+													>
+														<div className="font-medium">{subItem.title}</div>
+														{subItem.description && (
+															<p className="text-xs text-muted-foreground">
+																{subItem.description}
+															</p>
+														)}
+													</a>
+												);
+											})}
 										</div>
 									);
 								}
 
-								return (
+								return item.to ? (
+									<Link
+										key={item.to}
+										to={item.to}
+										params={{
+											locale: locale === DEFAULT_LOCALE ? undefined : locale,
+										}}
+										onClick={() => {
+											onItemClick?.(item);
+											setMobileOpen(false);
+										}}
+										className={cn(
+											"rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
+											item.isActive
+												? "bg-muted font-semibold text-foreground"
+												: "text-muted-foreground",
+										)}
+									>
+										{item.label}
+									</Link>
+								) : (
 									<a
 										key={item.href || item.label}
 										href={item.href ?? "#"}

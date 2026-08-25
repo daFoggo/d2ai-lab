@@ -11,7 +11,7 @@ interface IAppLogoProps {
 
 export const AppLogo = ({
 	className,
-	hideIcon,
+	hideIcon = true,
 	hideTitle,
 	size = "default",
 }: IAppLogoProps) => {
