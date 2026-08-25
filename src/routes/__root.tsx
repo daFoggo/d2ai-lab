@@ -19,26 +19,64 @@ import type { IRouterContext } from "@/router";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<IRouterContext>()({
-	head: () => ({
-		meta: [
-			{
-				charSet: "utf-8",
-			},
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1",
-			},
-			{
-				title: SITE_CONFIG.metadata.title,
-			},
-		],
-		links: [
-			{
-				rel: "stylesheet",
-				href: appCss,
-			},
-		],
-	}),
+	head: () => {
+		const title = SITE_CONFIG.metadata.title;
+		const description = SITE_CONFIG.metadata.description;
+		const url = SITE_CONFIG.app.url;
+		const ogImage = SITE_CONFIG.app.ogImage;
+
+		return {
+			meta: [
+				{ charSet: "utf-8" },
+				{
+					name: "viewport",
+					content: "width=device-width, initial-scale=1",
+				},
+				{ title },
+				{ name: "description", content: description },
+				{ name: "keywords", content: SITE_CONFIG.metadata.keywords.join(", ") },
+				// Open Graph
+				{ property: "og:site_name", content: SITE_CONFIG.app.title },
+				{ property: "og:title", content: title },
+				{ property: "og:description", content: description },
+				{ property: "og:type", content: "website" },
+				{ property: "og:url", content: url },
+				{ property: "og:image", content: ogImage },
+				// Twitter Card
+				{ name: "twitter:card", content: "summary_large_image" },
+				{ name: "twitter:title", content: title },
+				{ name: "twitter:description", content: description },
+				{ name: "twitter:image", content: ogImage },
+			],
+			links: [
+				{ rel: "stylesheet", href: appCss },
+				{ rel: "canonical", href: url },
+				{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+				{ rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+				{ rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+				{ rel: "manifest", href: "/manifest.json" },
+				// Hreflang
+				{ rel: "alternate", hrefLang: "en", href: url },
+				{ rel: "alternate", hrefLang: "vi", href: `${url}/vi` },
+				{ rel: "alternate", hrefLang: "x-default", href: url },
+			],
+			scripts: [
+				{
+					type: "application/ld+json",
+					children: JSON.stringify({
+						"@context": "https://schema.org",
+						"@type": "Organization",
+						name: SITE_CONFIG.app.title,
+						slogan: SITE_CONFIG.app.slogan,
+						url,
+						logo: `${url}/logo512.png`,
+						description,
+						knowsAbout: SITE_CONFIG.metadata.keywords,
+					}),
+				},
+			],
+		};
+	},
 	loader: () => getThemeServerFn(),
 	shellComponent: RootDocument,
 	notFoundComponent: NotFound,

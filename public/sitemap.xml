@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+		xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://d2ai-lab.vercel.app/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://d2ai-lab.vercel.app/"/>
+    <lastmod>2026-08-26</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/vi</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://d2ai-lab.vercel.app/"/>
+    <lastmod>2026-08-26</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/teams</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/teams"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/teams"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/publications</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/publications"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/publications"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/projects</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/projects"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/projects"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/seminars</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/seminars"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/seminars"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/careers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/careers"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/careers"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/research/areas</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/research/areas"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/research/areas"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/research/gaps</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/research/gaps"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/research/gaps"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+  <url>
+    <loc>https://d2ai-lab.vercel.app/research/directions</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://d2ai-lab.vercel.app/research/directions"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://d2ai-lab.vercel.app/vi/research/directions"/>
+    <lastmod>2026-08-26</lastmod>
+  </url>
+</urlset>
