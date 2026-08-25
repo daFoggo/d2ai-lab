@@ -1,7 +1,9 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { type ComponentProps, type ReactNode, useRef } from "react";
+import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { HERO_SCOPE_STYLE } from "../constants";
 
 export interface ILandingHeroRootProps extends ComponentProps<"section"> {
 	children: ReactNode;
@@ -63,8 +65,9 @@ export function LandingHeroRoot({
 		<section
 			ref={containerRef}
 			data-slot="landing-hero"
+			style={HERO_SCOPE_STYLE}
 			className={cn(
-				"relative flex min-h-screen w-full flex-col justify-center overflow-hidden pt-20 pb-14 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20",
+				"relative flex min-h-screen w-full flex-col justify-center overflow-hidden bg-background pt-20 pb-14 text-foreground sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20",
 				className,
 			)}
 			{...props}
@@ -110,11 +113,14 @@ export function LandingHeroTitle({
 	className,
 	...props
 }: ILandingHeroTitleProps) {
+	const { locale } = useI18n();
+
 	return (
 		<h1
 			data-slot="landing-hero-title"
 			className={cn(
-				"font-title text-4xl leading-tight font-normal tracking-tight text-foreground select-none sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl",
+				"font-title text-4xl leading-tight font-normal tracking-tight text-foreground text-balance select-none sm:text-5xl md:text-6xl",
+				locale === "vi" ? "lg:text-6xl xl:text-7xl" : "lg:text-7xl xl:text-8xl",
 				className,
 			)}
 			{...props}
@@ -148,49 +154,9 @@ export function LandingHeroDescription({
 	);
 }
 
-/**
- * Standard Full-Width Composable Hero Preset with viewport centering
- */
-export interface ILandingHeroPresetProps {
-	titleLine1?: string;
-	titleLine2?: string;
-	description?: string;
-	className?: string;
-}
-
-export function LandingHeroPreset({
-	titleLine1 = "Data to Intelligence,",
-	titleLine2 = "Ideas to Impact.",
-	description = "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society.",
-	className,
-}: ILandingHeroPresetProps) {
-	return (
-		<LandingHeroRoot className={className}>
-			<div className="flex flex-col gap-10 sm:gap-14 lg:gap-18">
-				{/* Row 1: Line 1 */}
-				<div>
-					<LandingHeroTitle>{titleLine1}</LandingHeroTitle>
-				</div>
-
-				{/* Row 2: Bottom-aligned Description on Left and Line 2 on Right */}
-				<LandingHeroRow>
-					<div className="max-w-sm sm:max-w-md lg:pb-1.5">
-						<LandingHeroDescription>{description}</LandingHeroDescription>
-					</div>
-
-					<div className="flex shrink-0 items-end">
-						<LandingHeroTitle>{titleLine2}</LandingHeroTitle>
-					</div>
-				</LandingHeroRow>
-			</div>
-		</LandingHeroRoot>
-	);
-}
-
-export const LandingHero = Object.assign(LandingHeroPreset, {
+export const LandingHero = Object.assign(LandingHeroRoot, {
 	Root: LandingHeroRoot,
 	Row: LandingHeroRow,
 	Title: LandingHeroTitle,
 	Description: LandingHeroDescription,
-	Preset: LandingHeroPreset,
 });

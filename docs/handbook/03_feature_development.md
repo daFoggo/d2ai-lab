@@ -1,6 +1,15 @@
+---
+name: feature-development
+description: Build or refactor a feature module under src/features/. Use when adding a feature, wiring queries/mutations/functions/schemas, or composing cross-feature pages in routes. Covers the feature checklist, import rules, mutation side effects, and async UI requirements.
+---
+
 # Feature Development
 
-This document describes how to add or refactor a feature module in startcn-base.
+## When to Use
+
+- Creating or refactoring a `src/features/[feature]/` module.
+- Adding query options, mutations, server functions, or schemas.
+- Wiring cross-feature data into a route and deciding async UI states.
 
 ## Feature Checklist
 

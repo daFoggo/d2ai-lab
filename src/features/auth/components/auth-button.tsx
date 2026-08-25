@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import * as React from "react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useI18n } from "@/lib/i18n";
 import { getMeQueryOptions } from "../queries";
 import { AuthDialog, type AuthDialogTab } from "./auth-dialog";
 
@@ -22,11 +24,12 @@ export interface AuthButtonProps {
 
 export function AuthButton({
 	variant = "default",
-	size = "sm",
+	size = "default",
 	className,
 	dashboardHref = "/dashboard",
 }: AuthButtonProps) {
 	const { data: user, isLoading } = useQuery(getMeQueryOptions());
+	const { t } = useI18n("auth");
 
 	const [dialogOpen, setDialogOpen] = React.useState(false);
 	const [defaultTab, setDefaultTab] = React.useState<AuthDialogTab>("signin");
@@ -37,22 +40,21 @@ export function AuthButton({
 	};
 
 	if (isLoading) {
-		return <div className="h-8 w-28 animate-pulse rounded-full bg-muted" />;
+		return <Skeleton className="h-8 w-28" />;
 	}
 
 	// 1. Authenticated State: Simple "Go to dashboard" button
 	if (user) {
 		return (
-			<a
-				href={dashboardHref}
-				className={cn(
-					buttonVariants({ variant: "default", size }),
-					"cursor-pointer",
-					className,
-				)}
+			<Button
+				render={<Link to={dashboardHref} />}
+				nativeButton={false}
+				variant="default"
+				size={size}
+				className={className}
 			>
-				Go to dashboard
-			</a>
+				{t("goToDashboard")}
+			</Button>
 		);
 	}
 
@@ -64,27 +66,27 @@ export function AuthButton({
 					<Button
 						variant="outline"
 						size={size}
-						className={cn("cursor-pointer", className)}
+						className={className}
 						onClick={() => handleOpen("signin")}
 					>
-						Sign In
+						{t("signIn")}
 					</Button>
 					<Button
 						size={size}
-						className={cn("cursor-pointer", className)}
+						className={className}
 						onClick={() => handleOpen("signup")}
 					>
-						Sign Up
+						{t("signUp")}
 					</Button>
 				</div>
 			) : (
 				<Button
 					variant={variant}
 					size={size}
-					className={cn("cursor-pointer", className)}
+					className={className}
 					onClick={() => handleOpen("signin")}
 				>
-					Sign In
+					{t("signIn")}
 				</Button>
 			)}
 

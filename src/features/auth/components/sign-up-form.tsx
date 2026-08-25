@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getErrorMessage } from "@/lib/error";
+import { useI18n } from "@/lib/i18n";
 import { useSignUpMutation } from "../queries";
 import { SignUpInputSchema } from "../schemas";
 
@@ -30,6 +31,7 @@ function getFieldError(err: unknown): string {
 export function SignUpForm({ onSuccess }: SignUpFormProps) {
 	const signUpMutation = useSignUpMutation();
 	const [serverError, setServerError] = React.useState<string | null>(null);
+	const { t } = useI18n("auth");
 
 	const form = useForm({
 		defaultValues: {
@@ -45,20 +47,13 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 			try {
 				const res = await signUpMutation.mutateAsync(value);
 				if (res.session) {
-					toast.success("Account created successfully!");
+					toast.success(t("signUpSuccess"));
 				} else {
-					toast.success(
-						"Registration successful! Please check your email to verify your account.",
-					);
+					toast.success(t("signUpVerify"));
 				}
 				onSuccess?.();
 			} catch (err) {
-				setServerError(
-					getErrorMessage(
-						err,
-						"Registration failed. Please try again with a different email.",
-					),
-				);
+				setServerError(getErrorMessage(err, t("signUpError")));
 			}
 		},
 	});
@@ -70,7 +65,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 				e.stopPropagation();
 				form.handleSubmit();
 			}}
-			className="space-y-4 pt-1"
+			className="flex flex-col gap-4 pt-1"
 		>
 			{serverError && (
 				<div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
@@ -91,19 +86,19 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 				{(field) => {
 					const errorMsg = getFieldError(field.state.meta.errors[0]);
 					return (
-						<div className="space-y-1.5">
+						<div className="flex flex-col gap-1.5">
 							<Label
 								htmlFor={`signup-${field.name}`}
 								className="text-xs font-medium text-foreground"
 							>
-								Email address
+								{t("email")}
 							</Label>
 							<div className="relative">
 								<Input
 									id={`signup-${field.name}`}
 									name={field.name}
 									type="email"
-									placeholder="name@example.com"
+									placeholder={t("emailPlaceholder")}
 									value={field.state.value}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
@@ -135,19 +130,19 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 				{(field) => {
 					const errorMsg = getFieldError(field.state.meta.errors[0]);
 					return (
-						<div className="space-y-1.5">
+						<div className="flex flex-col gap-1.5">
 							<Label
 								htmlFor={`signup-${field.name}`}
 								className="text-xs font-medium text-foreground"
 							>
-								Password
+								{t("password")}
 							</Label>
 							<div className="relative">
 								<Input
 									id={`signup-${field.name}`}
 									name={field.name}
 									type="password"
-									placeholder="At least 6 characters"
+									placeholder={t("passwordMinHint")}
 									value={field.state.value}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
@@ -171,10 +166,10 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 				name="confirmPassword"
 				validators={{
 					onBlur: ({ value, fieldApi }) => {
-						if (!value) return "Please confirm your password";
+						if (!value) return t("confirmPasswordError");
 						const password = fieldApi.form.getFieldValue("password");
 						if (value !== password) {
-							return "Passwords do not match";
+							return t("passwordsDontMatch");
 						}
 						return undefined;
 					},
@@ -183,19 +178,19 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 				{(field) => {
 					const errorMsg = getFieldError(field.state.meta.errors[0]);
 					return (
-						<div className="space-y-1.5">
+						<div className="flex flex-col gap-1.5">
 							<Label
 								htmlFor={`signup-${field.name}`}
 								className="text-xs font-medium text-foreground"
 							>
-								Confirm password
+								{t("confirmPassword")}
 							</Label>
 							<div className="relative">
 								<Input
 									id={`signup-${field.name}`}
 									name={field.name}
 									type="password"
-									placeholder="Re-enter your password"
+									placeholder={t("confirmPasswordPlaceholder")}
 									value={field.state.value}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
@@ -228,10 +223,10 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
 						{signUpMutation.isPending || isSubmitting ? (
 							<>
 								<IconLoader2 className="mr-2 size-4 animate-spin" />
-								Creating account...
+								{t("creatingAccount")}
 							</>
 						) : (
-							"Create Account"
+							t("signUp")
 						)}
 					</Button>
 				)}

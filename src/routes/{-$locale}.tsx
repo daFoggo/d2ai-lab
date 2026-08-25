@@ -1,6 +1,5 @@
 import { IconSparkleHighlight, IconTableSpark } from "@tabler/icons-react";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { AuthButton } from "@/features/auth";
 import type {
@@ -23,64 +22,35 @@ import {
 	LandingProjects,
 	LandingQuote,
 } from "@/features/landing";
+import { DEFAULT_LOCALE, isLocale, useI18n } from "@/lib/i18n";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/{-$locale}")({
+	beforeLoad: ({ params }) => {
+		if (params.locale && !isLocale(params.locale)) {
+			throw redirect({ to: "/{-$locale}", params: { locale: undefined } });
+		}
+		return { locale: params.locale ?? DEFAULT_LOCALE };
+	},
 	component: HomePage,
 });
 
-const LANDING_NAV_ITEMS: TLandingNavItem[] = [
-	{
-		label: "Research",
-		items: [
-			{
-				title: "Research Areas",
-				href: "#research-areas",
-				description: "Primary scientific domains and core scopes.",
-			},
-			{
-				title: "Research Gaps",
-				href: "#research-gaps",
-				description: "Addressing open challenges and critical bottlenecks.",
-			},
-			{
-				title: "Research Directions",
-				href: "#research-directions",
-				description: "Long-term vision and strategic innovation.",
-			},
-		],
-	},
-	{ label: "People", href: "#people" },
-	{ label: "Publications", href: "#publications" },
-	{ label: "Projects", href: "#projects" },
-	{ label: "Seminars", href: "#seminars" },
-	{ label: "Careers", href: "#careers" },
-];
+/* Content data stays in the source language — only UI chrome is translated. */
 
-const LANDING_HERO_DATA = {
-	titleLine1: "Data to Intelligence,",
-	titleLine2: "Ideas to Impact.",
-	description:
-		"Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society.",
-};
-
-/* Section 1: Film Data */
-const LANDING_FILM_DATA = {
+const FILM_DATA = {
 	title: "Amplifying human ingenuity",
 	description:
 		"As we realize new possibilities with AI, we maintain a human-centered approach. We advance scientific progress by publishing impactful research each year and collaborating with universities, NGOs, partners, and communities worldwide. Our goal is to build a world where AI is more than a tool: it's an essential partner for researchers, scientists, clinicians, teachers, users, and businesses.",
 	brandText: "D2AI Lab",
 };
 
-/* Section 2: Quote Data */
-const LANDING_QUOTE_DATA = {
+const QUOTE_DATA = {
 	quote:
 		"The magic cycle of research is accelerating. Research breakthroughs are leading to greater impact on products, science, and society—with greater opportunities for AI to amplify human ingenuity and capacity.",
 	authorName: "Huynh Phan Ly",
 	authorRole: "Director, D2AI Lab & Faculty of Information Technology",
 };
 
-/* Section 3: Read The Latest Data (Publications Only) */
-const LANDING_LATEST_ITEMS: TLandingLatestItem[] = [
+const LATEST_ITEMS: TLandingLatestItem[] = [
 	{
 		id: "pub-1",
 		title:
@@ -110,16 +80,7 @@ const LANDING_LATEST_ITEMS: TLandingLatestItem[] = [
 	},
 ];
 
-/* Section 4: Domains Data (Positioned between Publications and Projects) */
-const LANDING_DOMAINS_DATA: TLandingDomainsData = {
-	title: "We work across domains",
-	description:
-		"Our vast breadth of work covers AI/ML foundations, responsible human-centric technology, science & societal impact, computing paradigms, and algorithms & optimization. Our research teams impact technology used by people all over the world.",
-	ctaLabel: "Explore research areas",
-};
-
-/* Section 5: Projects / Applied Apps Data (Spotlight App + 2 Applied Sub-projects) */
-const LANDING_PROJECT_HERO: TLandingProjectHero = {
+const PROJECT_HERO: TLandingProjectHero = {
 	title: "Adaptive Learning Platform",
 	category: "SMART EDUCATION APP",
 	description:
@@ -128,7 +89,7 @@ const LANDING_PROJECT_HERO: TLandingProjectHero = {
 	href: "#projects",
 };
 
-const LANDING_PROJECT_ITEMS: TLandingProjectItem[] = [
+const PROJECT_ITEMS: TLandingProjectItem[] = [
 	{
 		id: "app-1",
 		title:
@@ -145,8 +106,7 @@ const LANDING_PROJECT_ITEMS: TLandingProjectItem[] = [
 	},
 ];
 
-/* Section 6: Future Opportunities Data (Left: Careers, Right: Seminars) */
-const LANDING_FUTURE_ITEMS: TLandingFutureItem[] = [
+const FUTURE_ITEMS: TLandingFutureItem[] = [
 	{
 		id: "future-careers",
 		title: "Career opportunities",
@@ -166,41 +126,76 @@ const LANDING_FUTURE_ITEMS: TLandingFutureItem[] = [
 ];
 
 function HomePage() {
-	const [currentLang, setCurrentLang] = useState<string>("EN");
+	const { t } = useI18n();
+
+	const navItems: TLandingNavItem[] = [
+		{
+			label: t("landing.nav.research"),
+			items: [
+				{
+					title: t("landing.nav.researchAreas"),
+					href: "#research-areas",
+					description: t("landing.nav.researchAreasDesc"),
+				},
+				{
+					title: t("landing.nav.researchGaps"),
+					href: "#research-gaps",
+					description: t("landing.nav.researchGapsDesc"),
+				},
+				{
+					title: t("landing.nav.researchDirections"),
+					href: "#research-directions",
+					description: t("landing.nav.researchDirectionsDesc"),
+				},
+			],
+		},
+		{ label: t("landing.nav.people"), href: "#people" },
+		{ label: t("landing.nav.publications"), href: "#publications" },
+		{ label: t("landing.nav.projects"), href: "#projects" },
+		{ label: t("landing.nav.seminars"), href: "#seminars" },
+		{ label: t("landing.nav.careers"), href: "#careers" },
+	];
+
+	const heroData = {
+		titleLine1: t("landing.hero.titleLine1"),
+		titleLine2: t("landing.hero.titleLine2"),
+		description: t("landing.hero.description"),
+	};
+
+	const domainsData: TLandingDomainsData = {
+		title: t("landing.domains.title"),
+		description:
+			"Our vast breadth of work covers AI/ML foundations, responsible human-centric technology, science & societal impact, computing paradigms, and algorithms & optimization. Our research teams impact technology used by people all over the world.",
+		ctaLabel: t("landing.domains.cta"),
+	};
 
 	const handleSearch = () => {
-		toast.info("Search Publications & Research", {
-			description:
-				"Access papers, open-source repositories, and lab project archives.",
+		toast.info(t("landing.toast.search"), {
+			description: t("landing.toast.searchDesc"),
 		});
 	};
 
-	const handleSelectLanguage = (langCode: string) => {
-		setCurrentLang(langCode);
-		toast(`Language selected: ${langCode === "EN" ? "English" : "Tiếng Việt"}`);
-	};
-
 	const handleSeePublications = () => {
-		toast.info("Navigating to Publications Archive", {
-			description: "View all peer-reviewed research papers and preprints.",
+		toast.info(t("landing.toast.publications"), {
+			description: t("landing.toast.publicationsDesc"),
 		});
 	};
 
 	const handleSeeProjects = () => {
-		toast.info("Navigating to Applications Directory", {
-			description: "Browse deployed software platforms and lab applications.",
+		toast.info(t("landing.toast.projects"), {
+			description: t("landing.toast.projectsDesc"),
 		});
 	};
 
 	const handleExploreDomains = () => {
-		toast.info("Exploring Research Domains", {
-			description: "Browsing all active D2AI scientific tracks and domains.",
+		toast.info(t("landing.toast.domains"), {
+			description: t("landing.toast.domainsDesc"),
 		});
 	};
 
 	const handleExploreFeaturedApp = () => {
-		toast.success("Adaptive Learning Platform", {
-			description: "Launching live deployed application sandbox.",
+		toast.success(t("landing.toast.launch"), {
+			description: t("landing.toast.launchDesc"),
 		});
 	};
 
@@ -210,15 +205,9 @@ function HomePage() {
 			<LandingNavbar.Root>
 				<div className="flex items-center gap-6 lg:gap-10">
 					<LandingNavbar.Brand name="D2AI Lab" hasDropdown={false} />
-					<LandingNavbar.Nav items={LANDING_NAV_ITEMS} />
+					<LandingNavbar.Nav items={navItems} />
 				</div>
-				<LandingNavbar.Actions
-					searchLabel="Search"
-					onSearchClick={handleSearch}
-					currentLang={currentLang}
-					onSelectLanguage={handleSelectLanguage}
-					items={LANDING_NAV_ITEMS}
-				>
+				<LandingNavbar.Actions onSearchClick={handleSearch} items={navItems}>
 					<AuthButton />
 				</LandingNavbar.Actions>
 			</LandingNavbar.Root>
@@ -230,9 +219,7 @@ function HomePage() {
 					<div className="flex flex-col gap-10 sm:gap-14 lg:gap-18">
 						{/* Row 1: Line 1 + Large Pure IconTableSpark */}
 						<div className="flex flex-wrap items-center gap-8 sm:gap-14 md:gap-20 lg:gap-28 xl:gap-36">
-							<LandingHero.Title>
-								{LANDING_HERO_DATA.titleLine1}
-							</LandingHero.Title>
+							<LandingHero.Title>{heroData.titleLine1}</LandingHero.Title>
 
 							<div
 								aria-hidden="true"
@@ -249,7 +236,7 @@ function HomePage() {
 						<LandingHero.Row className="gap-10 lg:gap-16 xl:gap-24">
 							<div className="max-w-sm sm:max-w-md lg:pb-1.5">
 								<LandingHero.Description>
-									{LANDING_HERO_DATA.description}
+									{heroData.description}
 								</LandingHero.Description>
 							</div>
 
@@ -264,9 +251,7 @@ function HomePage() {
 							</div>
 
 							<div className="flex shrink-0 items-end">
-								<LandingHero.Title>
-									{LANDING_HERO_DATA.titleLine2}
-								</LandingHero.Title>
+								<LandingHero.Title>{heroData.titleLine2}</LandingHero.Title>
 							</div>
 						</LandingHero.Row>
 					</div>
@@ -274,50 +259,47 @@ function HomePage() {
 
 				{/* 2. Section 1: Amplifying Human Ingenuity & Film */}
 				<LandingFilm
-					title={LANDING_FILM_DATA.title}
-					description={LANDING_FILM_DATA.description}
-					brandText={LANDING_FILM_DATA.brandText}
+					title={FILM_DATA.title}
+					description={FILM_DATA.description}
+					brandText={FILM_DATA.brandText}
 				/>
 
 				{/* 3. Section 2: Quote / Leader Statement Banner with GSAP Scroll Trigger */}
 				<LandingQuote
-					quote={LANDING_QUOTE_DATA.quote}
-					authorName={LANDING_QUOTE_DATA.authorName}
-					authorRole={LANDING_QUOTE_DATA.authorRole}
+					quote={QUOTE_DATA.quote}
+					authorName={QUOTE_DATA.authorName}
+					authorRole={QUOTE_DATA.authorRole}
 				/>
 
 				{/* 4. Section 3: Read the Latest (Publications) */}
 				<LandingLatest
-					title="Read the latest"
-					items={LANDING_LATEST_ITEMS}
+					title={t("landing.latest.title")}
+					items={LATEST_ITEMS}
 					onSeePublications={handleSeePublications}
 				/>
 
-				{/* 5. Section 4: We Work Across Domains (Positioned between Publications and Projects) */}
+				{/* 5. Section 4: We Work Across Domains */}
 				<LandingDomains
-					title={LANDING_DOMAINS_DATA.title}
-					description={LANDING_DOMAINS_DATA.description}
-					ctaLabel={LANDING_DOMAINS_DATA.ctaLabel}
+					title={domainsData.title}
+					description={domainsData.description}
+					ctaLabel={domainsData.ctaLabel}
 					onCtaClick={handleExploreDomains}
 				/>
 
-				{/* 6. Section 5: Projects / Applied Apps (Header Left/Right + Spotlight App + 2 Sub-Apps) */}
+				{/* 6. Section 5: Projects / Applied Apps */}
 				<LandingProjects
-					title="Applied platforms & initiatives"
-					hero={LANDING_PROJECT_HERO}
-					items={LANDING_PROJECT_ITEMS}
+					title={t("landing.projects.title")}
+					hero={PROJECT_HERO}
+					items={PROJECT_ITEMS}
 					onSeeProjects={handleSeeProjects}
 					onHeroCtaClick={handleExploreFeaturedApp}
 				/>
 
-				{/* 7. Section 6: Help Us Shape The Future (Left: Careers, Right: Seminars) */}
-				<LandingFuture
-					title="Help us shape the future"
-					items={LANDING_FUTURE_ITEMS}
-				/>
+				{/* 7. Section 6: Help Us Shape The Future */}
+				<LandingFuture title={t("landing.future.title")} items={FUTURE_ITEMS} />
 			</main>
 
-			{/* Footer: Google Research initiatives + Google Labs Big Typography */}
+			{/* Footer */}
 			<LandingFooter brandName="D2AI Lab" />
 		</LandingLayout>
 	);

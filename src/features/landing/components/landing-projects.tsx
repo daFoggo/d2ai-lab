@@ -1,97 +1,32 @@
-import type { ComponentProps, ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingProjectHero, TLandingProjectItem } from "../schemas";
 
-export interface ILandingProjectsRootProps extends ComponentProps<"section"> {
-	children: ReactNode;
-	className?: string;
-}
-
-export function LandingProjectsRoot({
-	children,
-	className,
-	...props
-}: ILandingProjectsRootProps) {
-	return (
-		<section
-			data-slot="landing-projects"
-			className={cn(
-				"w-full overflow-hidden py-10 sm:py-16 lg:py-20",
-				className,
-			)}
-			{...props}
-		>
-			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
-				{children}
-			</div>
-		</section>
-	);
-}
-
-export interface ILandingProjectsHeaderProps extends ComponentProps<"div"> {
+export interface ILandingProjectsProps {
 	title?: string;
-	onSeeProjects?: () => void;
-	className?: string;
-}
-
-export function LandingProjectsHeader({
-	title = "Our research drives real-world change",
-	onSeeProjects,
-	className,
-	...props
-}: ILandingProjectsHeaderProps) {
-	return (
-		<div
-			data-slot="landing-projects-header"
-			className={cn(
-				"flex flex-col justify-between gap-4 sm:flex-row sm:items-center",
-				className,
-			)}
-			{...props}
-		>
-			<h2 className="font-title text-2xl font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
-				{title}
-			</h2>
-
-			{onSeeProjects && (
-				<div>
-					<Button
-						type="button"
-						onClick={onSeeProjects}
-						variant="default"
-						size="sm"
-						className="cursor-pointer rounded-full px-4 text-xs font-medium sm:text-sm"
-					>
-						See more projects
-					</Button>
-				</div>
-			)}
-		</div>
-	);
-}
-
-export interface ILandingProjectsHeroProps extends ComponentProps<"div"> {
 	hero: TLandingProjectHero;
-	onCtaClick?: () => void;
+	items: TLandingProjectItem[];
+	onSeeProjects?: () => void;
+	onHeroCtaClick?: () => void;
 	className?: string;
 }
 
-export function LandingProjectsHero({
+function ProjectsHero({
 	hero,
 	onCtaClick,
-	className,
-	...props
-}: ILandingProjectsHeroProps) {
+}: {
+	hero: TLandingProjectHero;
+	onCtaClick?: () => void;
+}) {
+	const { t } = useI18n();
+
 	return (
 		<div
 			data-slot="landing-projects-hero"
-			className={cn(
-				"relative mt-6 grid grid-cols-1 items-center gap-6 sm:mt-8 sm:gap-8 md:grid-cols-12 lg:gap-12",
-				className,
-			)}
-			{...props}
+			className="relative mt-6 grid grid-cols-1 items-center gap-6 sm:mt-8 sm:gap-8 md:grid-cols-12 lg:gap-12"
 		>
 			{/* Left Visual Media (Compact AspectRatio) */}
 			<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl md:col-span-5">
@@ -103,12 +38,15 @@ export function LandingProjectsHero({
 							className="h-full w-full object-cover"
 						/>
 					) : (
-						<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-5">
+						<div
+							style={HERO_SCOPE_STYLE}
+							className="flex h-full w-full items-center justify-center bg-background p-5"
+						>
 							<div className="flex flex-col items-center gap-1 text-center select-none">
-								<span className="font-mono text-xs tracking-wider text-zinc-500 uppercase">
-									{hero.category ?? "FEATURED APP"}
+								<span className="font-mono text-xs tracking-wider text-muted-foreground/50 uppercase">
+									{hero.category ?? t("landing.projects.featuredApp")}
 								</span>
-								<span className="font-title text-base font-normal text-zinc-300">
+								<span className="font-title text-base font-normal text-foreground/70">
 									{hero.title}
 								</span>
 							</div>
@@ -132,31 +70,22 @@ export function LandingProjectsHero({
 				</p>
 
 				<div className="mt-4 sm:mt-6">
-					<Button
-						type="button"
-						onClick={onCtaClick}
-						variant="default"
-						size="sm"
-						className="cursor-pointer rounded-full px-4 text-xs font-medium sm:text-sm"
-					>
-						{hero.ctaLabel}
-					</Button>
+					<Button onClick={onCtaClick}>{hero.ctaLabel}</Button>
 				</div>
 			</div>
 		</div>
 	);
 }
 
-export interface ILandingProjectsItemProps extends ComponentProps<"div"> {
-	item: TLandingProjectItem;
-	className?: string;
-}
-
-export function LandingProjectsItem({
+function ProjectsItem({
 	item,
 	className,
-	...props
-}: ILandingProjectsItemProps) {
+}: {
+	item: TLandingProjectItem;
+	className?: string;
+}) {
+	const { t } = useI18n();
+
 	return (
 		<div
 			data-slot="landing-projects-item"
@@ -164,10 +93,12 @@ export function LandingProjectsItem({
 				"group flex items-start gap-3.5 rounded-2xl p-2.5 transition-colors hover:bg-muted/30",
 				className,
 			)}
-			{...props}
 		>
 			{/* Square Compact Thumbnail */}
-			<div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 shadow-xs sm:size-16 sm:rounded-2xl">
+			<div
+				style={HERO_SCOPE_STYLE}
+				className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-background shadow-xs sm:size-16 sm:rounded-2xl"
+			>
 				{item.thumbnail ? (
 					<img
 						src={item.thumbnail}
@@ -176,8 +107,8 @@ export function LandingProjectsItem({
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center p-2 text-center select-none">
-						<span className="font-mono text-xs text-zinc-500 uppercase">
-							APP
+						<span className="font-mono text-xs text-muted-foreground/50 uppercase">
+							{t("landing.projects.appTag")}
 						</span>
 					</div>
 				)}
@@ -198,47 +129,52 @@ export function LandingProjectsItem({
 	);
 }
 
-export interface ILandingProjectsPresetProps {
-	title?: string;
-	hero: TLandingProjectHero;
-	items: TLandingProjectItem[];
-	onSeeProjects?: () => void;
-	onHeroCtaClick?: () => void;
-	className?: string;
-}
-
-export function LandingProjectsPreset({
+export function LandingProjects({
 	title = "Our research drives real-world change",
 	hero,
 	items,
 	onSeeProjects,
 	onHeroCtaClick,
 	className,
-}: ILandingProjectsPresetProps) {
+}: ILandingProjectsProps) {
+	const { t } = useI18n();
 	const displayItems = items.slice(0, 2);
 
 	return (
-		<LandingProjectsRoot className={className}>
-			<LandingProjectsHeader title={title} onSeeProjects={onSeeProjects} />
-			<LandingProjectsHero hero={hero} onCtaClick={onHeroCtaClick} />
+		<section
+			data-slot="landing-projects"
+			className={cn(
+				"w-full overflow-hidden py-10 sm:py-16 lg:py-20",
+				className,
+			)}
+		>
+			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
+				<div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+					<h2 className="font-title text-2xl font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
+						{title}
+					</h2>
 
-			<div className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 lg:gap-6">
-				{displayItems.map((item, index) => (
-					<LandingProjectsItem
-						key={item.id}
-						item={item}
-						className={cn(index > 0 && "hidden sm:flex")}
-					/>
-				))}
+					{onSeeProjects && (
+						<div>
+							<Button onClick={onSeeProjects}>
+								{t("landing.projects.seeMore")}
+							</Button>
+						</div>
+					)}
+				</div>
+
+				<ProjectsHero hero={hero} onCtaClick={onHeroCtaClick} />
+
+				<div className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 lg:gap-6">
+					{displayItems.map((item, index) => (
+						<ProjectsItem
+							key={item.id}
+							item={item}
+							className={cn(index > 0 && "hidden sm:flex")}
+						/>
+					))}
+				</div>
 			</div>
-		</LandingProjectsRoot>
+		</section>
 	);
 }
-
-export const LandingProjects = Object.assign(LandingProjectsPreset, {
-	Root: LandingProjectsRoot,
-	Header: LandingProjectsHeader,
-	Hero: LandingProjectsHero,
-	Item: LandingProjectsItem,
-	Preset: LandingProjectsPreset,
-});

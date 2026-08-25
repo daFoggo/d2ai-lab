@@ -1,6 +1,15 @@
+---
+name: ui-state-patterns
+description: Apply the mandatory async UI state rules. Use when rendering any async surface (lists, tables, cards, widgets) or form actions. Covers loading/error/empty/valid states, compact exceptions, submit-critical dependencies, and Suspense vs local UI.
+---
+
 # UI State Patterns
 
-This document is the canonical UI rule set for async data, loading, error, empty states, and compact surfaces.
+## When to Use
+
+- Rendering a `useQuery` / `useSuspenseQuery` surface.
+- Adding loading, error, or empty states.
+- Gating an action behind a query that feeds critical form data.
 
 ## Principle
 

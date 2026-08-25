@@ -1,6 +1,15 @@
+---
+name: development-checklist
+description: Review implementation against the project's architecture, data, and UI rules. Use before, during, and after coding a feature to verify feature boundaries, data fetching, UI states, mutations, and Supabase usage.
+---
+
 # Development Checklist
 
-This checklist is focused on implementation and review. It intentionally avoids product model documentation.
+## When to Use
+
+- Before starting a feature (boundaries, orchestration, existing components).
+- During implementation (data fetching, UI state, mutations).
+- Before merging (review checklist).
 
 ## Before Coding
 
@@ -81,5 +90,11 @@ Submit-critical examples:
 - Are mutation side effects split correctly between hooks and components?
 - Are invalidations using key factories?
 - Are UI components using existing primitives and composition rules?
+- Are primitives used without re-styling their built-in appearance (no `rounded-full`/`text-xs`/`px-4` overrides on default Buttons; `variant`/`size` props chosen instead)?
+- Is `className` on a primitive limited to layout or theme-necessitated overrides?
+- Are search / language / icon controls composed from primitives (`InputGroup`, `Button`, `DropdownMenuTrigger`) instead of hand-rolled `<button>` pills?
+- Are internal button-as-link usages using `Button render={<Link />}` instead of a raw `<a>`?
+- Is a compound component (`Object.assign`) present only where sub-parts are actually composed by callers?
+- Are single-use sections plain components with no dead `Root`/`Header`/`Card`/`Preset` exports or unused `className`/`...props` threading?
 - Are errors displayed through `getErrorMessage`?
 - Did you run the appropriate checks for the size of the change?

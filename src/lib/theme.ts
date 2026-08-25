@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie, setCookie } from "@tanstack/react-start/server";
+import { setCookie } from "@tanstack/react-start/server";
 import * as z from "zod";
 
 const postThemeValidator = z.union([
@@ -19,14 +19,11 @@ export const resolveTheme = (
 	theme === "system" ? (prefersDark ? "dark" : "light") : theme;
 
 /**
- * Lấy tùy chọn giao diện (light hoặc dark) hiện tại từ cookie phía server.
- * Giúp đảm bảo giao diện người dùng nhất quán ngay khi trang vừa tải mà không bị nhấp nháy (FOUC).
+ * Project hiện tại chỉ dùng light theme, không cho chọn theme.
+ * Luôn trả về "light" bất kể cookie đã lưu trước đó.
  */
 export const getThemeServerFn = createServerFn().handler(async () => {
-	const storedTheme = getCookie(storageKey);
-	return postThemeValidator.safeParse(storedTheme).success
-		? (storedTheme as TTheme)
-		: "system";
+	return "light" as const;
 });
 
 /**

@@ -14,6 +14,8 @@ This file is the fast entry point for agents. The detailed source of truth lives
    - `docs/handbook/06_quality_rules.md`
    - `docs/handbook/07_development_checklist.md`
    - `docs/handbook/08_zustand_best_practices.md`
+   - `docs/handbook/09_i18n.md`
+   - `docs/handbook/10_design_tokens.md`
 
 ## Core Architecture Rules
 
@@ -79,6 +81,9 @@ Every async UI must distinguish loading, error, and valid empty data.
 
 - Prefer small, scoped changes that match existing code patterns.
 - **Design Tokens & Styling**: Strictly use standard Tailwind tokens (`text-xs`..`text-9xl`, `p-2`, `gap-4`, `max-w-md`...). Never use arbitrary custom classes like `className-[...]` (`text-[10px]`, `w-[450px]`, `p-[15px]`). Minimum text size is `text-xs` (12px).
+- **Use UI primitives as-is**: Pick `variant`/`size` props instead of restyling a primitive's built-in appearance. Never add `rounded-full`, `text-xs`, `font-medium`, or `px-4` overrides to a default `Button` — `<Button>Label</Button>` is the norm. `className` on a primitive is only for layout or theme-necessitated overrides.
+- **Compose, don't hand-roll**: Use `InputGroup` + `Input` for search fields, `DropdownMenuTrigger` + `Button` for language/menu triggers, and `Button` for icon-only controls. Internal button-as-link uses `Button render={<Link to="..." />}` (TanStack Router), never a raw `<a>`.
+- **Compound components are minimal**: Only use `Object.assign` compounds when callers actually compose the sub-parts (e.g. `LandingNavbar`, `LandingHero`). Single-use sections are plain components — no dead `Root`/`Header`/`Card`/`Preset` exports, no unused `className`/`...props` threading.
 - Run checks after major multi-file work:
   - `pnpm exec biome check --write`
   - `pnpm typecheck`

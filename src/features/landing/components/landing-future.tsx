@@ -1,68 +1,22 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
-import type { ComponentProps, ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
+import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingFutureItem } from "../schemas";
 
-export interface ILandingFutureRootProps extends ComponentProps<"section"> {
-	children: ReactNode;
-	className?: string;
-}
-
-export function LandingFutureRoot({
-	children,
-	className,
-	...props
-}: ILandingFutureRootProps) {
-	return (
-		<section
-			data-slot="landing-future"
-			className={cn(
-				"w-full overflow-hidden py-10 sm:py-16 lg:py-20",
-				className,
-			)}
-			{...props}
-		>
-			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
-				{children}
-			</div>
-		</section>
-	);
-}
-
-export interface ILandingFutureHeaderProps extends ComponentProps<"div"> {
+export interface ILandingFutureProps {
 	title?: string;
+	items: TLandingFutureItem[];
 	className?: string;
 }
 
-export function LandingFutureHeader({
-	title = "Help us shape the future",
-	className,
-	...props
-}: ILandingFutureHeaderProps) {
-	return (
-		<div
-			data-slot="landing-future-header"
-			className={cn("flex flex-col", className)}
-			{...props}
-		>
-			<h2 className="font-title text-2xl font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
-				{title}
-			</h2>
-		</div>
-	);
-}
-
-export interface ILandingFutureCardProps extends ComponentProps<"article"> {
-	item: TLandingFutureItem;
-	className?: string;
-}
-
-export function LandingFutureCard({
+function FutureCard({
 	item,
 	className,
-	...props
-}: ILandingFutureCardProps) {
+}: {
+	item: TLandingFutureItem;
+	className?: string;
+}) {
 	return (
 		<article
 			data-slot="landing-future-card"
@@ -70,7 +24,6 @@ export function LandingFutureCard({
 				"group flex flex-col overflow-hidden transition-all duration-300",
 				className,
 			)}
-			{...props}
 		>
 			{/* Thumbnail with Standardized AspectRatio and No Border */}
 			<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl">
@@ -82,8 +35,11 @@ export function LandingFutureCard({
 							className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>
 					) : (
-						<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-6">
-							<span className="font-title text-lg font-normal text-zinc-300 sm:text-xl">
+						<div
+							style={HERO_SCOPE_STYLE}
+							className="flex h-full w-full items-center justify-center bg-background p-6"
+						>
+							<span className="font-title text-lg font-normal text-muted-foreground sm:text-xl">
 								{item.title}
 							</span>
 						</div>
@@ -113,33 +69,30 @@ export function LandingFutureCard({
 	);
 }
 
-export interface ILandingFuturePresetProps {
-	title?: string;
-	items: TLandingFutureItem[];
-	className?: string;
-}
-
-export function LandingFuturePreset({
+export function LandingFuture({
 	title = "Help us shape the future",
 	items,
 	className,
-}: ILandingFuturePresetProps) {
+}: ILandingFutureProps) {
 	return (
-		<LandingFutureRoot className={className}>
-			<LandingFutureHeader title={title} />
+		<section
+			data-slot="landing-future"
+			className={cn(
+				"w-full overflow-hidden py-10 sm:py-16 lg:py-20",
+				className,
+			)}
+		>
+			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
+				<h2 className="font-title text-2xl font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
+					{title}
+				</h2>
 
-			<div className="mt-6 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 lg:gap-10">
-				{items.map((item) => (
-					<LandingFutureCard key={item.id} item={item} />
-				))}
+				<div className="mt-6 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 lg:gap-10">
+					{items.map((item) => (
+						<FutureCard key={item.id} item={item} />
+					))}
+				</div>
 			</div>
-		</LandingFutureRoot>
+		</section>
 	);
 }
-
-export const LandingFuture = Object.assign(LandingFuturePreset, {
-	Root: LandingFutureRoot,
-	Header: LandingFutureHeader,
-	Card: LandingFutureCard,
-	Preset: LandingFuturePreset,
-});

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getErrorMessage } from "@/lib/error";
+import { useI18n } from "@/lib/i18n";
 import { useLoginMutation } from "../queries";
 import { LoginInputSchema } from "../schemas";
 
@@ -30,6 +31,7 @@ function getFieldError(err: unknown): string {
 export function SignInForm({ onSuccess }: SignInFormProps) {
 	const loginMutation = useLoginMutation();
 	const [serverError, setServerError] = React.useState<string | null>(null);
+	const { t } = useI18n("auth");
 
 	const form = useForm({
 		defaultValues: {
@@ -43,15 +45,10 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 			setServerError(null);
 			try {
 				await loginMutation.mutateAsync(value);
-				toast.success("Signed in successfully!");
+				toast.success(t("signInSuccess"));
 				onSuccess?.();
 			} catch (err) {
-				setServerError(
-					getErrorMessage(
-						err,
-						"Sign in failed. Please verify your email and password.",
-					),
-				);
+				setServerError(getErrorMessage(err, t("signInError")));
 			}
 		},
 	});
@@ -63,7 +60,7 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 				e.stopPropagation();
 				form.handleSubmit();
 			}}
-			className="space-y-4 pt-1"
+			className="flex flex-col gap-4 pt-1"
 		>
 			{serverError && (
 				<div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
@@ -84,19 +81,19 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 				{(field) => {
 					const errorMsg = getFieldError(field.state.meta.errors[0]);
 					return (
-						<div className="space-y-1.5">
+						<div className="flex flex-col gap-1.5">
 							<Label
 								htmlFor={field.name}
 								className="text-xs font-medium text-foreground"
 							>
-								Email address
+								{t("email")}
 							</Label>
 							<div className="relative">
 								<Input
 									id={field.name}
 									name={field.name}
 									type="email"
-									placeholder="name@example.com"
+									placeholder={t("emailPlaceholder")}
 									value={field.state.value}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
@@ -128,19 +125,19 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 				{(field) => {
 					const errorMsg = getFieldError(field.state.meta.errors[0]);
 					return (
-						<div className="space-y-1.5">
+						<div className="flex flex-col gap-1.5">
 							<Label
 								htmlFor={field.name}
 								className="text-xs font-medium text-foreground"
 							>
-								Password
+								{t("password")}
 							</Label>
 							<div className="relative">
 								<Input
 									id={field.name}
 									name={field.name}
 									type="password"
-									placeholder="••••••••"
+									placeholder={t("passwordPlaceholder")}
 									value={field.state.value}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
@@ -173,10 +170,10 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 						{loginMutation.isPending || isSubmitting ? (
 							<>
 								<IconLoader2 className="mr-2 size-4 animate-spin" />
-								Signing in...
+								{t("signingIn")}
 							</>
 						) : (
-							"Sign In"
+							t("signIn")
 						)}
 					</Button>
 				)}

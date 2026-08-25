@@ -1,6 +1,15 @@
+---
+name: quality-rules
+description: Enforce UI consistency and safety rules. Use when writing or reviewing components, styling, primitives, composition, motion, or running project checks. Covers design tokens, primitive usage, compound components, and the standard verification commands.
+---
+
 # Quality Rules
 
-This document collects consistency and safety rules for startcn-base.
+## When to Use
+
+- Writing or reviewing any UI code.
+- Deciding whether to hand-roll a tag or use a primitive.
+- Before finishing multi-file work (run the checks).
 
 ## Checks
 
@@ -25,17 +34,14 @@ Do not run expensive checks repeatedly for every tiny edit unless requested.
 
 ## Styling Rules
 
-- **Nghiêm cấm arbitrary custom values (`className-[...]`)**: Tuyệt đối không dùng các class tùy biến như `w-[460px]`, `max-w-[400px]`, `text-[10px]`, `text-[11px]`, `p-[15px]`, `gap-[10px]`, `min-h-[500px]`.
-- **Chuẩn hóa Design Tokens theo Tailwind Scale**:
-  - **Font size**: Chỉ dùng `text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl`, `text-4xl`, `text-5xl`, `text-6xl`, `text-7xl`, `text-8xl`, `text-9xl`. Giới hạn dưới tối thiểu là `text-xs` (12px), tuyệt đối không dùng font nhỏ hơn.
-  - **Spacing & Dimension**: Dùng thang chuẩn 4px (`0, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 14, 16, 20, 24...`).
-  - **Max/Min Width & Height**: Dùng scale chuẩn (`max-w-xs`, `max-w-sm`, `max-w-md`, `max-w-lg`, `max-w-xl`, `max-w-2xl`, `max-w-4xl`, `max-w-7xl`, `min-h-screen`, `min-h-120`...).
-  - **Font weight**: `font-normal` (400), `font-medium` (500), `font-semibold` (600), `font-bold` (700).
-- Do not hardcode raw colors such as `#fff`, `rgb(...)`, or `bg-[#...]`.
-- Do not hardcode custom z-index values such as `z-[999]`.
-- Use Tailwind design tokens and project CSS variables.
-- Use @tabler/icons-react only for icons.
-- Do not use `<Badge>` for filters because badges do not provide interactive state.
+Canonical token rules live in `10_design_tokens.md`. Summary:
+
+- **Nghiêm cấm arbitrary custom values (`className-[...]`)**: tuyệt đối không dùng `w-[460px]`, `max-w-[400px]`, `text-[10px]`, `text-[11px]`, `p-[15px]`, `gap-[10px]`, `min-h-[500px]`, `z-[999]`.
+- Dùng **semantic theme tokens** (`text-foreground`, `text-muted-foreground`, `bg-background`, `border-border`...) — không dùng màu raw (`#fff`, `rgb(...)`, `bg-[#...]`) và không dùng palette Tailwind gốc (`bg-zinc-900`, `text-zinc-300`). Surface luôn-tối (hero/footer/dark cards) áp `HERO_SCOPE_STYLE` để class chuẩn resolve sang brand palette.
+- Chỉ dùng Tailwind default scale: font `text-xs`..`text-9xl` (tối thiểu `text-xs`), spacing 4px, `gap-*` thay cho `space-*`, `size-*` khi w = h.
+- Không hardcode z-index.
+- Chỉ dùng `@tabler/icons-react` cho icon.
+- Không dùng `<Badge>` cho filter vì badge không có interactive state.
 
 ## Component Rules
 
@@ -46,6 +52,31 @@ Do not run expensive checks repeatedly for every tiny edit unless requested.
 - Icon-only buttons need `aria-label` or screen-reader text.
 - Inputs must support default, focus, error, disabled, and readonly states.
 - Use `aria-invalid` for error states.
+
+### Primitive Usage (Buttons, Inputs, Controls)
+
+**Mindset rule:** before writing a raw `<button>`, `<a>`, styled `<div>`, or `animate-pulse` markup, ask "does a component already exist for this?" If yes, use it. Hand-rolling a tag + classes when a primitive exists is the primary source of UI inconsistency. Choose the primitive, then pick its `variant` / `size` / type props to express intent — do not re-implement the component's built-in appearance.
+
+- Do not restyle a default `Button` by overriding its radius (`rounded-full`), font size/weight (`text-xs`, `font-medium`), or padding (`px-4`). The primitive's default IS the design system. `<Button>Label</Button>` and `<Button variant="outline">Label</Button>` should be the norm.
+- `className` on a primitive is only for:
+  - **Layout** overrides: `w-full`, `mt-2`, `gap-2`, alignment.
+  - **Theme-necessitated** overrides: colors that must stay constant across light/dark (e.g. a white CTA on an always-dark marketing card). Prefer reusing existing tokens (`bg-white`, `text-zinc-950`) over re-styling shape/typography.
+- Do not hand-roll a styled `<button>` pill for search, language, or icon controls. Compose existing primitives instead:
+  - Search field → `InputGroup` + `InputGroupInput` + `InputGroupAddon`/`InputGroupButton`.
+  - Language / menu trigger → `DropdownMenuTrigger` with `render={<Button variant="outline" />}`.
+  - Icon-only control → `Button variant="ghost" size="icon-sm"`.
+- Internal navigation must not use a raw `<a>` as a button. Use `Button render={<Link to="..." />} nativeButton={false}` (TanStack Router `Link`). External links keep a real `<a>`.
+- Custom `<button>` elements are allowed only for genuinely bespoke controls that primitives cannot express; they still need explicit `type`, focus styles, and `aria-label`.
+
+### Compound Component Rules (Vercel Composition, Minimal)
+
+Compound components (`Object.assign(Comp, { SubComp })`) are only justified when callers genuinely compose the sub-parts in more than one way (e.g. `LandingNavbar.Root/.Brand/.Nav/.Actions`, `LandingHero.Root/.Title/.Row/.Description`).
+
+- Do NOT create a `Root`/`Header`/`Card`/`Item`/`Preset` compound for a section that is only ever rendered as one unit. Export a single component instead.
+- Keep large internal visual blocks as private (non-exported) helper functions in the same file when that improves readability.
+- Do not thread `className` + `...props` through internal wrappers that never receive them. Props exist only when a caller actually passes them.
+- Do not export a `Preset` that duplicates the component itself.
+- Reassess a compound component when its sub-parts stop being used in composition; collapse it back to a single component.
 
 ## Motion Rules
 

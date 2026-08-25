@@ -1,0 +1,56 @@
+{
+	"nav": {
+		"research": "Research",
+		"researchAreas": "Research Areas",
+		"researchAreasDesc": "Primary scientific domains and core scopes.",
+		"researchGaps": "Research Gaps",
+		"researchGapsDesc": "Addressing open challenges and critical bottlenecks.",
+		"researchDirections": "Research Directions",
+		"researchDirectionsDesc": "Long-term vision and strategic innovation.",
+		"people": "People",
+		"publications": "Publications",
+		"projects": "Projects",
+		"seminars": "Seminars",
+		"careers": "Careers"
+	},
+	"hero": {
+		"titleLine1": "Data to Intelligence,",
+		"titleLine2": "Ideas to Impact.",
+		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society."
+	},
+	"latest": {
+		"title": "Read the latest",
+		"seeMore": "See more publications"
+	},
+	"domains": {
+		"title": "We work across domains",
+		"cta": "Explore research areas",
+		"ariaPause": "Pause ambient animation",
+		"ariaPlay": "Play ambient animation"
+	},
+	"projects": {
+		"title": "Applied platforms & initiatives",
+		"seeMore": "See more projects",
+		"featuredApp": "FEATURED APP",
+		"appTag": "APP"
+	},
+	"future": {
+		"title": "Help us shape the future"
+	},
+	"footer": {
+		"labsLabel": "Other research teams and initiative areas",
+		"slogan": "Data to Intelligence, Ideas to Impact."
+	},
+	"toast": {
+		"search": "Search Publications & Research",
+		"searchDesc": "Access papers, open-source repositories, and lab project archives.",
+		"publications": "Navigating to Publications Archive",
+		"publicationsDesc": "View all peer-reviewed research papers and preprints.",
+		"projects": "Navigating to Applications Directory",
+		"projectsDesc": "Browse deployed software platforms and lab applications.",
+		"domains": "Exploring Research Domains",
+		"domainsDesc": "Browsing all active D2AI scientific tracks and domains.",
+		"launch": "Adaptive Learning Platform",
+		"launchDesc": "Launching live deployed application sandbox."
+	}
+}

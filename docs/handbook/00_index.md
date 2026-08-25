@@ -2,6 +2,8 @@
 
 This folder is the canonical documentation set for the current frontend architecture and development rules.
 
+> Docs are written in **SKILL.md format** — each has a `name`/`description` frontmatter so agents can load the matching section as a playbook. Reference docs (`01`, `02`, `design-system`) stay prose.
+
 ## Reading Order
 
 | Order | Document | Purpose |
@@ -14,6 +16,8 @@ This folder is the canonical documentation set for the current frontend architec
 | 6 | `06_quality_rules.md` | Consistency rules, checks, and review expectations |
 | 7 | `07_development_checklist.md` | Practical development and review checklist |
 | 8 | `08_zustand_best_practices.md` | Zustand client state management best practices & SSR rules |
+| 9 | `09_i18n.md` | Locale routing (`{-$locale}`) and translation content organization |
+| 10 | `10_design_tokens.md` | Canonical design tokens & styling rules (colors, typography, spacing, radius) |
 
 ## Mandatory Agent Rule Files
 

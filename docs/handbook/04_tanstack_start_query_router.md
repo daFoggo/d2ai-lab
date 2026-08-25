@@ -1,6 +1,15 @@
+---
+name: tanstack-data-fetching
+description: Apply the canonical TanStack Start/Router/Query + Supabase data-fetching patterns. Use when writing or reviewing query functions, query keys/options, route loaders, mutations, or Supabase access. Covers the query contract, loader policy, suspense rules, and QueryClient lifecycle.
+---
+
 # TanStack Start, Router, Query, and Supabase Patterns
 
-This is the canonical data-fetching pattern for startcn-base.
+## When to Use
+
+- Writing a query function, key factory, or `queryOptions`.
+- Deciding route loader criticality and Suspense usage.
+- Adding a mutation, invalidating caches, or accessing Supabase.
 
 ## Approved Stack
 

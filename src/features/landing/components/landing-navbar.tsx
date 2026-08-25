@@ -6,13 +6,9 @@ import {
 	IconSearch,
 	IconX,
 } from "@tabler/icons-react";
-import {
-	type ComponentProps,
-	type ReactNode,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { Link } from "@tanstack/react-router";
+import type { ComponentProps, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -21,16 +17,23 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupButton,
+	InputGroupInput,
+} from "@/components/ui/input-group";
+import {
 	NavigationMenu,
 	NavigationMenuContent,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-	NavigationMenuRoot,
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { DEFAULT_LOCALE, LOCALES, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingNavItem } from "../schemas";
 
 export interface ILandingNavbarRootProps extends ComponentProps<"header"> {
@@ -43,43 +46,52 @@ export function LandingNavbarRoot({
 	className,
 	...props
 }: ILandingNavbarRootProps) {
-	const [isVisible, setIsVisible] = useState(true);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const lastScrollYRef = useRef(0);
+	const [isOverHero, setIsOverHero] = useState(true);
+	const headerRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		const handleScroll = () => {
-			const currentScrollY = window.scrollY;
-			const delta = currentScrollY - lastScrollYRef.current;
-
 			// Check if scrolled past threshold for background color
-			setIsScrolled(currentScrollY > 20);
-
-			// Scroll down -> hide header; Scroll up -> show header
-			if (currentScrollY <= 30) {
-				setIsVisible(true);
-			} else if (delta > 8 && currentScrollY > 80) {
-				setIsVisible(false);
-			} else if (delta < -8) {
-				setIsVisible(true);
-			}
-
-			lastScrollYRef.current = currentScrollY;
+			setIsScrolled(window.scrollY > 20);
 		};
 
 		window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	// Track whether the header still overlaps the hero section so its color
+	// scheme can follow the hero while over it and switch back to the site's
+	// normal tokens once the user scrolls past it into the sections below.
+	useEffect(() => {
+		const heroEl = document.querySelector('[data-slot="landing-hero"]');
+		if (!heroEl) {
+			setIsOverHero(false);
+			return;
+		}
+
+		const navHeight = headerRef.current?.offsetHeight ?? 80;
+		const observer = new IntersectionObserver(
+			([entry]) => setIsOverHero(entry.isIntersecting),
+			{ rootMargin: `-${navHeight}px 0px 0px 0px`, threshold: 0 },
+		);
+
+		observer.observe(heroEl);
+		return () => observer.disconnect();
+	}, []);
+
 	return (
 		<header
+			ref={headerRef}
 			data-slot="landing-navbar"
+			style={isOverHero ? HERO_SCOPE_STYLE : undefined}
 			className={cn(
-				"fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out",
-				isVisible
-					? "translate-y-0 opacity-100"
-					: "pointer-events-none -translate-y-full opacity-0",
-				isScrolled ? "bg-background" : "bg-transparent",
+				"fixed top-0 right-0 left-0 z-50 w-full text-foreground transition-colors duration-300 ease-in-out",
+				isOverHero
+					? isScrolled
+						? "bg-background/90"
+						: "bg-transparent"
+					: "bg-background",
 				className,
 			)}
 			{...props}
@@ -188,35 +200,28 @@ export function LandingNavbarNav({
 							if (item.items && item.items.length > 0) {
 								return (
 									<NavigationMenuItem key={item.label}>
-										<NavigationMenuRoot>
-											<NavigationMenuTrigger>
-												{item.label}
-											</NavigationMenuTrigger>
-											<NavigationMenuContent
-												align="start"
-												className="w-80 p-2 sm:w-96"
-											>
-												<div className="flex flex-col gap-1">
-													{item.items.map((subItem) => (
-														<NavigationMenuLink
-															key={subItem.href}
-															href={subItem.href}
-															onClick={() => onItemClick?.(item)}
-															className="group/subitem flex flex-col gap-1 rounded-xl p-3 transition-colors hover:bg-muted"
-														>
-															<div className="text-sm font-medium text-foreground">
-																{subItem.title}
-															</div>
-															{subItem.description && (
-																<p className="text-xs leading-relaxed text-muted-foreground">
-																	{subItem.description}
-																</p>
-															)}
-														</NavigationMenuLink>
-													))}
-												</div>
-											</NavigationMenuContent>
-										</NavigationMenuRoot>
+										<NavigationMenuTrigger>{item.label}</NavigationMenuTrigger>
+										<NavigationMenuContent className="w-80 p-2 sm:w-96">
+											<div className="flex flex-col gap-1">
+												{item.items.map((subItem) => (
+													<NavigationMenuLink
+														key={subItem.href}
+														href={subItem.href}
+														onClick={() => onItemClick?.(item)}
+														className="group/subitem flex flex-col items-start gap-1 rounded-xl p-3 transition-colors hover:bg-muted"
+													>
+														<div className="text-sm font-medium text-foreground">
+															{subItem.title}
+														</div>
+														{subItem.description && (
+															<p className="text-xs leading-relaxed text-muted-foreground">
+																{subItem.description}
+															</p>
+														)}
+													</NavigationMenuLink>
+												))}
+											</div>
+										</NavigationMenuContent>
 									</NavigationMenuItem>
 								);
 							}
@@ -245,60 +250,48 @@ export function LandingNavbarNav({
 	);
 }
 
-export interface ILanguageOption {
-	code: string;
-	label: string;
-}
-
 export interface ILandingNavbarLanguageSwitcherProps {
-	currentLang?: string;
-	languages?: ILanguageOption[];
-	onSelectLanguage?: (langCode: string) => void;
 	className?: string;
 }
 
-const DEFAULT_LANGUAGES: ILanguageOption[] = [
-	{ code: "EN", label: "English" },
-	{ code: "VI", label: "Tiếng Việt" },
-];
-
 export function LandingNavbarLanguageSwitcher({
-	currentLang = "EN",
-	languages = DEFAULT_LANGUAGES,
-	onSelectLanguage,
 	className,
 }: ILandingNavbarLanguageSwitcherProps) {
+	const { locale, t } = useI18n();
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger
-				data-slot="landing-language-switcher-trigger"
-				className={cn(
-					"inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border/80 bg-background/50 px-3 py-1.5 text-xs font-medium text-foreground transition-all duration-200 outline-none select-none hover:border-foreground/30 hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring sm:text-sm",
-					className,
-				)}
-				aria-label={`Selected language: ${currentLang}. Click to change language`}
+				render={<Button variant="outline" className={className} />}
+				aria-label={t("common.changeLanguage")}
 			>
 				<IconLanguage className="size-4 text-muted-foreground" />
 				<span className="text-xs font-semibold tracking-wider uppercase">
-					{currentLang}
+					{locale}
 				</span>
 				<IconChevronDown className="size-3.5 text-muted-foreground" />
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="end" className="w-36">
-				{languages.map((lang) => {
-					const isSelected =
-						lang.code.toUpperCase() === currentLang.toUpperCase();
+				{LOCALES.map((lang) => {
+					const isSelected = lang === locale;
 					return (
 						<DropdownMenuItem
-							key={lang.code}
-							onClick={() => onSelectLanguage?.(lang.code)}
+							key={lang}
+							render={
+								<Link
+									to="/{-$locale}"
+									params={{
+										locale: lang === DEFAULT_LOCALE ? undefined : lang,
+									}}
+								/>
+							}
 							className="flex items-center justify-between"
 						>
 							<span
 								className={cn(isSelected && "font-semibold text-foreground")}
 							>
-								{lang.label}
+								{t(`common.language.${lang}`)}
 							</span>
 							{isSelected && <IconCheck className="size-4 text-foreground" />}
 						</DropdownMenuItem>
@@ -313,9 +306,6 @@ export interface ILandingNavbarActionsProps extends ComponentProps<"div"> {
 	children?: ReactNode;
 	searchLabel?: string;
 	onSearchClick?: () => void;
-	currentLang?: string;
-	languages?: ILanguageOption[];
-	onSelectLanguage?: (langCode: string) => void;
 	loginLabel?: string;
 	onLoginClick?: () => void;
 	items?: TLandingNavItem[];
@@ -325,19 +315,19 @@ export interface ILandingNavbarActionsProps extends ComponentProps<"div"> {
 
 export function LandingNavbarActions({
 	children,
-	searchLabel = "Search",
+	searchLabel,
 	onSearchClick,
-	currentLang = "EN",
-	languages = DEFAULT_LANGUAGES,
-	onSelectLanguage,
-	loginLabel = "Sign in",
+	loginLabel,
 	onLoginClick,
 	items,
 	onItemClick,
 	className,
 	...props
 }: ILandingNavbarActionsProps) {
+	const { t, locale } = useI18n();
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const resolvedSearch = searchLabel ?? t("common.search");
+	const resolvedLogin = loginLabel ?? t("common.signIn");
 
 	return (
 		<div
@@ -345,45 +335,46 @@ export function LandingNavbarActions({
 			className={cn("flex shrink-0 items-center gap-2 sm:gap-2.5", className)}
 			{...props}
 		>
-			{/* 1. Search Pill Button */}
-			{onSearchClick && (
-				<button
-					type="button"
-					onClick={onSearchClick}
-					data-slot="landing-search-trigger"
-					className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border/80 bg-background/50 px-3.5 py-1.5 text-sm font-medium text-foreground transition-all duration-200 outline-none hover:border-foreground/30 hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring sm:px-4"
-					aria-label={searchLabel}
-				>
-					<IconSearch className="size-4 text-muted-foreground" />
-					<span className="text-sm font-normal text-muted-foreground">
-						{searchLabel}
-					</span>
-				</button>
-			)}
+			{/* Desktop controls — hidden on mobile, moved into the drawer */}
+			<div className="hidden items-center gap-2 sm:gap-2.5 md:flex">
+				{/* 1. Search Input */}
+				{onSearchClick && (
+					<InputGroup
+						data-slot="landing-search-trigger"
+						className="w-28 sm:w-44 lg:w-56"
+					>
+						<InputGroupInput
+							placeholder={resolvedSearch}
+							aria-label={resolvedSearch}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									e.preventDefault();
+									onSearchClick();
+								}
+							}}
+						/>
+						<InputGroupAddon align="inline-end">
+							<InputGroupButton
+								size="icon-sm"
+								onClick={onSearchClick}
+								aria-label={resolvedSearch}
+							>
+								<IconSearch />
+							</InputGroupButton>
+						</InputGroupAddon>
+					</InputGroup>
+				)}
 
-			{/* 2. Dropdown Language Switcher */}
-			{onSelectLanguage && (
-				<LandingNavbarLanguageSwitcher
-					currentLang={currentLang}
-					languages={languages}
-					onSelectLanguage={onSelectLanguage}
-				/>
-			)}
+				{/* 2. Dropdown Language Switcher */}
+				<LandingNavbarLanguageSwitcher />
 
-			{/* 3. Sign In / Auth Button */}
-			{onLoginClick ? (
-				<Button
-					type="button"
-					onClick={onLoginClick}
-					size="sm"
-					variant="default"
-					className="rounded-full px-4 text-xs font-medium sm:text-sm"
-				>
-					{loginLabel}
-				</Button>
-			) : (
-				children
-			)}
+				{/* 3. Sign In / Auth Button */}
+				{onLoginClick ? (
+					<Button onClick={onLoginClick}>{resolvedLogin}</Button>
+				) : (
+					children
+				)}
+			</div>
 
 			{/* Mobile Drawer Trigger */}
 			{items && items.length > 0 && (
@@ -408,6 +399,35 @@ export function LandingNavbarActions({
 							data-slot="landing-mobile-drawer"
 							className="absolute top-full left-0 z-50 flex max-h-screen w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2"
 						>
+							{/* Search (mobile) */}
+							{onSearchClick && (
+								<InputGroup data-slot="landing-search-trigger">
+									<InputGroupInput
+										placeholder={resolvedSearch}
+										aria-label={resolvedSearch}
+										onKeyDown={(e) => {
+											if (e.key === "Enter") {
+												e.preventDefault();
+												onSearchClick();
+												setMobileOpen(false);
+											}
+										}}
+									/>
+									<InputGroupAddon align="inline-end">
+										<InputGroupButton
+											size="icon-sm"
+											onClick={() => {
+												onSearchClick();
+												setMobileOpen(false);
+											}}
+											aria-label={resolvedSearch}
+										>
+											<IconSearch />
+										</InputGroupButton>
+									</InputGroupAddon>
+								</InputGroup>
+							)}
+
 							{items.map((item) => {
 								if (item.items && item.items.length > 0) {
 									return (
@@ -460,33 +480,31 @@ export function LandingNavbarActions({
 								);
 							})}
 
-							{onSelectLanguage && (
-								<div className="flex items-center justify-between border-t border-border pt-3">
-									<span className="text-sm font-medium text-muted-foreground">
-										Language
-									</span>
-									<div className="flex items-center gap-1">
-										{languages.map((lang) => (
-											<button
-												key={lang.code}
-												type="button"
-												onClick={() => {
-													onSelectLanguage?.(lang.code);
-													setMobileOpen(false);
-												}}
-												className={cn(
-													"rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
-													lang.code.toUpperCase() === currentLang.toUpperCase()
-														? "bg-foreground font-semibold text-background"
-														: "bg-muted text-muted-foreground hover:text-foreground",
-												)}
-											>
-												{lang.code}
-											</button>
-										))}
-									</div>
+							<div className="flex items-center justify-between border-t border-border pt-3">
+								<span className="text-sm font-medium text-muted-foreground">
+									{t("common.languageLabel")}
+								</span>
+								<div className="flex items-center gap-1">
+									{LOCALES.map((lang) => (
+										<Link
+											key={lang}
+											to="/{-$locale}"
+											params={{
+												locale: lang === DEFAULT_LOCALE ? undefined : lang,
+											}}
+											onClick={() => setMobileOpen(false)}
+											className={cn(
+												"rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
+												lang === locale
+													? "bg-foreground font-semibold text-background"
+													: "bg-muted text-muted-foreground hover:text-foreground",
+											)}
+										>
+											{lang.toUpperCase()}
+										</Link>
+									))}
 								</div>
-							)}
+							</div>
 
 							{onLoginClick ? (
 								<Button
@@ -495,10 +513,9 @@ export function LandingNavbarActions({
 										onLoginClick?.();
 										setMobileOpen(false);
 									}}
-									size="sm"
-									className="mt-2 w-full"
+									className="w-full"
 								>
-									{loginLabel}
+									{resolvedLogin}
 								</Button>
 							) : children ? (
 								<div className="mt-2 flex w-full justify-center">

@@ -1,10 +1,17 @@
-# Zustand State Management Best Practices
-
-This guide establishes the canonical patterns for using Zustand in `startcn-base`, derived from the official [Zustand documentation](https://zustand.docs.pmnd.rs/learn/index) and tailored to our TanStack Start + Router + Query + Supabase architecture.
-
+---
+name: zustand-best-practices
+description: Apply the canonical Zustand client-state patterns. Use when adding or reviewing client UI state, feature stores, persisted stores, or SSR hydration. Covers the Query vs Zustand boundary, store structure, selectors, slices, and SSR rules.
 ---
 
-## 1. State Boundary: When to use Zustand
+# Zustand State Management Best Practices
+
+## When to Use
+
+- Adding client-only UI state (sidebars, modals, draft wizards, tool state).
+- Choosing between Zustand, TanStack Query, router state, and `useState`.
+- Persisting store state safely with SSR.
+
+## State Boundary: When to use Zustand
 
 In our architecture, choose the right tool for each state category:
 

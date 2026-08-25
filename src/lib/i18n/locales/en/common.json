@@ -1,0 +1,11 @@
+{
+	"search": "Search",
+	"signIn": "Sign in",
+	"backToTop": "Back to top",
+	"languageLabel": "Language",
+	"changeLanguage": "Change language",
+	"language": {
+		"en": "English",
+		"vi": "Tiếng Việt"
+	}
+}
