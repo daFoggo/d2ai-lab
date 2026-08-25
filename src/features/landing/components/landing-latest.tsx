@@ -1,6 +1,7 @@
+import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingLatestItem } from "../schemas";
@@ -8,7 +9,8 @@ import type { TLandingLatestItem } from "../schemas";
 export interface ILandingLatestProps {
 	title?: string;
 	items: TLandingLatestItem[];
-	onSeePublications?: () => void;
+	/** Nút "see more" do route compose sẵn (Button + Link). */
+	action?: ReactNode;
 	className?: string;
 }
 
@@ -19,6 +21,8 @@ function LatestCard({
 	item: TLandingLatestItem;
 	className?: string;
 }) {
+	const { locale } = useI18n();
+
 	return (
 		<article
 			data-slot="landing-latest-card"
@@ -71,9 +75,13 @@ function LatestCard({
 
 			{/* Title */}
 			<h3 className="mt-1 line-clamp-3 text-sm leading-snug font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-base">
-				<a href={item.href ?? "#"} className="focus:outline-hidden">
+				<Link
+					to={item.to ?? "/{-$locale}"}
+					params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
+					className="focus:outline-hidden"
+				>
 					{item.title}
-				</a>
+				</Link>
 			</h3>
 		</article>
 	);
@@ -82,11 +90,9 @@ function LatestCard({
 export function LandingLatest({
 	title = "Read the latest",
 	items,
-	onSeePublications,
+	action,
 	className,
 }: ILandingLatestProps) {
-	const { t } = useI18n();
-
 	return (
 		<section
 			data-slot="landing-latest"
@@ -101,13 +107,7 @@ export function LandingLatest({
 						{title}
 					</h2>
 
-					{onSeePublications && (
-						<div>
-							<Button onClick={onSeePublications}>
-								{t("landing.latest.seeMore")}
-							</Button>
-						</div>
-					)}
+					{action && <div>{action}</div>}
 				</div>
 
 				<div className="mt-6 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">

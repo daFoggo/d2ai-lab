@@ -1,5 +1,7 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingFutureItem } from "../schemas";
@@ -17,6 +19,8 @@ function FutureCard({
 	item: TLandingFutureItem;
 	className?: string;
 }) {
+	const { locale } = useI18n();
+
 	return (
 		<article
 			data-slot="landing-future-card"
@@ -56,15 +60,18 @@ function FutureCard({
 			</p>
 
 			{/* Link with Clean Arrow */}
-			<div className="mt-4 flex items-center gap-1.5 font-medium text-foreground">
-				<a
-					href={item.href}
-					className="text-xs transition-colors hover:text-foreground/80 focus:outline-hidden sm:text-sm"
-				>
-					{item.linkLabel}
-				</a>
-				<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-			</div>
+			{item.to && (
+				<div className="mt-4 flex items-center gap-1.5 font-medium text-foreground">
+					<Link
+						to={item.to}
+						params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
+						className="text-xs transition-colors hover:text-foreground/80 focus:outline-hidden sm:text-sm"
+					>
+						{item.linkLabel}
+					</Link>
+					<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+				</div>
+			)}
 		</article>
 	);
 }

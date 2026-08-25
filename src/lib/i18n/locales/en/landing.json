@@ -16,7 +16,9 @@
 	"hero": {
 		"titleLine1": "Data to Intelligence,",
 		"titleLine2": "Ideas to Impact.",
-		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society."
+		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society.",
+		"exploreResearch": "Explore Research",
+		"exploreProjects": "View Projects"
 	},
 	"latest": {
 		"title": "Read the latest",
@@ -24,9 +26,7 @@
 	},
 	"domains": {
 		"title": "We work across domains",
-		"cta": "Explore research areas",
-		"ariaPause": "Pause ambient animation",
-		"ariaPlay": "Play ambient animation"
+		"cta": "Explore research areas"
 	},
 	"projects": {
 		"title": "Applied platforms & initiatives",

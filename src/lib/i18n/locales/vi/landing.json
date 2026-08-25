@@ -16,7 +16,9 @@
 	"hero": {
 		"titleLine1": "Dữ liệu đến Trí tuệ,",
 		"titleLine2": "Ý tưởng đến Tác động.",
-		"description": "Sứ mệnh của chúng tôi là thúc đẩy AI và khoa học dữ liệu, tạo ra những đột phá thực tế mang lại lợi ích cho xã hội."
+		"description": "Sứ mệnh của chúng tôi là thúc đẩy AI và khoa học dữ liệu, tạo ra những đột phá thực tế mang lại lợi ích cho xã hội.",
+		"exploreResearch": "Khám phá nghiên cứu",
+		"exploreProjects": "Xem dự án"
 	},
 	"latest": {
 		"title": "Đọc tin mới nhất",
@@ -24,9 +26,7 @@
 	},
 	"domains": {
 		"title": "Chúng tôi hoạt động trên nhiều lĩnh vực",
-		"cta": "Khám phá lĩnh vực nghiên cứu",
-		"ariaPause": "Tạm dừng hoạt ảnh nền",
-		"ariaPlay": "Phát hoạt ảnh nền"
+		"cta": "Khám phá lĩnh vực nghiên cứu"
 	},
 	"projects": {
 		"title": "Nền tảng ứng dụng & sáng kiến",

@@ -23,21 +23,31 @@ export function LandingHeroRoot({
 
 			const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-			// Staggered smooth entrance for hero titles and content
+			// Staggered smooth entrance for hero titles, content and actions
 			tl.from("[data-slot='landing-hero-title']", {
-				y: 40,
+				y: 35,
 				opacity: 0,
-				duration: 1,
+				duration: 0.9,
 				stagger: 0.15,
-			}).from(
-				"[data-slot='landing-hero-description']",
-				{
-					y: 25,
-					opacity: 0,
-					duration: 0.85,
-				},
-				"-=0.6",
-			);
+			})
+				.from(
+					"[data-slot='landing-hero-description']",
+					{
+						y: 20,
+						opacity: 0,
+						duration: 0.8,
+					},
+					"-=0.5",
+				)
+				.from(
+					"[data-slot='landing-hero-actions']",
+					{
+						y: 15,
+						opacity: 0,
+						duration: 0.7,
+					},
+					"-=0.5",
+				);
 
 			// Ultra-gentle, subtle breathing physics on accent icons
 			gsap.to(".hero-icon-spark", {
@@ -72,7 +82,15 @@ export function LandingHeroRoot({
 			)}
 			{...props}
 		>
-			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
+			{/* Subtle ambient lighting aura for visual depth */}
+			<div
+				aria-hidden="true"
+				className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none"
+			>
+				<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-foreground/[0.04] blur-3xl sm:size-96 lg:size-[500px]" />
+			</div>
+
+			<div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24">
 				{children}
 			</div>
 		</section>
@@ -93,7 +111,7 @@ export function LandingHeroRow({
 		<div
 			data-slot="landing-hero-row"
 			className={cn(
-				"flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end lg:gap-12",
+				"flex flex-col items-start justify-between gap-6 sm:gap-8 lg:flex-row lg:items-end lg:gap-12",
 				className,
 			)}
 			{...props}
@@ -119,8 +137,10 @@ export function LandingHeroTitle({
 		<h1
 			data-slot="landing-hero-title"
 			className={cn(
-				"font-title text-4xl leading-tight font-normal tracking-tight text-foreground text-balance select-none sm:text-5xl md:text-6xl",
-				locale === "vi" ? "lg:text-6xl xl:text-7xl" : "lg:text-7xl xl:text-8xl",
+				"font-title text-3xl leading-tight font-normal tracking-tight text-foreground text-balance select-none sm:text-4xl md:text-5xl",
+				locale === "vi"
+					? "lg:text-5xl xl:text-6xl 2xl:text-7xl"
+					: "lg:text-6xl xl:text-7xl 2xl:text-8xl",
 				className,
 			)}
 			{...props}
@@ -144,7 +164,7 @@ export function LandingHeroDescription({
 		<p
 			data-slot="landing-hero-description"
 			className={cn(
-				"max-w-xs text-sm leading-relaxed text-muted-foreground sm:max-w-sm sm:text-base md:max-w-md",
+				"text-sm leading-relaxed text-muted-foreground sm:text-base md:text-base",
 				className,
 			)}
 			{...props}
@@ -154,9 +174,34 @@ export function LandingHeroDescription({
 	);
 }
 
+export interface ILandingHeroActionsProps extends ComponentProps<"div"> {
+	children: ReactNode;
+	className?: string;
+}
+
+export function LandingHeroActions({
+	children,
+	className,
+	...props
+}: ILandingHeroActionsProps) {
+	return (
+		<div
+			data-slot="landing-hero-actions"
+			className={cn(
+				"flex flex-wrap items-center gap-3 pt-2 sm:pt-4",
+				className,
+			)}
+			{...props}
+		>
+			{children}
+		</div>
+	);
+}
+
 export const LandingHero = Object.assign(LandingHeroRoot, {
 	Root: LandingHeroRoot,
 	Row: LandingHeroRow,
 	Title: LandingHeroTitle,
 	Description: LandingHeroDescription,
+	Actions: LandingHeroActions,
 });

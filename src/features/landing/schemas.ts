@@ -64,7 +64,7 @@ export const landingLatestItemSchema = z.object({
 	category: z.string().min(1),
 	date: z.string().min(1),
 	thumbnail: z.string().optional(),
-	href: z.string().optional(),
+	to: z.string().optional(),
 	type: z.enum(["BLOG", "RESEARCH", "PAPER", "NEWS"]).default("RESEARCH"),
 });
 
@@ -76,7 +76,7 @@ export const landingProjectHeroSchema = z.object({
 	description: z.string().min(1),
 	category: z.string().optional(),
 	ctaLabel: z.string().default("Explore project"),
-	href: z.string().optional(),
+	to: z.string().optional(),
 	thumbnail: z.string().optional(),
 });
 
@@ -87,7 +87,7 @@ export const landingProjectItemSchema = z.object({
 	title: z.string().min(1),
 	category: z.string().min(1),
 	thumbnail: z.string().optional(),
-	href: z.string().optional(),
+	to: z.string().optional(),
 });
 
 export type TLandingProjectItem = z.infer<typeof landingProjectItemSchema>;
@@ -96,7 +96,6 @@ export type TLandingProjectItem = z.infer<typeof landingProjectItemSchema>;
 export const landingDomainsDataSchema = z.object({
 	title: z.string().min(1),
 	description: z.string().min(1),
-	ctaLabel: z.string().default("Explore research areas"),
 });
 
 export type TLandingDomainsData = z.infer<typeof landingDomainsDataSchema>;
@@ -107,7 +106,7 @@ export const landingFutureItemSchema = z.object({
 	title: z.string().min(1),
 	description: z.string().min(1),
 	linkLabel: z.string().min(1),
-	href: z.string().optional(),
+	to: z.string().optional(),
 	thumbnail: z.string().optional(),
 });
 

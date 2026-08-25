@@ -1,6 +1,7 @@
+import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingProjectHero, TLandingProjectItem } from "../schemas";
@@ -9,17 +10,19 @@ export interface ILandingProjectsProps {
 	title?: string;
 	hero: TLandingProjectHero;
 	items: TLandingProjectItem[];
-	onSeeProjects?: () => void;
-	onHeroCtaClick?: () => void;
+	/** Nút "see more" do route compose sẵn (Button + Link). */
+	seeMore?: ReactNode;
+	/** Nút CTA của project nổi bật do route compose sẵn. */
+	heroCta?: ReactNode;
 	className?: string;
 }
 
 function ProjectsHero({
 	hero,
-	onCtaClick,
+	cta,
 }: {
 	hero: TLandingProjectHero;
-	onCtaClick?: () => void;
+	cta?: ReactNode;
 }) {
 	const { t } = useI18n();
 
@@ -69,9 +72,7 @@ function ProjectsHero({
 					{hero.description}
 				</p>
 
-				<div className="mt-4 sm:mt-6">
-					<Button onClick={onCtaClick}>{hero.ctaLabel}</Button>
-				</div>
+				<div className="mt-4 sm:mt-6">{cta && cta}</div>
 			</div>
 		</div>
 	);
@@ -84,7 +85,7 @@ function ProjectsItem({
 	item: TLandingProjectItem;
 	className?: string;
 }) {
-	const { t } = useI18n();
+	const { t, locale } = useI18n();
 
 	return (
 		<div
@@ -120,9 +121,13 @@ function ProjectsItem({
 					{item.category}
 				</span>
 				<h4 className="mt-1 line-clamp-2 text-xs leading-snug font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-sm">
-					<a href={item.href ?? "#"} className="focus:outline-hidden">
+					<Link
+						to={item.to ?? "/{-$locale}"}
+						params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
+						className="focus:outline-hidden"
+					>
 						{item.title}
-					</a>
+					</Link>
 				</h4>
 			</div>
 		</div>
@@ -133,11 +138,10 @@ export function LandingProjects({
 	title = "Our research drives real-world change",
 	hero,
 	items,
-	onSeeProjects,
-	onHeroCtaClick,
+	seeMore,
+	heroCta,
 	className,
 }: ILandingProjectsProps) {
-	const { t } = useI18n();
 	const displayItems = items.slice(0, 2);
 
 	return (
@@ -154,16 +158,10 @@ export function LandingProjects({
 						{title}
 					</h2>
 
-					{onSeeProjects && (
-						<div>
-							<Button onClick={onSeeProjects}>
-								{t("landing.projects.seeMore")}
-							</Button>
-						</div>
-					)}
+					{seeMore && <div>{seeMore}</div>}
 				</div>
 
-				<ProjectsHero hero={hero} onCtaClick={onHeroCtaClick} />
+				<ProjectsHero hero={hero} cta={heroCta} />
 
 				<div className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 lg:gap-6">
 					{displayItems.map((item, index) => (

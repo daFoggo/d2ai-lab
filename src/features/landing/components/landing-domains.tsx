@@ -1,7 +1,4 @@
-import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { HERO_SCOPE_STYLE } from "../constants";
 
@@ -19,21 +16,17 @@ const MOSAIC_TILES = [
 export interface ILandingDomainsProps {
 	title?: string;
 	description?: string;
-	ctaLabel?: string;
-	onCtaClick?: () => void;
+	/** Nút CTA do route compose sẵn (Button + Link). */
+	cta?: ReactNode;
 	className?: string;
 }
 
 export function LandingDomains({
 	title = "We work across domains",
 	description = "Our vast breadth of work covers AI/ML foundations, responsible human-centric technology, science & societal impact, computing paradigms, and algorithms & optimization. Our research teams impact technology used by people all over the world.",
-	ctaLabel = "Explore research areas",
-	onCtaClick,
+	cta,
 	className,
 }: ILandingDomainsProps) {
-	const { t } = useI18n();
-	const [isPaused, setIsPaused] = useState(false);
-
 	return (
 		<section
 			data-slot="landing-domains"
@@ -68,28 +61,6 @@ export function LandingDomains({
 						))}
 					</div>
 
-					{/* Center Pause/Play Control as in Google Research */}
-					<div className="absolute top-6 right-6 z-20 sm:top-8 sm:right-8">
-						<Button
-							variant="ghost"
-							size="icon-sm"
-							type="button"
-							onClick={() => setIsPaused((prev) => !prev)}
-							aria-label={
-								isPaused
-									? t("landing.domains.ariaPlay")
-									: t("landing.domains.ariaPause")
-							}
-							className="rounded-full bg-background/80 text-foreground/80 backdrop-blur-md hover:bg-accent hover:text-foreground"
-						>
-							{isPaused ? (
-								<IconPlayerPlay className="size-3" />
-							) : (
-								<IconPlayerPause className="size-3" />
-							)}
-						</Button>
-					</div>
-
 					{/* Foreground Content Card */}
 					<div
 						data-slot="landing-domains-content"
@@ -102,11 +73,7 @@ export function LandingDomains({
 							{description}
 						</p>
 
-						{ctaLabel && (
-							<div className="mt-6 sm:mt-8">
-								<Button onClick={onCtaClick}>{ctaLabel}</Button>
-							</div>
-						)}
+						{cta && <div className="mt-6 sm:mt-8">{cta}</div>}
 					</div>
 				</div>
 			</div>
