@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TCareer } from "@/features/careers";
 import { Careers } from "@/features/careers";
 
-export const Route = createFileRoute("/{-$locale}/careers")({
+export const Route = createFileRoute("/{-$locale}/careers/")({
 	component: CareersPage,
 });
 

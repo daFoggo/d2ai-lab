@@ -1,7 +1,8 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/page-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { TCareer } from "../schemas";
 
@@ -14,33 +15,41 @@ export interface ICareersProps {
 }
 
 function CareerRow({ role }: { role: TCareer }) {
+	const { locale } = useI18n();
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
+
 	return (
-		<li
-			data-slot="career-row"
-			className="flex flex-col gap-3 border-t border-border py-6 sm:py-7"
-		>
-			<div className="flex flex-wrap items-center gap-3">
-				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
-					{role.department}
-				</span>
-				<Badge variant="secondary">{role.type}</Badge>
-			</div>
+		<li data-slot="career-row" className="border-t border-border">
+			<Link
+				to="/{-$locale}/careers/$id"
+				params={{ ...localeParams, id: role.id }}
+				className="group flex flex-col gap-3 py-6 transition-colors hover:bg-muted/40 focus:outline-hidden sm:py-7"
+			>
+				<div className="flex flex-wrap items-center gap-3">
+					<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
+						{role.department}
+					</span>
+					<Badge variant="secondary">{role.type}</Badge>
+				</div>
 
-			<div className="flex flex-col gap-2">
-				<h3 className="font-title text-lg font-normal tracking-tight text-foreground sm:text-xl">
-					{role.title}
-				</h3>
-				<p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-					{role.description}
-				</p>
-			</div>
+				<div className="flex flex-col gap-2">
+					<h3 className="font-title text-lg font-normal tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-xl">
+						{role.title}
+					</h3>
+					<p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+						{role.description}
+					</p>
+				</div>
 
-			<div className="mt-1">
-				<Button variant="outline" size="sm">
-					Apply
-					<IconArrowUpRight data-icon="inline-end" />
-				</Button>
-			</div>
+				<div className="mt-1">
+					<span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
+						View role
+						<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+					</span>
+				</div>
+			</Link>
 		</li>
 	);
 }

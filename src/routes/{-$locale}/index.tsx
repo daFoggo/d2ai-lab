@@ -78,7 +78,7 @@ const PROJECT_HERO: TLandingProjectHero = {
 	category: "SMART EDUCATION APP",
 	description:
 		"A personalized learning web application combining cognitive diagnostics and generative curriculum planning to empower students in real-time.",
-	ctaLabel: "Launch platform",
+	ctaLabel: "View project",
 	to: "/{-$locale}/projects",
 };
 

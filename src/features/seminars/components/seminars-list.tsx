@@ -1,5 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/page-header";
 import { Badge } from "@/components/ui/badge";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { TSeminar, TSeminarStatus } from "../schemas";
 
@@ -20,28 +22,40 @@ const STATUS_VARIANT: Record<
 };
 
 function SeminarRow({ seminar }: { seminar: TSeminar }) {
-	return (
-		<li
-			data-slot="seminar-row"
-			className="flex flex-col gap-3 border-t border-border py-6 sm:py-7 lg:grid lg:grid-cols-12 lg:gap-8"
-		>
-			<div className="flex flex-wrap items-center gap-3 lg:col-span-3">
-				<span className="font-mono text-sm text-muted-foreground uppercase">
-					{seminar.date}
-				</span>
-				<Badge variant={STATUS_VARIANT[seminar.status]}>{seminar.status}</Badge>
-			</div>
+	const { locale } = useI18n();
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
 
-			<div className="flex flex-col gap-1.5 lg:col-span-9">
-				<h3 className="font-title text-lg font-normal tracking-tight text-foreground sm:text-xl">
-					{seminar.title}
-				</h3>
-				<p className="text-sm text-muted-foreground">
-					<span className="font-medium text-foreground">{seminar.speaker}</span>
-					{" · "}
-					{seminar.role}
-				</p>
-			</div>
+	return (
+		<li data-slot="seminar-row" className="border-t border-border">
+			<Link
+				to="/{-$locale}/seminars/$id"
+				params={{ ...localeParams, id: seminar.id }}
+				className="group flex flex-col gap-3 py-6 transition-colors hover:bg-muted/40 focus:outline-hidden sm:py-7 lg:grid lg:grid-cols-12 lg:gap-8 lg:px-3 lg:-mx-3"
+			>
+				<div className="flex flex-wrap items-center gap-3 lg:col-span-3">
+					<span className="font-mono text-sm text-muted-foreground uppercase">
+						{seminar.date}
+					</span>
+					<Badge variant={STATUS_VARIANT[seminar.status]}>
+						{seminar.status}
+					</Badge>
+				</div>
+
+				<div className="flex flex-col gap-1.5 lg:col-span-9">
+					<h3 className="font-title text-lg font-normal tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-xl">
+						{seminar.title}
+					</h3>
+					<p className="text-sm text-muted-foreground">
+						<span className="font-medium text-foreground">
+							{seminar.speaker}
+						</span>
+						{" · "}
+						{seminar.role}
+					</p>
+				</div>
+			</Link>
 		</li>
 	);
 }

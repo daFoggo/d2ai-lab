@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TSeminar } from "@/features/seminars";
 import { Seminars } from "@/features/seminars";
 
-export const Route = createFileRoute("/{-$locale}/seminars")({
+export const Route = createFileRoute("/{-$locale}/seminars/")({
 	component: SeminarsPage,
 });
 

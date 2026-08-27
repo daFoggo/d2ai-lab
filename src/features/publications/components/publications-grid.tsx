@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CornerFrame } from "@/components/common/corner-frame";
 import { PageHeader } from "@/components/common/page-header";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -76,12 +77,9 @@ function PublicationCard({
 			{publication.tags && publication.tags.length > 0 && (
 				<div className="mt-auto flex flex-wrap gap-2 pt-1">
 					{publication.tags.map((tag) => (
-						<span
-							key={tag}
-							className="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-foreground/80"
-						>
+						<Badge key={tag} variant="outline">
 							{tag}
-						</span>
+						</Badge>
 					))}
 				</div>
 			)}

@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/common/page-header";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { TResearchDirection } from "../schemas";
 
@@ -39,12 +40,9 @@ function DirectionSection({
 
 				<div className="mt-2 flex flex-wrap gap-2">
 					{direction.focus.map((item) => (
-						<span
-							key={item}
-							className="rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground"
-						>
+						<Badge key={item} variant="outline">
 							{item}
-						</span>
+						</Badge>
 					))}
 				</div>
 			</div>
