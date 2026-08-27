@@ -1,5 +1,5 @@
 # Tanstack Start base
-Frontend web application base, built with **TanStack Start + React 19 + shadcn/ui + Tailwind CSS v4 + Supabase**.
+Frontend web application base, built with **TanStack Start + React 19 + shadcn/ui + Tailwind CSS v4 + Supabase**. Server state via **TanStack Query**, forms via **TanStack Form**, tables via **TanStack Table**, client UI state via **Zustand**.
 
 ## Prerequisites
 
@@ -56,6 +56,12 @@ pnpm --version
 
 ### 3. Clone & Install Dependencies
 
+```bash
+git clone <your-repo-url>
+cd <your-project>
+pnpm install
+```
+
 
 
 ### 4. Configure Environment Variables
@@ -83,7 +89,7 @@ Open http://localhost:3000.
 
 The app connects to Supabase through `@supabase/supabase-js`. The client is created once in `src/utils/supabase.ts` and reads `VITE_SUPABASE_URL` / `VITE_SUPABASE_KEY` from the environment.
 
-The home route (`src/routes/index.tsx`) demonstrates reading rows from the `todos` table. Create that table in the Supabase dashboard before relying on the demo.
+Data-fetching conventions (query functions resolve valid data or throw, `PGRST116` → `notFound()`, shared client only) are documented in `docs/handbook/04_tanstack_start_query_router.md`.
 
 ## Common Commands
 
@@ -107,6 +113,7 @@ Run these after larger changes or before merging (see `docs/handbook/06_quality_
 pnpm exec biome check --write
 pnpm typecheck
 pnpm build
+pnpm check:encoding
 ```
 
 ## Tech Stack & Architecture
@@ -149,6 +156,8 @@ flowchart LR
 | App framework | TanStack Start (Nitro) |
 | Routing | TanStack Router |
 | Server state | TanStack Query |
+| Forms | TanStack Form |
+| Tables | TanStack Table (v9) |
 | Client UI state | Zustand |
 | Data platform | Supabase (PostgreSQL, Auth, Storage) |
 | Validation | Zod |
@@ -165,7 +174,7 @@ All architecture docs, conventions, and checklists live in `docs/handbook/`.
 
 | Document | Contents |
 |---|---|
-| [`docs/handbook/00_index.md`](docs/handbook/00_index.md) | Handbook index & overview |
+| [`docs/handbook/00_index.md`](docs/handbook/00_index.md) | Handbook index & reading order |
 | [`docs/handbook/01_project_overview.md`](docs/handbook/01_project_overview.md) | Project scope & tech stack |
 | [`docs/handbook/02_architecture.md`](docs/handbook/02_architecture.md) | Feature-based architecture & route orchestration |
 | [`docs/handbook/03_feature_development.md`](docs/handbook/03_feature_development.md) | Building & refactoring feature modules |
@@ -173,8 +182,13 @@ All architecture docs, conventions, and checklists live in `docs/handbook/`.
 | [`docs/handbook/05_ui_state_patterns.md`](docs/handbook/05_ui_state_patterns.md) | Loading, error, empty, & form action states |
 | [`docs/handbook/06_quality_rules.md`](docs/handbook/06_quality_rules.md) | Consistency rules & review expectations |
 | [`docs/handbook/07_development_checklist.md`](docs/handbook/07_development_checklist.md) | Dev & review checklist |
+| [`docs/handbook/08_zustand_best_practices.md`](docs/handbook/08_zustand_best_practices.md) | Zustand client state & SSR rules |
+| [`docs/handbook/09_i18n.md`](docs/handbook/09_i18n.md) | i18n / locale routing |
+| [`docs/handbook/10_design_tokens.md`](docs/handbook/10_design_tokens.md) | Design tokens & styling rules |
+| [`docs/handbook/11_tanstack_form.md`](docs/handbook/11_tanstack_form.md) | TanStack Form patterns |
+| [`docs/handbook/12_tanstack_table.md`](docs/handbook/12_tanstack_table.md) | TanStack Table (v9) patterns |
 
-Design tokens live in [`docs/design-system/`](docs/design-system/).
+Project-specific content (per-project, not part of the base) lives in [`docs/project/`](docs/project/).
 
 Agent and automation tools should read [`AGENTS.md`](AGENTS.md) first.
 
@@ -183,6 +197,8 @@ Agent and automation tools should read [`AGENTS.md`](AGENTS.md) first.
 - [TanStack Start](https://tanstack.com/start/latest/docs/framework/react/overview)
 - [TanStack Router](https://tanstack.com/router/latest/docs/framework/react/overview)
 - [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview)
+- [TanStack Form](https://tanstack.com/form/latest/docs/framework/react/overview)
+- [TanStack Table](https://tanstack.com/table/latest/docs/framework/react/overview)
 - [Supabase JS](https://supabase.com/docs/reference/javascript/)
 - [shadcn/ui](https://ui.shadcn.com/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
