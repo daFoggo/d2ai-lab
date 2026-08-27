@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { DEFAULT_LOCALE, LOCALES, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingNavItem } from "../schemas";
 
 export interface ILandingNavbarRootProps extends ComponentProps<"header"> {
@@ -41,11 +40,11 @@ export interface ILandingNavbarRootProps extends ComponentProps<"header"> {
 	className?: string;
 }
 
-export function LandingNavbarRoot({
+export const LandingNavbarRoot = ({
 	children,
 	className,
 	...props
-}: ILandingNavbarRootProps) {
+}: ILandingNavbarRootProps) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isOverHero, setIsOverHero] = useState(true);
 	const headerRef = useRef<HTMLElement>(null);
@@ -108,14 +107,10 @@ export function LandingNavbarRoot({
 		<header
 			ref={headerRef}
 			data-slot="landing-navbar"
-			style={isOverHero ? HERO_SCOPE_STYLE : undefined}
+			data-over-hero={isOverHero}
 			className={cn(
-				"fixed top-0 right-0 left-0 z-50 w-full text-foreground transition-colors duration-300 ease-in-out",
-				isOverHero
-					? isScrolled
-						? "bg-background/90"
-						: "bg-transparent"
-					: "bg-background",
+				"fixed top-0 right-0 left-0 z-50 w-full text-foreground",
+				isOverHero && !isScrolled ? "bg-transparent" : "bg-background",
 				className,
 			)}
 			{...props}
@@ -125,7 +120,7 @@ export function LandingNavbarRoot({
 			</div>
 		</header>
 	);
-}
+};
 
 export interface ILandingNavbarBrandProps {
 	name: string;
@@ -136,14 +131,14 @@ export interface ILandingNavbarBrandProps {
 	className?: string;
 }
 
-export function LandingNavbarBrand({
+export const LandingNavbarBrand = ({
 	name,
 	tagline,
 	logo,
 	hasDropdown = false,
 	onDropdownClick,
 	className,
-}: ILandingNavbarBrandProps) {
+}: ILandingNavbarBrandProps) => {
 	const { locale } = useI18n();
 
 	if (hasDropdown && onDropdownClick) {
@@ -199,7 +194,7 @@ export function LandingNavbarBrand({
 			</div>
 		</Link>
 	);
-}
+};
 
 export interface ILandingNavbarNavProps extends ComponentProps<"div"> {
 	children?: ReactNode;
@@ -208,13 +203,13 @@ export interface ILandingNavbarNavProps extends ComponentProps<"div"> {
 	className?: string;
 }
 
-export function LandingNavbarNav({
+export const LandingNavbarNav = ({
 	children,
 	items,
 	onItemClick,
 	className,
 	...props
-}: ILandingNavbarNavProps) {
+}: ILandingNavbarNavProps) => {
 	const { locale } = useI18n();
 
 	return (
@@ -319,15 +314,15 @@ export function LandingNavbarNav({
 			)}
 		</div>
 	);
-}
+};
 
 export interface ILandingNavbarLanguageSwitcherProps {
 	className?: string;
 }
 
-export function LandingNavbarLanguageSwitcher({
+export const LandingNavbarLanguageSwitcher = ({
 	className,
-}: ILandingNavbarLanguageSwitcherProps) {
+}: ILandingNavbarLanguageSwitcherProps) => {
 	const { locale, t } = useI18n();
 
 	return (
@@ -371,7 +366,7 @@ export function LandingNavbarLanguageSwitcher({
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
-}
+};
 
 export interface ILandingNavbarActionsProps extends ComponentProps<"div"> {
 	children?: ReactNode;
@@ -384,7 +379,7 @@ export interface ILandingNavbarActionsProps extends ComponentProps<"div"> {
 	className?: string;
 }
 
-export function LandingNavbarActions({
+export const LandingNavbarActions = ({
 	children,
 	searchLabel,
 	onSearchClick,
@@ -394,7 +389,7 @@ export function LandingNavbarActions({
 	onItemClick,
 	className,
 	...props
-}: ILandingNavbarActionsProps) {
+}: ILandingNavbarActionsProps) => {
 	const { t, locale } = useI18n();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const resolvedSearch = searchLabel ?? t("common.search");
@@ -630,7 +625,7 @@ export function LandingNavbarActions({
 								<Button
 									type="button"
 									onClick={() => {
-										onLoginClick?.();
+										onLoginClick();
 										setMobileOpen(false);
 									}}
 									className="w-full"
@@ -648,7 +643,7 @@ export function LandingNavbarActions({
 			)}
 		</div>
 	);
-}
+};
 
 export const LandingNavbar = Object.assign(LandingNavbarRoot, {
 	Root: LandingNavbarRoot,

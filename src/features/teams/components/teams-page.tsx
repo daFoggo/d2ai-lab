@@ -1,8 +1,6 @@
 import { PageHeader } from "@/components/common/page-header";
-import {
-	type IInPageNavItem,
-	StickyInPageNav,
-} from "@/components/common/sticky-in-page-nav";
+import type { IInPageNavItem } from "@/components/common/sticky-in-page-nav";
+import { StickyInPageNav } from "@/components/common/sticky-in-page-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { TTeam, TTeamMember } from "../schemas";
@@ -15,7 +13,7 @@ export interface ITeamsProps {
 	className?: string;
 }
 
-function MemberCard({ member }: { member: TTeamMember }) {
+const MemberCard = ({ member }: { member: TTeamMember }) => {
 	return (
 		<article
 			data-slot="team-member-card"
@@ -38,9 +36,9 @@ function MemberCard({ member }: { member: TTeamMember }) {
 			</div>
 		</article>
 	);
-}
+};
 
-function TeamSection({ team, index }: { team: TTeam; index: number }) {
+const TeamSection = ({ team, index }: { team: TTeam; index: number }) => {
 	return (
 		<section
 			id={team.id}
@@ -69,15 +67,15 @@ function TeamSection({ team, index }: { team: TTeam; index: number }) {
 			</div>
 		</section>
 	);
-}
+};
 
-export function Teams({
+export const Teams = ({
 	eyebrow = "Teams",
 	title = "The people behind the lab",
 	description,
 	teams,
 	className,
-}: ITeamsProps) {
+}: ITeamsProps) => {
 	const navItems: IInPageNavItem[] = teams.map((team) => ({
 		id: team.id,
 		label: team.name,
@@ -111,4 +109,4 @@ export function Teams({
 			</div>
 		</section>
 	);
-}
+};

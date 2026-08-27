@@ -11,7 +11,7 @@ export interface ICornerFrameProps {
  * Trang trí góc kiểu Vercel: dấu "+" ở 4 góc nằm ngay trên mép khối.
  * Dùng để tạo điểm nhấn cho một card/ảnh nổi bật mà không thêm nền hay viền riêng.
  */
-export function CornerFrame({ children, className }: ICornerFrameProps) {
+export const CornerFrame = ({ children, className }: ICornerFrameProps) => {
 	return (
 		<div data-slot="corner-frame" className={cn("relative", className)}>
 			<CornerPlus className="top-0 left-0 -translate-y-1/2 -translate-x-1/2" />
@@ -21,9 +21,9 @@ export function CornerFrame({ children, className }: ICornerFrameProps) {
 			{children}
 		</div>
 	);
-}
+};
 
-function CornerPlus({ className }: { className?: string }) {
+const CornerPlus = ({ className }: { className?: string }) => {
 	return (
 		<span
 			aria-hidden="true"
@@ -35,4 +35,4 @@ function CornerPlus({ className }: { className?: string }) {
 			<IconPlus className="size-3" />
 		</span>
 	);
-}
+};

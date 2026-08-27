@@ -4,11 +4,11 @@ export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = "en";
 
-export function isLocale(value: string): value is Locale {
+export const isLocale = (value: string): value is Locale => {
 	return LOCALES.includes(value as Locale);
-}
+};
 
-export function getLocaleFromPathname(pathname: string): Locale {
+export const getLocaleFromPathname = (pathname: string): Locale => {
 	const first = pathname.split("/").filter(Boolean)[0];
 	return first && isLocale(first) ? first : DEFAULT_LOCALE;
-}
+};

@@ -11,11 +11,11 @@ export interface ISectionDividerProps {
  * Đề mục lớn màu indigo đậm (font-title + text-primary) kiểu Notion —
  * dùng để tạo nhịp giữa các section và phá độ trắng.
  */
-export function SectionDivider({
+export const SectionDivider = ({
 	children,
 	subtitle,
 	className,
-}: ISectionDividerProps) {
+}: ISectionDividerProps) => {
 	return (
 		<div
 			data-slot="section-divider"
@@ -31,4 +31,4 @@ export function SectionDivider({
 			)}
 		</div>
 	);
-}
+};

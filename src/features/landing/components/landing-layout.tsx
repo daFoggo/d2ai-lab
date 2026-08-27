@@ -6,11 +6,11 @@ export interface ILandingLayoutProps extends ComponentProps<"div"> {
 	className?: string;
 }
 
-export function LandingLayout({
+export const LandingLayout = ({
 	children,
 	className,
 	...props
-}: ILandingLayoutProps) {
+}: ILandingLayoutProps) => {
 	return (
 		<div
 			data-slot="landing-layout"
@@ -23,4 +23,4 @@ export function LandingLayout({
 			{children}
 		</div>
 	);
-}
+};

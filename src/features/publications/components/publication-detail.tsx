@@ -12,11 +12,11 @@ export interface IPublicationDetailProps {
 	className?: string;
 }
 
-export function PublicationDetail({
+export const PublicationDetail = ({
 	publication,
 	locale,
 	className,
-}: IPublicationDetailProps) {
+}: IPublicationDetailProps) => {
 	const breadcrumbItems = [
 		{ label: "Home", to: "/{-$locale}", params: { locale } },
 		{
@@ -119,4 +119,4 @@ export function PublicationDetail({
 			</div>
 		</section>
 	);
-}
+};

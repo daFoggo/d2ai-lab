@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingLatestItem } from "../schemas";
 
 export interface ILandingLatestProps {
@@ -14,13 +13,13 @@ export interface ILandingLatestProps {
 	className?: string;
 }
 
-function LatestCard({
+const LatestCard = ({
 	item,
 	className,
 }: {
 	item: TLandingLatestItem;
 	className?: string;
-}) {
+}) => {
 	const { locale } = useI18n();
 
 	return (
@@ -41,12 +40,9 @@ function LatestCard({
 							className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>
 					) : (
-						<div
-							style={HERO_SCOPE_STYLE}
-							className="flex h-full w-full items-center justify-center bg-background p-5"
-						>
+						<div className="flex h-full w-full items-center justify-center bg-muted/50 p-5">
 							<div className="flex flex-col items-center gap-1 text-center select-none">
-								<span className="font-mono text-xs tracking-wider text-muted-foreground/50 uppercase">
+								<span className="font-mono text-xs tracking-wider text-muted-foreground/70 uppercase">
 									{item.category}
 								</span>
 								<span className="line-clamp-2 text-xs font-medium text-muted-foreground">
@@ -85,14 +81,14 @@ function LatestCard({
 			</h3>
 		</article>
 	);
-}
+};
 
-export function LandingLatest({
+export const LandingLatest = ({
 	title = "Read the latest",
 	items,
 	action,
 	className,
-}: ILandingLatestProps) {
+}: ILandingLatestProps) => {
 	return (
 		<section
 			data-slot="landing-latest"
@@ -122,4 +118,4 @@ export function LandingLatest({
 			</div>
 		</section>
 	);
-}
+};

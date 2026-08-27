@@ -19,16 +19,16 @@ export interface SignInFormProps {
 	onSuccess?: () => void;
 }
 
-function getFieldError(err: unknown): string {
+const getFieldError = (err: unknown): string => {
 	if (!err) return "";
 	if (typeof err === "string") return err;
 	if (typeof err === "object" && "message" in err) {
 		return String((err as { message?: unknown }).message ?? "");
 	}
 	return String(err);
-}
+};
 
-export function SignInForm({ onSuccess }: SignInFormProps) {
+export const SignInForm = ({ onSuccess }: SignInFormProps) => {
 	const loginMutation = useLoginMutation();
 	const [serverError, setServerError] = React.useState<string | null>(null);
 	const { t } = useI18n("auth");
@@ -180,4 +180,4 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
 			</form.Subscribe>
 		</form>
 	);
-}
+};

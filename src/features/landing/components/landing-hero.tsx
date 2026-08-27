@@ -1,83 +1,22 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { type ComponentProps, type ReactNode, useRef } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 
 export interface ILandingHeroRootProps extends ComponentProps<"section"> {
 	children: ReactNode;
 	className?: string;
 }
 
-export function LandingHeroRoot({
+export const LandingHeroRoot = ({
 	children,
 	className,
 	...props
-}: ILandingHeroRootProps) {
-	const containerRef = useRef<HTMLElement>(null);
-
-	useGSAP(
-		() => {
-			if (typeof window === "undefined") return;
-
-			const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-			// Staggered smooth entrance for hero titles, content and actions
-			tl.from("[data-slot='landing-hero-title']", {
-				y: 35,
-				opacity: 0,
-				duration: 0.9,
-				stagger: 0.15,
-			})
-				.from(
-					"[data-slot='landing-hero-description']",
-					{
-						y: 20,
-						opacity: 0,
-						duration: 0.8,
-					},
-					"-=0.5",
-				)
-				.from(
-					"[data-slot='landing-hero-actions']",
-					{
-						y: 15,
-						opacity: 0,
-						duration: 0.7,
-					},
-					"-=0.5",
-				);
-
-			// Ultra-gentle, subtle breathing physics on accent icons
-			gsap.to(".hero-icon-spark", {
-				y: -3,
-				rotation: 3,
-				duration: 4.5,
-				repeat: -1,
-				yoyo: true,
-				ease: "sine.inOut",
-			});
-
-			gsap.to(".hero-icon-highlight", {
-				y: 3,
-				rotation: -3,
-				duration: 5,
-				repeat: -1,
-				yoyo: true,
-				ease: "sine.inOut",
-			});
-		},
-		{ scope: containerRef },
-	);
-
+}: ILandingHeroRootProps) => {
 	return (
 		<section
-			ref={containerRef}
 			data-slot="landing-hero"
-			style={HERO_SCOPE_STYLE}
 			className={cn(
-				"relative flex min-h-screen w-full flex-col justify-center overflow-hidden bg-background pt-20 pb-14 text-foreground sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20",
+				"relative flex min-h-screen w-full flex-col justify-center overflow-hidden bg-primary pt-20 pb-14 text-primary-foreground sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20",
 				className,
 			)}
 			{...props}
@@ -87,7 +26,7 @@ export function LandingHeroRoot({
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none"
 			>
-				<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-foreground/[0.04] blur-3xl sm:size-96 lg:size-[500px]" />
+				<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-primary-foreground/4 blur-3xl sm:size-96 lg:size-[500px]" />
 			</div>
 
 			<div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24">
@@ -95,18 +34,18 @@ export function LandingHeroRoot({
 			</div>
 		</section>
 	);
-}
+};
 
 export interface ILandingHeroRowProps extends ComponentProps<"div"> {
 	children: ReactNode;
 	className?: string;
 }
 
-export function LandingHeroRow({
+export const LandingHeroRow = ({
 	children,
 	className,
 	...props
-}: ILandingHeroRowProps) {
+}: ILandingHeroRowProps) => {
 	return (
 		<div
 			data-slot="landing-hero-row"
@@ -119,25 +58,25 @@ export function LandingHeroRow({
 			{children}
 		</div>
 	);
-}
+};
 
 export interface ILandingHeroTitleProps extends ComponentProps<"h1"> {
 	children: ReactNode;
 	className?: string;
 }
 
-export function LandingHeroTitle({
+export const LandingHeroTitle = ({
 	children,
 	className,
 	...props
-}: ILandingHeroTitleProps) {
+}: ILandingHeroTitleProps) => {
 	const { locale } = useI18n();
 
 	return (
 		<h1
 			data-slot="landing-hero-title"
 			className={cn(
-				"font-title text-3xl leading-tight font-normal tracking-tight text-foreground text-balance select-none sm:text-4xl md:text-5xl",
+				"font-title text-3xl leading-tight font-normal tracking-tight text-primary-foreground text-balance select-none sm:text-4xl md:text-5xl",
 				locale === "vi"
 					? "lg:text-5xl xl:text-6xl 2xl:text-7xl"
 					: "lg:text-6xl xl:text-7xl 2xl:text-8xl",
@@ -148,23 +87,23 @@ export function LandingHeroTitle({
 			{children}
 		</h1>
 	);
-}
+};
 
 export interface ILandingHeroDescriptionProps extends ComponentProps<"p"> {
 	children: ReactNode;
 	className?: string;
 }
 
-export function LandingHeroDescription({
+export const LandingHeroDescription = ({
 	children,
 	className,
 	...props
-}: ILandingHeroDescriptionProps) {
+}: ILandingHeroDescriptionProps) => {
 	return (
 		<p
 			data-slot="landing-hero-description"
 			className={cn(
-				"text-sm leading-relaxed text-muted-foreground sm:text-base md:text-base",
+				"text-sm leading-relaxed text-primary-foreground/80 sm:text-base md:text-base",
 				className,
 			)}
 			{...props}
@@ -172,30 +111,11 @@ export function LandingHeroDescription({
 			{children}
 		</p>
 	);
-}
+};
 
 export interface ILandingHeroActionsProps extends ComponentProps<"div"> {
 	children: ReactNode;
 	className?: string;
-}
-
-export function LandingHeroActions({
-	children,
-	className,
-	...props
-}: ILandingHeroActionsProps) {
-	return (
-		<div
-			data-slot="landing-hero-actions"
-			className={cn(
-				"flex flex-wrap items-center gap-3 pt-2 sm:pt-4",
-				className,
-			)}
-			{...props}
-		>
-			{children}
-		</div>
-	);
 }
 
 export const LandingHero = Object.assign(LandingHeroRoot, {
@@ -203,5 +123,4 @@ export const LandingHero = Object.assign(LandingHeroRoot, {
 	Row: LandingHeroRow,
 	Title: LandingHeroTitle,
 	Description: LandingHeroDescription,
-	Actions: LandingHeroActions,
 });

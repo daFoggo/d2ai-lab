@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TPublication } from "@/features/publications";
 import { Publications } from "@/features/publications";
 
-export const Route = createFileRoute("/{-$locale}/publications/")({
-	component: PublicationsPage,
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const PUBLICATIONS: TPublication[] = [
 	{
@@ -76,7 +72,7 @@ const PUBLICATIONS: TPublication[] = [
 	},
 ];
 
-function PublicationsPage() {
+const PublicationsPage = () => {
 	return (
 		<Publications
 			eyebrow="Publications"
@@ -85,4 +81,8 @@ function PublicationsPage() {
 			publications={PUBLICATIONS}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/publications/")({
+	component: PublicationsPage,
+});

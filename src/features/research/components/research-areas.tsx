@@ -11,13 +11,13 @@ export interface IResearchAreasProps {
 	className?: string;
 }
 
-function AreaCard({
+const AreaCard = ({
 	area,
 	className,
 }: {
 	area: TResearchArea;
 	className?: string;
-}) {
+}) => {
 	return (
 		<article
 			data-slot="research-area-card"
@@ -43,15 +43,15 @@ function AreaCard({
 			</div>
 		</article>
 	);
-}
+};
 
-export function ResearchAreas({
+export const ResearchAreas = ({
 	eyebrow = "Research areas",
 	title = "Areas of scientific focus",
 	description,
 	areas,
 	className,
-}: IResearchAreasProps) {
+}: IResearchAreasProps) => {
 	return (
 		<section
 			data-slot="research-areas"
@@ -68,4 +68,4 @@ export function ResearchAreas({
 			</div>
 		</section>
 	);
-}
+};

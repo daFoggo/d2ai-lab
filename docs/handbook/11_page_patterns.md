@@ -276,8 +276,9 @@ Reusable across many archetypes (put in `src/components/common/`):
   `LandingQuote`, `LandingFilm`, `LandingFuture` → these ARE the **bands**
   (`SectionBand`) the topic/detail pages reuse. Rename/alias as generic
   `SectionBand` variants rather than duplicating.
-- `HERO_SCOPE_STYLE` (`src/features/landing/constants.ts`) → always-dark
-  surfaces (hero, footer, dark cards).
+- `HERO_SCOPE_STYLE` → replaced by `bg-primary text-primary-foreground`
+  for always-dark surfaces (hero, footer, dark cards); the navbar-over-hero
+  scope lives in `src/styles.css` (`[data-slot="landing-navbar"][data-over-hero="true"]`).
 - `InputGroup` + `Input` → search inputs; `DropdownMenu` + `Button` → sort &
   filter triggers; `Button` → CTA / icon controls.
 
@@ -292,7 +293,8 @@ From `10_design_tokens.md`:
 - Label data (`AUGUST 12`, `BLOG`, `years`) uses the mono-uppercase pattern.
 - Tailwind default scale only; min text `text-xs`. No arbitrary `text-[...]`.
 - Radius is `0` (sharp). `rounded-full` only for pills/avatars/circular controls.
-- Always-dark surfaces apply `HERO_SCOPE_STYLE` then use the standard classes.
+- Always-dark surfaces use `bg-primary text-primary-foreground` and map nested
+  content to primary tokens.
 
 ---
 

@@ -1,14 +1,20 @@
 import { useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
-import { getLocaleFromPathname, type Locale } from "./locales";
-import { type Messages, messages } from "./resources";
+import type { Locale } from "./locales";
+import { getLocaleFromPathname } from "./locales";
+import type { Messages } from "./resources";
+import { messages } from "./resources";
 
-type Join<K extends string, P extends string> = P extends "" ? K : `${K}.${P}`;
+type Join<TKey extends string, TParam extends string> = TParam extends ""
+	? TKey
+	: `${TKey}.${TParam}`;
 
 type Paths<T> = T extends object
 	? {
-			[K in keyof T]-?: K extends string ? K | Join<K, Paths<T[K]>> : never;
+			[TKey in keyof T]-?: TKey extends string
+				? TKey | Join<TKey, Paths<T[TKey]>>
+				: never;
 		}[keyof T]
 	: "";
 
@@ -16,25 +22,27 @@ export type Namespace = keyof Messages;
 
 export type MessageKey = Paths<Messages>;
 
-export type MessageKeyOf<N extends Namespace> = Paths<Messages[N]>;
+export type MessageKeyOf<TName extends Namespace> = Paths<Messages[TName]>;
 
-function resolve(table: unknown, key: string): string {
+const resolve = (table: unknown, key: string): string => {
 	const value = key
 		.split(".")
 		.reduce<unknown>(
-			(acc, part) => (acc as Record<string, unknown>)?.[part],
+			(acc, part) => (acc as Record<string, unknown>)[part],
 			table,
 		);
 	return typeof value === "string" ? value : key;
-}
+};
 
-export function createT<NS extends Namespace | undefined>(
+export const createT = <TNamespace extends Namespace | undefined>(
 	locale: Locale,
-	namespace?: NS,
-): (key: NS extends Namespace ? MessageKeyOf<NS> : MessageKey) => string {
+	namespace?: TNamespace,
+): ((
+	key: TNamespace extends Namespace ? MessageKeyOf<TNamespace> : MessageKey,
+) => string) => {
 	const table = namespace ? messages[locale][namespace] : messages[locale];
 	return (key: string): string => resolve(table, key);
-}
+};
 
 interface II18nContext {
 	locale: Locale;
@@ -44,7 +52,7 @@ interface II18nContext {
 
 const I18nContext = createContext<II18nContext | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+export const I18nProvider = ({ children }: { children: ReactNode }) => {
 	const pathname = useRouterState({ select: (s) => s.location.pathname });
 	const locale = useMemo(() => getLocaleFromPathname(pathname), [pathname]);
 	const t = useMemo(() => createT(locale), [locale]);
@@ -54,13 +62,17 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 			{children}
 		</I18nContext.Provider>
 	);
-}
+};
 
 export function useI18n(): II18nContext;
-export function useI18n<N extends Namespace>(
-	namespace: N,
-): { locale: Locale; pathname: string; t: (key: MessageKeyOf<N>) => string };
-export function useI18n<N extends Namespace>(namespace?: N) {
+export function useI18n<TName extends Namespace>(
+	namespace: TName,
+): {
+	locale: Locale;
+	pathname: string;
+	t: (key: MessageKeyOf<TName>) => string;
+};
+export function useI18n<TName extends Namespace>(namespace?: TName) {
 	const ctx = useContext(I18nContext);
 	if (!ctx) {
 		throw new Error("useI18n must be used within <I18nProvider>");

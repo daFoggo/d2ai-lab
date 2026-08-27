@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TCareer } from "@/features/careers";
 import { Careers } from "@/features/careers";
 
-export const Route = createFileRoute("/{-$locale}/careers/")({
-	component: CareersPage,
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const ROLES: TCareer[] = [
 	{
@@ -50,7 +46,7 @@ const ROLES: TCareer[] = [
 	},
 ];
 
-function CareersPage() {
+const CareersPage = () => {
 	return (
 		<Careers
 			eyebrow="Careers"
@@ -59,4 +55,8 @@ function CareersPage() {
 			roles={ROLES}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/careers/")({
+	component: CareersPage,
+});

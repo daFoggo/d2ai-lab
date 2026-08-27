@@ -12,11 +12,11 @@ export interface IStickyInPageNavProps {
 	className?: string;
 }
 
-export function StickyInPageNav({
+export const StickyInPageNav = ({
 	title,
 	items,
 	className,
-}: IStickyInPageNavProps) {
+}: IStickyInPageNavProps) => {
 	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
 
 	useEffect(() => {
@@ -71,4 +71,4 @@ export function StickyInPageNav({
 			))}
 		</nav>
 	);
-}
+};

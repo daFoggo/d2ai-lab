@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TTeam } from "@/features/teams";
 import { Teams } from "@/features/teams";
 
-export const Route = createFileRoute("/{-$locale}/teams")({
-	component: TeamsPage,
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const TEAMS: TTeam[] = [
 	{
@@ -93,7 +89,7 @@ const TEAMS: TTeam[] = [
 	},
 ];
 
-function TeamsPage() {
+const TeamsPage = () => {
 	return (
 		<Teams
 			eyebrow="Teams"
@@ -102,4 +98,8 @@ function TeamsPage() {
 			teams={TEAMS}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/teams")({
+	component: TeamsPage,
+});

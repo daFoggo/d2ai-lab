@@ -13,7 +13,11 @@ export interface IProseBodyProps {
 	className?: string;
 }
 
-export function ProseBody({ sections, children, className }: IProseBodyProps) {
+export const ProseBody = ({
+	sections,
+	children,
+	className,
+}: IProseBodyProps) => {
 	return (
 		<div
 			data-slot="prose-body"
@@ -41,15 +45,15 @@ export function ProseBody({ sections, children, className }: IProseBodyProps) {
 			{children}
 		</div>
 	);
-}
+};
 
-export function ProseParagraph({
+export const ProseParagraph = ({
 	children,
 	className,
 }: {
 	children: ReactNode;
 	className?: string;
-}) {
+}) => {
 	return (
 		<p
 			data-slot="prose-paragraph"
@@ -61,4 +65,4 @@ export function ProseParagraph({
 			{children}
 		</p>
 	);
-}
+};

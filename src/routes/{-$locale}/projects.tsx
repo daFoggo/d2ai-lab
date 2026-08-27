@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TProject } from "@/features/projects";
 import { Projects } from "@/features/projects";
 
-export const Route = createFileRoute("/{-$locale}/projects")({
-	component: ProjectsPage,
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const FEATURED: TProject = {
 	id: "app-featured",
@@ -61,7 +57,7 @@ const PROJECTS: TProject[] = [
 	},
 ];
 
-function ProjectsPage() {
+const ProjectsPage = () => {
 	return (
 		<Projects
 			eyebrow="Projects"
@@ -71,4 +67,8 @@ function ProjectsPage() {
 			projects={PROJECTS}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/projects")({
+	component: ProjectsPage,
+});

@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -18,7 +19,7 @@
     --color-sidebar-accent: var(--sidebar-accent);
     --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-foreground: var(--sidebar -foreground);
     --color-sidebar: var(--sidebar);
     --color-chart-5: var(--chart-5);
     --color-chart-4: var(--chart-4);
@@ -136,13 +137,17 @@
     }
 }
 
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-0.5rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Chỉ dành cho landing navbar khi đè lên hero (data-over-hero). Không tái sử dụng. */
+[data-slot="landing-navbar"][data-over-hero="true"] {
+  --background: oklch(0.3718 0.2366 266.8);
+  --foreground: oklch(0.985 0 0);
+  --muted: oklch(0.985 0 0 / 12%);
+  --muted-foreground: oklch(0.985 0 0 / 80%);
+  --accent: oklch(0.985 0 0 / 12%);
+  --accent-foreground: oklch(0.985 0 0);
+  --border: oklch(0.985 0 0 / 18%);
+  --input: oklch(0.985 0 0 / 18%);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.3718 0.2366 266.8);
+  --ring: oklch(0.985 0 0 / 80%);
 }

@@ -4,7 +4,7 @@ import opentype from "opentype.js";
 import sharp from "sharp";
 import wawoff2 from "wawoff2";
 
-async function main() {
+const main = async () => {
 	const fontPath = path.resolve(
 		"node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2",
 	);
@@ -131,7 +131,7 @@ async function main() {
 	console.log("All logo & favicon generation completed successfully!");
 }
 
-function createIco(images) {
+const createIco = (images) => {
 	const numImages = images.length;
 	const headerLength = 6;
 	const dirEntryLength = 16;

@@ -21,7 +21,7 @@ const STATUS_VARIANT: Record<
 	PAST: "outline",
 };
 
-function SeminarRow({ seminar }: { seminar: TSeminar }) {
+const SeminarRow = ({ seminar }: { seminar: TSeminar }) => {
 	const { locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
@@ -58,15 +58,15 @@ function SeminarRow({ seminar }: { seminar: TSeminar }) {
 			</Link>
 		</li>
 	);
-}
+};
 
-export function Seminars({
+export const Seminars = ({
 	eyebrow = "Seminars",
 	title = "Seminars & academic exchange",
 	description,
 	seminars,
 	className,
-}: ISeminarsProps) {
+}: ISeminarsProps) => {
 	return (
 		<section
 			data-slot="seminars"
@@ -83,4 +83,4 @@ export function Seminars({
 			</div>
 		</section>
 	);
-}
+};

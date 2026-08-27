@@ -38,7 +38,7 @@ export const getMeQueryOptions = () =>
 /**
  * Mutation Hook xử lý đăng nhập
  */
-export function useLoginMutation() {
+export const useLoginMutation = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -51,22 +51,20 @@ export function useLoginMutation() {
 			return data;
 		},
 		onSuccess: async (data) => {
-			if (data.user) {
-				queryClient.setQueryData(authKeys.me(), {
-					id: data.user.id,
-					email: data.user.email ?? "",
-					createdAt: data.user.created_at,
-				});
-			}
+			queryClient.setQueryData(authKeys.me(), {
+				id: data.user.id,
+				email: data.user.email ?? "",
+				createdAt: data.user.created_at,
+			});
 			await queryClient.invalidateQueries({ queryKey: authKeys.me() });
 		},
 	});
-}
+};
 
 /**
  * Mutation Hook xử lý đăng ký tài khoản
  */
-export function useSignUpMutation() {
+export const useSignUpMutation = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -89,12 +87,12 @@ export function useSignUpMutation() {
 			await queryClient.invalidateQueries({ queryKey: authKeys.me() });
 		},
 	});
-}
+};
 
 /**
  * Mutation Hook xử lý đăng xuất
  */
-export function useLogoutMutation() {
+export const useLogoutMutation = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -108,4 +106,4 @@ export function useLogoutMutation() {
 			await queryClient.invalidateQueries({ queryKey: authKeys.me() });
 		},
 	});
-}
+};

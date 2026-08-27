@@ -9,17 +9,7 @@ import {
 } from "@/features/landing";
 import { DEFAULT_LOCALE, isLocale, useI18n } from "@/lib/i18n";
 
-export const Route = createFileRoute("/{-$locale}")({
-	beforeLoad: ({ params }) => {
-		if (params.locale && !isLocale(params.locale)) {
-			throw redirect({ to: "/{-$locale}", params: { locale: undefined } });
-		}
-		return { locale: params.locale ?? DEFAULT_LOCALE };
-	},
-	component: LocaleLayout,
-});
-
-function LocaleLayout() {
+const LocaleLayout = () => {
 	const { t } = useI18n();
 
 	const navItems: TLandingNavItem[] = [
@@ -32,14 +22,14 @@ function LocaleLayout() {
 					description: t("landing.nav.researchAreasDesc"),
 				},
 				{
-					title: t("landing.nav.researchGaps"),
-					to: "/{-$locale}/research/gaps",
-					description: t("landing.nav.researchGapsDesc"),
-				},
-				{
 					title: t("landing.nav.researchDirections"),
 					to: "/{-$locale}/research/directions",
 					description: t("landing.nav.researchDirectionsDesc"),
+				},
+				{
+					title: t("landing.nav.researchGaps"),
+					to: "/{-$locale}/research/gaps",
+					description: t("landing.nav.researchGapsDesc"),
 				},
 			],
 		},
@@ -75,4 +65,14 @@ function LocaleLayout() {
 			<LandingFooter brandName="D2AI Lab" />
 		</LandingLayout>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}")({
+	beforeLoad: ({ params }) => {
+		if (params.locale && !isLocale(params.locale)) {
+			throw redirect({ to: "/{-$locale}", params: { locale: undefined } });
+		}
+		return { locale: params.locale ?? DEFAULT_LOCALE };
+	},
+	component: LocaleLayout,
+});

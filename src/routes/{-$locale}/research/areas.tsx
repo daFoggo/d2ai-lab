@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TResearchArea } from "@/features/research";
 import { ResearchAreas } from "@/features/research";
 
-export const Route = createFileRoute("/{-$locale}/research/areas")({
-	component: ResearchAreasPage,
-});
-
 /* Content data stays in the source language — only UI chrome is translated. */
 
 const AREAS: TResearchArea[] = [
@@ -67,7 +63,7 @@ const AREAS: TResearchArea[] = [
 	},
 ];
 
-function ResearchAreasPage() {
+const ResearchAreasPage = () => {
 	return (
 		<ResearchAreas
 			eyebrow="Research areas"
@@ -76,4 +72,8 @@ function ResearchAreasPage() {
 			areas={AREAS}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/research/areas")({
+	component: ResearchAreasPage,
+});

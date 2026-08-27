@@ -8,7 +8,7 @@ export interface IRouterContext {
 	queryClient: QueryClient;
 }
 
-export function getRouter() {
+export const getRouter = () => {
 	const queryClient = createQueryClient();
 
 	const router = createTanStackRouter({
@@ -29,7 +29,7 @@ export function getRouter() {
 	});
 
 	return router;
-}
+};
 
 export interface NavItem {
 	title: string;

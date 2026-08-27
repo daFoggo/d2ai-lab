@@ -3,17 +3,6 @@ import type { TCareerDetail } from "@/features/careers";
 import { CareerDetail } from "@/features/careers";
 import { useI18n } from "@/lib/i18n";
 
-export const Route = createFileRoute("/{-$locale}/careers/$id")({
-	component: CareerDetailPage,
-	loader: ({ params }) => {
-		const career = ROLES.find((item) => item.id === params.id);
-		if (!career) {
-			throw notFound();
-		}
-		return career;
-	},
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const ROLES: TCareerDetail[] = [
 	{
@@ -147,8 +136,19 @@ const ROLES: TCareerDetail[] = [
 	},
 ];
 
-function CareerDetailPage() {
+const CareerDetailPage = () => {
 	const career = Route.useLoaderData();
 	const { locale } = useI18n();
 	return <CareerDetail career={career} locale={locale} />;
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/careers/$id")({
+	component: CareerDetailPage,
+	loader: ({ params }) => {
+		const career = ROLES.find((item) => item.id === params.id);
+		if (!career) {
+			throw notFound();
+		}
+		return career;
+	},
+});

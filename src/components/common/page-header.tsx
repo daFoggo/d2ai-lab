@@ -9,13 +9,13 @@ export interface IPageHeaderProps {
 	className?: string;
 }
 
-export function PageHeader({
+export const PageHeader = ({
 	eyebrow,
 	title,
 	description,
 	children,
 	className,
-}: IPageHeaderProps) {
+}: IPageHeaderProps) => {
 	return (
 		<header
 			data-slot="page-header"
@@ -37,4 +37,4 @@ export function PageHeader({
 			{children}
 		</header>
 	);
-}
+};

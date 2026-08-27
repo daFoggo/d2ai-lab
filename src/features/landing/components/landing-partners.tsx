@@ -19,12 +19,12 @@ const PARTNERS: ILandingPartner[] = [
 	{ id: "uga", name: "UGA" },
 ];
 
-export function LandingPartners({
+export const LandingPartners = ({
 	title = "Research partners",
 	description = "We collaborate with world-class research labs and industry leaders to advance AI science and its real-world impact. Our partners appear on our publication covers and support our research portal.",
 	partners = PARTNERS,
 	className,
-}: ILandingPartnersProps) {
+}: ILandingPartnersProps) => {
 	return (
 		<section
 			data-slot="landing-partners"
@@ -63,4 +63,4 @@ export function LandingPartners({
 			</div>
 		</section>
 	);
-}
+};

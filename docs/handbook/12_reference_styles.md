@@ -34,7 +34,7 @@ we already have**.
 
 Instead of everything on `bg-background`, alternate band surfaces using existing
 tokens: white `bg-background` → light lavender `bg-accent` / `bg-secondary` →
-always-dark indigo (`HERO_SCOPE_STYLE`). This adds rhythm without new colors.
+always-dark indigo (`bg-primary`). This adds rhythm without new colors.
 
 - Applies to: home, archetype A (Collection Index), archetype B (Entity Detail).
 - Each `SectionBand` may declare a surface (`background` | `accent` | `dark`);
@@ -57,8 +57,8 @@ connected by dashed lines and a subtle dotted blueprint grid behind.
 Dark indigo terminal/code blocks are the dominant visual here. For the lab this
 is the strongest adoptable motif:
 
-- `CodeBlock`: dark surface (`HERO_SCOPE_STYLE`), `font-mono`, `$` prompt,
-  copy button, download, optional syntax highlight.
+- `CodeBlock`: dark surface (`bg-primary text-primary-foreground`), `font-mono`,
+  `$` prompt, copy button, download, optional syntax highlight.
 - Content: paper pseudocode, `pip`/`conda install`, train/eval command,
   algorithm snippet, dataset schema.
 - Applies to: archetype B band, archetype C body, "how to use / reproduce"
@@ -88,7 +88,7 @@ A big centered `font-title` headline ("Any data. Any tool. Any agent.") used as 
 rhythm-breaker between bands.
 
 - Light sections: `text-primary` (deep indigo) or `text-foreground`.
-- Dark sections: `text-white` via `text-foreground` under `HERO_SCOPE_STYLE`.
+- Dark sections: `text-primary-foreground` (white) on `bg-primary`.
 
 ### P7 — Logo wall ("Trusted by …")
 

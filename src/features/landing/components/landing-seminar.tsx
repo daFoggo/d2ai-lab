@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import type { TSeminar, TSeminarStatus } from "@/features/seminars";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 
 export interface ILandingSeminarProps {
 	title?: string;
@@ -22,14 +21,14 @@ const STATUS_VARIANT: Record<TSeminarStatus, "default" | "outline"> = {
 	PAST: "outline",
 };
 
-export function LandingSeminar({
+export const LandingSeminar = ({
 	title = "Upcoming seminar",
 	description,
 	seminar,
 	viewDetailsLabel = "View seminar details",
 	cta,
 	className,
-}: ILandingSeminarProps) {
+}: ILandingSeminarProps) => {
 	const { locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
@@ -63,29 +62,35 @@ export function LandingSeminar({
 				{/* Spotlight: a single ticket-stub card — date block + event details, split by a dashed rule */}
 				<div
 					data-slot="landing-seminar-card"
-					style={HERO_SCOPE_STYLE}
-					className="mt-6 flex flex-col overflow-hidden border-2 border-foreground/25 bg-background sm:mt-8 sm:flex-row"
+					className="mt-6 flex flex-col overflow-hidden bg-primary text-primary-foreground sm:mt-8 sm:flex-row"
 				>
-					<div className="flex shrink-0 flex-row items-center gap-4 border-b-2 border-dashed border-foreground/25 p-6 sm:w-52 sm:flex-col sm:items-start sm:justify-center sm:border-r-2 sm:border-b-0 sm:p-8">
-						<Badge variant={STATUS_VARIANT[seminar.status]}>
+					<div className="flex shrink-0 flex-row items-center gap-4 border-b-2 border-dashed border-primary-foreground/25 p-6 sm:w-52 sm:flex-col sm:items-start sm:justify-center sm:border-r-2 sm:border-b-0 sm:p-8">
+						<Badge
+							variant={STATUS_VARIANT[seminar.status]}
+							className={
+								seminar.status === "UPCOMING"
+									? "bg-primary-foreground text-primary"
+									: "border-primary-foreground/30 text-primary-foreground"
+							}
+						>
 							{seminar.status}
 						</Badge>
 						<div className="flex items-baseline gap-2 sm:mt-4 sm:flex-col sm:items-start sm:gap-0">
-							<span className="font-mono text-sm font-medium tracking-wider text-muted-foreground uppercase">
+							<span className="font-mono text-sm font-medium tracking-wider text-primary-foreground/80 uppercase">
 								{month}
 							</span>
-							<span className="font-mono text-5xl leading-none font-semibold text-foreground sm:text-6xl">
+							<span className="font-mono text-5xl leading-none font-semibold text-primary-foreground sm:text-6xl">
 								{day}
 							</span>
 						</div>
 					</div>
 
 					<div className="flex flex-1 flex-col justify-center gap-3 p-6 sm:p-8">
-						<h3 className="font-title text-xl font-normal tracking-tight text-foreground sm:text-2xl md:text-3xl">
+						<h3 className="font-title text-xl font-normal tracking-tight text-primary-foreground sm:text-2xl md:text-3xl">
 							{seminar.title}
 						</h3>
-						<p className="text-sm text-muted-foreground sm:text-base">
-							<span className="font-medium text-foreground">
+						<p className="text-sm text-primary-foreground/80 sm:text-base">
+							<span className="font-medium text-primary-foreground">
 								{seminar.speaker}
 							</span>
 							{" · "}
@@ -94,7 +99,7 @@ export function LandingSeminar({
 						<Link
 							to="/{-$locale}/seminars/$id"
 							params={{ ...localeParams, id: seminar.id }}
-							className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-foreground/80 focus:outline-hidden"
+							className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-primary-foreground transition-colors hover:text-primary-foreground/80 focus:outline-hidden"
 						>
 							{viewDetailsLabel}
 							<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -104,4 +109,4 @@ export function LandingSeminar({
 			</div>
 		</section>
 	);
-}
+};

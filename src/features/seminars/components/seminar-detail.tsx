@@ -11,7 +11,6 @@ import { Breadcrumb } from "@/components/common/breadcrumb";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { HERO_SCOPE_STYLE } from "@/lib/brand-scope";
 import { cn } from "@/lib/utils";
 import type {
 	TSeminarDetail,
@@ -27,12 +26,12 @@ const STATUS_VARIANT: Record<
 	PAST: "outline",
 };
 
-function SpeakerSocialIcon({ type }: { type: "x" | "linkedin" }) {
+const SpeakerSocialIcon = ({ type }: { type: "x" | "linkedin" }) => {
 	const Icon = type === "linkedin" ? IconBrandLinkedin : IconBrandX;
 	return <Icon className="size-4" />;
-}
+};
 
-function SpeakerPortrait({ speaker }: { speaker: TSeminarSpeaker }) {
+const SpeakerPortrait = ({ speaker }: { speaker: TSeminarSpeaker }) => {
 	const initials = speaker.name
 		.split(/\s+/)
 		.map((part) => part.charAt(0))
@@ -41,7 +40,7 @@ function SpeakerPortrait({ speaker }: { speaker: TSeminarSpeaker }) {
 		.toUpperCase();
 
 	return (
-		<div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-background p-6 text-center">
+		<div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-primary p-6 text-center text-primary-foreground">
 			{speaker.photo ? (
 				<img
 					src={speaker.photo}
@@ -50,18 +49,18 @@ function SpeakerPortrait({ speaker }: { speaker: TSeminarSpeaker }) {
 				/>
 			) : (
 				<>
-					<IconRobot className="size-12 text-foreground/25" />
-					<span className="font-title text-6xl font-normal tracking-tight text-foreground/15">
+					<IconRobot className="size-12 text-primary-foreground/25" />
+					<span className="font-title text-6xl font-normal tracking-tight text-primary-foreground/15">
 						{initials}
 					</span>
-					<span className="font-mono text-xs tracking-wider text-muted-foreground/50 uppercase">
+					<span className="font-mono text-xs tracking-wider text-primary-foreground/50 uppercase">
 						{speaker.name}
 					</span>
 				</>
 			)}
 		</div>
 	);
-}
+};
 
 export interface ISeminarSpeakersProps {
 	title?: string;
@@ -69,11 +68,11 @@ export interface ISeminarSpeakersProps {
 	className?: string;
 }
 
-export function SeminarSpeakers({
+export const SeminarSpeakers = ({
 	title = "Featured speakers",
 	speakers,
 	className,
-}: ISeminarSpeakersProps) {
+}: ISeminarSpeakersProps) => {
 	const [activeId, setActiveId] = useState(speakers[0]?.id ?? "");
 	const active =
 		speakers.find((speaker) => speaker.id === activeId) ?? speakers[0];
@@ -88,10 +87,7 @@ export function SeminarSpeakers({
 			</h2>
 
 			{/* Base layout: list shares a fixed frame height; photo panel fills it */}
-			<div
-				style={HERO_SCOPE_STYLE}
-				className="overflow-hidden rounded-3xl border border-border bg-background text-foreground lg:flex lg:h-135 lg:items-stretch"
-			>
+			<div className="overflow-hidden rounded-3xl border border-primary-foreground/20 bg-primary text-primary-foreground lg:flex lg:h-135 lg:items-stretch">
 				{/* Left: speaker list */}
 				<ul className="flex min-w-0 flex-col lg:flex-1">
 					{speakers.map((speaker) => {
@@ -103,8 +99,8 @@ export function SeminarSpeakers({
 							<li
 								key={speaker.id}
 								className={cn(
-									"flex flex-1 items-center justify-between gap-4 border-b border-border px-6 py-5 transition-colors last:border-b-0 sm:px-8",
-									isActive ? "bg-muted/40" : "bg-transparent",
+									"flex flex-1 items-center justify-between gap-4 border-b border-primary-foreground/20 px-6 py-5 transition-colors last:border-b-0 sm:px-8",
+									isActive ? "bg-primary-foreground/10" : "bg-transparent",
 								)}
 							>
 								<button
@@ -112,17 +108,17 @@ export function SeminarSpeakers({
 									onMouseEnter={() => setActiveId(speaker.id)}
 									onFocus={() => setActiveId(speaker.id)}
 									aria-pressed={isActive}
-									className="flex min-w-0 flex-1 flex-col gap-1.5 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+									className="flex min-w-0 flex-1 flex-col gap-1.5 text-left outline-none focus-visible:ring-3 focus-visible:ring-primary-foreground/50"
 								>
 									<span
 										className={cn(
-											"truncate font-mono text-sm font-medium tracking-wide text-foreground uppercase transition-opacity sm:text-base",
+											"truncate font-mono text-sm font-medium tracking-wide text-primary-foreground uppercase transition-opacity sm:text-base",
 											!isActive && "opacity-40",
 										)}
 									>
 										{speaker.name}
 									</span>
-									<span className="font-mono text-xs uppercase leading-none text-muted-foreground sm:text-sm">
+									<span className="font-mono text-xs uppercase leading-none text-primary-foreground/80 sm:text-sm">
 										{speaker.role}
 									</span>
 								</button>
@@ -141,7 +137,7 @@ export function SeminarSpeakers({
 												target="_blank"
 												rel="noreferrer"
 												aria-label={social.label}
-												className="text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 outline-none"
+												className="text-primary-foreground/80 transition-colors hover:text-primary-foreground focus-visible:ring-3 focus-visible:ring-primary-foreground/50 outline-none"
 											>
 												<SpeakerSocialIcon type={social.type} />
 											</a>
@@ -154,13 +150,13 @@ export function SeminarSpeakers({
 				</ul>
 
 				{/* Right: fixed-width photo panel filling the frame */}
-				<div className="relative h-80 w-full shrink-0 overflow-hidden bg-background sm:h-96 lg:h-full lg:w-80 xl:w-96">
+				<div className="relative h-80 w-full shrink-0 overflow-hidden bg-primary sm:h-96 lg:h-full lg:w-80 xl:w-96">
 					<SpeakerPortrait speaker={active} />
 				</div>
 			</div>
 		</div>
 	);
-}
+};
 
 export interface ISeminarDetailProps {
 	seminar: TSeminarDetail;
@@ -168,11 +164,11 @@ export interface ISeminarDetailProps {
 	className?: string;
 }
 
-export function SeminarDetail({
+export const SeminarDetail = ({
 	seminar,
 	locale,
 	className,
-}: ISeminarDetailProps) {
+}: ISeminarDetailProps) => {
 	const breadcrumbItems = [
 		{ label: "Home", to: "/{-$locale}", params: { locale } },
 		{ label: "Seminars", to: "/{-$locale}/seminars", params: { locale } },
@@ -285,4 +281,4 @@ export function SeminarDetail({
 			</div>
 		</section>
 	);
-}
+};

@@ -1,14 +1,5 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
-
-if (typeof window !== "undefined") {
-	gsap.registerPlugin(ScrollTrigger);
-}
 
 export interface ILandingQuoteProps {
 	quote?: string;
@@ -19,52 +10,18 @@ export interface ILandingQuoteProps {
 	className?: string;
 }
 
-export function LandingQuote({
+export const LandingQuote = ({
 	quote = "The magic cycle of research is accelerating. Research breakthroughs are leading to greater impact on products, science, and society—with greater opportunities for AI to amplify human ingenuity and capacity.",
 	authorName = "Huynh Phan Ly",
 	authorRole = "Director, D2AI Lab & Faculty of Information Technology",
 	authorAvatar,
 	bgImageSrc = "https://storage.googleapis.com/gweb-research2023-media/images/scroller-bg-2.width-1920.png",
 	className,
-}: ILandingQuoteProps) {
-	const cardRef = useRef<HTMLDivElement>(null);
-	const quoteRef = useRef<HTMLQuoteElement>(null);
-
+}: ILandingQuoteProps) => {
 	const wordTokens = quote.split(" ").map((text, i) => ({
 		id: `q-word-${i}`,
 		text,
 	}));
-
-	useGSAP(
-		() => {
-			if (!cardRef.current || !quoteRef.current) return;
-			if (typeof window === "undefined") return;
-
-			const wordElements = quoteRef.current.querySelectorAll(".quote-word");
-
-			// Faster & more responsive scroll scrub: finishes completely while card is in main view
-			gsap.fromTo(
-				wordElements,
-				{
-					color: "rgba(255, 255, 255, 0.25)",
-					opacity: 0.25,
-				},
-				{
-					color: "rgba(255, 255, 255, 1)",
-					opacity: 1,
-					stagger: 0.04,
-					ease: "none",
-					scrollTrigger: {
-						trigger: cardRef.current,
-						start: "top 75%",
-						end: "center 45%",
-						scrub: 0.4,
-					},
-				},
-			);
-		},
-		{ scope: cardRef },
-	);
 
 	return (
 		<section
@@ -76,10 +33,8 @@ export function LandingQuote({
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				<div
-					ref={cardRef}
 					data-slot="landing-quote-card"
-					style={HERO_SCOPE_STYLE}
-					className="relative flex min-h-120 w-full flex-col justify-between overflow-hidden rounded-3xl p-8 shadow-sm sm:min-h-135 sm:p-12 md:p-16 lg:min-h-150 lg:p-20"
+					className="relative flex min-h-120 w-full flex-col justify-between overflow-hidden rounded-3xl bg-primary p-8 text-primary-foreground shadow-sm sm:min-h-135 sm:p-12 md:p-16 lg:min-h-150 lg:p-20"
 				>
 					{/* High-Resolution Dynamic Background Image */}
 					<picture className="absolute inset-0 h-full w-full">
@@ -92,22 +47,19 @@ export function LandingQuote({
 					</picture>
 
 					{/* Contrast Overlays */}
-					<div className="pointer-events-none absolute inset-0 bg-background/45 backdrop-blur-xs" />
-					<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-background/80 via-background/20 to-background/60" />
+					<div className="pointer-events-none absolute inset-0 bg-primary/45 backdrop-blur-xs" />
+					<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-primary/80 via-primary/20 to-primary/60" />
 
-					{/* Quotation Content with Interactive Scroll Scrubbing */}
+					{/* Quotation Content */}
 					<div className="relative z-10 max-w-4xl">
-						<blockquote
-							ref={quoteRef}
-							className="font-title text-xl leading-snug font-normal tracking-tight text-foreground/30 sm:text-2xl md:text-3xl lg:text-4xl"
-						>
-							<span className="quote-word mr-1 inline-block">“</span>
+						<blockquote className="font-title text-xl leading-snug font-normal tracking-tight text-primary-foreground sm:text-2xl md:text-3xl lg:text-4xl">
+							<span className="mr-1 inline-block">“</span>
 							{wordTokens.map((token) => (
-								<span key={token.id} className="quote-word mr-1 inline-block">
+								<span key={token.id} className="mr-1 inline-block">
 									{token.text}
 								</span>
 							))}
-							<span className="quote-word inline-block">”</span>
+							<span className="inline-block">”</span>
 						</blockquote>
 					</div>
 
@@ -124,10 +76,10 @@ export function LandingQuote({
 						</Avatar>
 
 						<div className="flex flex-col">
-							<span className="text-sm font-semibold text-foreground drop-shadow-sm sm:text-base">
+							<span className="text-sm font-semibold text-primary-foreground drop-shadow-sm sm:text-base">
 								{authorName}
 							</span>
-							<span className="text-xs text-muted-foreground drop-shadow-sm sm:text-sm">
+							<span className="text-xs text-primary-foreground/80 drop-shadow-sm sm:text-sm">
 								{authorRole}
 							</span>
 						</div>
@@ -136,4 +88,4 @@ export function LandingQuote({
 			</div>
 		</section>
 	);
-}
+};

@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingProjectHero, TLandingProjectItem } from "../schemas";
 
 export interface ILandingProjectsProps {
@@ -17,13 +16,13 @@ export interface ILandingProjectsProps {
 	className?: string;
 }
 
-function ProjectsHero({
+const ProjectsHero = ({
 	hero,
 	cta,
 }: {
 	hero: TLandingProjectHero;
 	cta?: ReactNode;
-}) {
+}) => {
 	const { t } = useI18n();
 
 	return (
@@ -41,15 +40,12 @@ function ProjectsHero({
 							className="h-full w-full object-cover"
 						/>
 					) : (
-						<div
-							style={HERO_SCOPE_STYLE}
-							className="flex h-full w-full items-center justify-center bg-background p-5"
-						>
+						<div className="flex h-full w-full items-center justify-center bg-muted/50 p-5">
 							<div className="flex flex-col items-center gap-1 text-center select-none">
-								<span className="font-mono text-xs tracking-wider text-muted-foreground/50 uppercase">
+								<span className="font-mono text-xs tracking-wider text-muted-foreground/70 uppercase">
 									{hero.category ?? t("landing.projects.featuredApp")}
 								</span>
-								<span className="font-title text-base font-normal text-foreground/70">
+								<span className="font-title text-base font-normal text-muted-foreground">
 									{hero.title}
 								</span>
 							</div>
@@ -76,15 +72,15 @@ function ProjectsHero({
 			</div>
 		</div>
 	);
-}
+};
 
-function ProjectsItem({
+const ProjectsItem = ({
 	item,
 	className,
 }: {
 	item: TLandingProjectItem;
 	className?: string;
-}) {
+}) => {
 	const { t, locale } = useI18n();
 
 	return (
@@ -96,10 +92,7 @@ function ProjectsItem({
 			)}
 		>
 			{/* Square Compact Thumbnail */}
-			<div
-				style={HERO_SCOPE_STYLE}
-				className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-background shadow-xs sm:size-16 sm:rounded-2xl"
-			>
+			<div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-muted/50 shadow-xs sm:size-16 sm:rounded-2xl">
 				{item.thumbnail ? (
 					<img
 						src={item.thumbnail}
@@ -132,16 +125,16 @@ function ProjectsItem({
 			</div>
 		</div>
 	);
-}
+};
 
-export function LandingProjects({
+export const LandingProjects = ({
 	title = "Our research drives real-world change",
 	hero,
 	items,
 	seeMore,
 	heroCta,
 	className,
-}: ILandingProjectsProps) {
+}: ILandingProjectsProps) => {
 	const displayItems = items.slice(0, 2);
 
 	return (
@@ -175,4 +168,4 @@ export function LandingProjects({
 			</div>
 		</section>
 	);
-}
+};

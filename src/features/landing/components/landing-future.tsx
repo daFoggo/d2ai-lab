@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 import type { TLandingFutureItem } from "../schemas";
 
 export interface ILandingFutureProps {
@@ -12,13 +11,13 @@ export interface ILandingFutureProps {
 	className?: string;
 }
 
-function FutureCard({
+const FutureCard = ({
 	item,
 	className,
 }: {
 	item: TLandingFutureItem;
 	className?: string;
-}) {
+}) => {
 	const { locale } = useI18n();
 
 	return (
@@ -39,10 +38,7 @@ function FutureCard({
 							className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>
 					) : (
-						<div
-							style={HERO_SCOPE_STYLE}
-							className="flex h-full w-full items-center justify-center bg-background p-6"
-						>
+						<div className="flex h-full w-full items-center justify-center bg-muted/50 p-6">
 							<span className="font-title text-lg font-normal text-muted-foreground sm:text-xl">
 								{item.title}
 							</span>
@@ -74,13 +70,13 @@ function FutureCard({
 			)}
 		</article>
 	);
-}
+};
 
-export function LandingFuture({
+export const LandingFuture = ({
 	title = "Help us shape the future",
 	items,
 	className,
-}: ILandingFutureProps) {
+}: ILandingFutureProps) => {
 	return (
 		<section
 			data-slot="landing-future"
@@ -102,4 +98,4 @@ export function LandingFuture({
 			</div>
 		</section>
 	);
-}
+};

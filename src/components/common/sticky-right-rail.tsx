@@ -14,12 +14,12 @@ export interface IStickyRightRailProps {
 	className?: string;
 }
 
-export function StickyRightRail({
+export const StickyRightRail = ({
 	title = "QUICK LINKS",
 	links,
 	children,
 	className,
-}: IStickyRightRailProps) {
+}: IStickyRightRailProps) => {
 	return (
 		<aside
 			data-slot="sticky-right-rail"
@@ -52,4 +52,4 @@ export function StickyRightRail({
 			{children}
 		</aside>
 	);
-}
+};

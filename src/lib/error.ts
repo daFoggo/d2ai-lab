@@ -1,7 +1,7 @@
-export function getErrorMessage(
+export const getErrorMessage = (
 	error: unknown,
 	fallback = "Something went wrong",
-) {
+) => {
 	if (error instanceof Error) {
 		return error.message.trim() || fallback;
 	}
@@ -15,8 +15,8 @@ export function getErrorMessage(
 	}
 
 	return fallback;
-}
+};
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+const isRecord = (value: unknown): value is Record<string, unknown> => {
 	return typeof value === "object" && value !== null;
-}
+};

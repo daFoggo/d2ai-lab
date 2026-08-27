@@ -3,17 +3,6 @@ import type { TPublicationDetail } from "@/features/publications";
 import { PublicationDetail } from "@/features/publications";
 import { useI18n } from "@/lib/i18n";
 
-export const Route = createFileRoute("/{-$locale}/publications/$id")({
-	component: PublicationDetailPage,
-	loader: ({ params }) => {
-		const publication = PUBLICATIONS.find((p) => p.id === params.id);
-		if (!publication) {
-			throw notFound();
-		}
-		return publication;
-	},
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const PUBLICATIONS: TPublicationDetail[] = [
 	{
@@ -116,8 +105,19 @@ const PUBLICATIONS: TPublicationDetail[] = [
 	},
 ];
 
-function PublicationDetailPage() {
+const PublicationDetailPage = () => {
 	const publication = Route.useLoaderData();
 	const { locale } = useI18n();
 	return <PublicationDetail publication={publication} locale={locale} />;
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/publications/$id")({
+	component: PublicationDetailPage,
+	loader: ({ params }) => {
+		const publication = PUBLICATIONS.find((p) => p.id === params.id);
+		if (!publication) {
+			throw notFound();
+		}
+		return publication;
+	},
+});

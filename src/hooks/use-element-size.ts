@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useElementSize<T extends HTMLElement>() {
+export const useElementSize = <T extends HTMLElement>() => {
 	const ref = useRef<T>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -21,4 +21,4 @@ export function useElementSize<T extends HTMLElement>() {
 	}, []);
 
 	return [ref, size] as const;
-}
+};

@@ -14,7 +14,7 @@ export interface ICareersProps {
 	className?: string;
 }
 
-function CareerRow({ role }: { role: TCareer }) {
+const CareerRow = ({ role }: { role: TCareer }) => {
 	const { locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
@@ -52,15 +52,15 @@ function CareerRow({ role }: { role: TCareer }) {
 			</Link>
 		</li>
 	);
-}
+};
 
-export function Careers({
+export const Careers = ({
 	eyebrow = "Careers",
 	title = "Join the lab",
 	description,
 	roles,
 	className,
-}: ICareersProps) {
+}: ICareersProps) => {
 	return (
 		<section
 			data-slot="careers"
@@ -77,4 +77,4 @@ export function Careers({
 			</div>
 		</section>
 	);
-}
+};

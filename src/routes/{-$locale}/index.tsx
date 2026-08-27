@@ -1,11 +1,17 @@
 import {
+	IconAntenna,
 	IconArrowUpRight,
+	IconBrain,
+	IconLeaf,
+	IconSchool,
+	IconShieldCheck,
 	IconSparkleHighlight,
 	IconTableSpark,
 } from "@tabler/icons-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import type {
+	ILandingDomainItem,
 	TLandingDomainsData,
 	TLandingFutureItem,
 	TLandingLatestItem,
@@ -25,10 +31,6 @@ import {
 } from "@/features/landing";
 import type { TSeminar } from "@/features/seminars";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
-
-export const Route = createFileRoute("/{-$locale}/")({
-	component: HomePage,
-});
 
 /* Shared hover-arrow treatment for every landing CTA (matches the careers list "View role" affordance). */
 const CTA_ARROW_CLASS =
@@ -108,6 +110,40 @@ const PROJECT_ITEMS: TLandingProjectItem[] = [
 	},
 ];
 
+/* Landing shows a curated handful, not the full catalogue — the header CTA links out to the rest. */
+const DOMAIN_ITEMS: ILandingDomainItem[] = [
+	{
+		id: "ai-ml",
+		tag: "NEURAL ARCHITECTURES",
+		title: "AI/ML Foundations",
+		icon: IconBrain,
+	},
+	{
+		id: "smart-education",
+		tag: "ADAPTIVE SYSTEMS",
+		title: "Smart Education",
+		icon: IconSchool,
+	},
+	{
+		id: "ambient-iot",
+		tag: "TELEMETRY & SENSORS",
+		title: "Ambient IoT",
+		icon: IconAntenna,
+	},
+	{
+		id: "responsible-ai",
+		tag: "ETHICAL ML",
+		title: "Responsible AI",
+		icon: IconShieldCheck,
+	},
+	{
+		id: "climate-ecology",
+		tag: "SPATIAL SENSING",
+		title: "Climate & Ecology",
+		icon: IconLeaf,
+	},
+];
+
 const FUTURE_ITEMS: TLandingFutureItem[] = [
 	{
 		id: "future-careers",
@@ -122,7 +158,7 @@ const FUTURE_ITEMS: TLandingFutureItem[] = [
 		title: "Seminars & Academic exchange",
 		description:
 			"Join our regular scientific seminar series, guest lectures by international scholars, and technical knowledge exchange workshops.",
-		linkLabel: "Explore seminars",
+		linkLabel: "View all seminars",
 		to: "/{-$locale}/seminars",
 	},
 ];
@@ -135,7 +171,7 @@ const HERO_STATS = [
 	{ value: "5", label: "Seminars & talks" },
 ];
 
-function HomePage() {
+const HomePage = () => {
 	const { t, locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
@@ -164,11 +200,11 @@ function HomePage() {
 
 						<div
 							aria-hidden="true"
-							className="hero-icon-spark pointer-events-none flex shrink-0 items-center text-foreground/80 select-none"
+							className="hero-icon-spark pointer-events-none flex shrink-0 items-center text-primary-foreground/80 select-none"
 						>
 							<IconTableSpark
 								strokeWidth={1.2}
-								className="size-8 rotate-12 text-foreground/85 transition-transform duration-300 sm:size-12 md:size-16 lg:size-20 xl:size-24 2xl:size-28"
+								className="size-8 rotate-12 text-primary-foreground/85 transition-transform duration-300 sm:size-12 md:size-16 lg:size-20 xl:size-24 2xl:size-28"
 							/>
 						</div>
 					</div>
@@ -179,48 +215,15 @@ function HomePage() {
 							<LandingHero.Description>
 								{heroData.description}
 							</LandingHero.Description>
-
-							<LandingHero.Actions>
-								<Button
-									render={
-										<Link
-											to="/{-$locale}/research/areas"
-											params={localeParams}
-										/>
-									}
-									nativeButton={false}
-									className="bg-foreground text-background hover:bg-foreground/90 font-medium"
-								>
-									{t("landing.hero.exploreResearch")}
-									<IconArrowUpRight
-										data-icon="inline-end"
-										className={CTA_ARROW_CLASS}
-									/>
-								</Button>
-								<Button
-									variant="outline"
-									render={
-										<Link to="/{-$locale}/projects" params={localeParams} />
-									}
-									nativeButton={false}
-									className="border-foreground/20 text-foreground hover:bg-foreground/10 hover:text-foreground font-medium"
-								>
-									{t("landing.hero.exploreProjects")}
-									<IconArrowUpRight
-										data-icon="inline-end"
-										className={CTA_ARROW_CLASS}
-									/>
-								</Button>
-							</LandingHero.Actions>
 						</div>
 
 						<div
 							aria-hidden="true"
-							className="hero-icon-highlight pointer-events-none hidden items-center self-center text-foreground/80 select-none lg:order-2 lg:flex lg:shrink-0"
+							className="hero-icon-highlight pointer-events-none hidden items-center self-center text-primary-foreground/80 select-none lg:order-2 lg:flex lg:shrink-0"
 						>
 							<IconSparkleHighlight
 								strokeWidth={1.2}
-								className="size-14 -rotate-12 text-foreground/85 transition-transform duration-300 lg:size-16 xl:size-20 2xl:size-24"
+								className="size-14 -rotate-12 text-primary-foreground/85 transition-transform duration-300 lg:size-16 xl:size-20 2xl:size-24"
 							/>
 						</div>
 
@@ -282,6 +285,7 @@ function HomePage() {
 			<LandingDomains
 				title={domainsData.title}
 				description={domainsData.description}
+				domains={DOMAIN_ITEMS}
 				cta={
 					<Button
 						render={
@@ -356,4 +360,8 @@ function HomePage() {
 			<LandingFuture title={t("landing.future.title")} items={FUTURE_ITEMS} />
 		</>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/")({
+	component: HomePage,
+});

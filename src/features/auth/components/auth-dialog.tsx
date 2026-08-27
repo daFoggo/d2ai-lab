@@ -23,13 +23,13 @@ export interface AuthDialogProps {
 	children?: React.ReactNode;
 }
 
-export function AuthDialog({
+export const AuthDialog = ({
 	open,
 	onOpenChange,
 	defaultTab = "signin",
 	trigger,
 	children,
-}: AuthDialogProps) {
+}: AuthDialogProps) => {
 	const [internalOpen, setInternalOpen] = React.useState(false);
 	const [activeTab, setActiveTab] = React.useState<AuthDialogTab>(defaultTab);
 
@@ -39,9 +39,7 @@ export function AuthDialog({
 	const { t } = useI18n("auth");
 
 	React.useEffect(() => {
-		if (defaultTab) {
-			setActiveTab(defaultTab);
-		}
+		setActiveTab(defaultTab);
 	}, [defaultTab]);
 
 	const handleSuccess = () => {
@@ -89,4 +87,4 @@ export function AuthDialog({
 			</DialogContent>
 		</Dialog>
 	);
-}
+};

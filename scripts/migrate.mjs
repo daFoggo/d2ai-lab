@@ -30,7 +30,7 @@ const allPoolerRegions = [
 	"af-south-1",      // Cape Town
 ];
 
-async function runMigration() {
+const runMigration = async () => {
 	const migrationsDir = path.resolve(process.cwd(), "supabase/migrations");
 	if (!fs.existsSync(migrationsDir)) {
 		console.error("❌ Không tìm thấy thư mục migrations tại:", migrationsDir);

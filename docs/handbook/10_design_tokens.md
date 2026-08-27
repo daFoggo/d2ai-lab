@@ -24,13 +24,14 @@ Semantic theme tokens live in `src/styles.css`:
 | Family | Tokens | Use for |
 |---|---|---|
 | Theme (light) | `background`, `foreground`, `card`, `popover`, `primary`, `secondary`, `muted`, `accent`, `destructive`, `border`, `input`, `ring`, `chart-1..5`, `sidebar-*` | All UI. The project is light-only (`getThemeServerFn` always returns `"light"`). |
-| Always-dark brand surfaces | No extra tokens — `HERO_SCOPE_STYLE` remaps the standard tokens | Hero, footer, dark marketing cards |
+| Always-dark brand surfaces | `bg-primary` + `text-primary-foreground` | Hero, footer, dark marketing cards |
 
 Rules:
 
 - Use standard theme classes — `text-foreground`, `text-muted-foreground`, `bg-background`, `bg-muted`, `border-border`, `bg-primary` ... — never `#hex`, `rgb(...)`, `bg-[#...]`, or raw Tailwind palette (`bg-zinc-900`, `text-zinc-300`).
 - Adjust intensity with the `/xx` opacity syntax: `text-muted-foreground/70`, `bg-background/80`, `text-foreground/30`.
-- **Always-dark surfaces** (hero, footer, dark cards) apply `HERO_SCOPE_STYLE` (`src/features/landing/constants.ts`) to the section root via inline `style`, then use the **same standard classes**. The scope maps `background` → deep indigo, `foreground`/`primary` → white, etc. There is no separate `--hero-*` token set — the brand palette IS the light-mode `--primary`/`--primary-foreground` pair.
+- **Always-dark surfaces** (hero, footer, dark cards) use `bg-primary text-primary-foreground` on the section root, and map nested content to primary tokens (`text-primary-foreground`, `text-primary-foreground/80`, `border-primary-foreground/20`, ...). The brand indigo IS the light-mode `--primary`, and `--primary-foreground` is white — no separate `--hero-*` token set.
+- **Navbar over hero** is the one dynamic case: it remaps the standard tokens via the scoped CSS rule `[data-slot="landing-navbar"][data-over-hero="true"]` in `src/styles.css`. Do not reuse that selector anywhere else.
 - Never hardcode z-index; rely on the Tailwind stack (`z-10`…`z-50`) and primitive internals.
 
 ## Typography (3 fonts)

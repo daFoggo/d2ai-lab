@@ -15,7 +15,7 @@ export interface IProjectsProps {
 	className?: string;
 }
 
-function FeaturedProject({ project }: { project: TProject }) {
+const FeaturedProject = ({ project }: { project: TProject }) => {
 	return (
 		<div
 			data-slot="projects-featured"
@@ -60,9 +60,9 @@ function FeaturedProject({ project }: { project: TProject }) {
 			</div>
 		</div>
 	);
-}
+};
 
-function ProjectItem({ project }: { project: TProject }) {
+const ProjectItem = ({ project }: { project: TProject }) => {
 	return (
 		<article
 			data-slot="project-card"
@@ -85,16 +85,16 @@ function ProjectItem({ project }: { project: TProject }) {
 			</div>
 		</article>
 	);
-}
+};
 
-export function Projects({
+export const Projects = ({
 	eyebrow = "Projects",
 	title = "Applied platforms & initiatives",
 	description,
 	featured,
 	projects,
 	className,
-}: IProjectsProps) {
+}: IProjectsProps) => {
 	return (
 		<section
 			data-slot="projects"
@@ -113,4 +113,4 @@ export function Projects({
 			</div>
 		</section>
 	);
-}
+};

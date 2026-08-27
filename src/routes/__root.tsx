@@ -18,6 +18,44 @@ import { getThemeServerFn } from "@/lib/theme";
 import type { IRouterContext } from "@/router";
 import appCss from "../styles.css?url";
 
+const RootDocument = ({ children }: { children: React.ReactNode }) => {
+	const theme = Route.useLoaderData();
+	const { queryClient } = Route.useRouteContext();
+	const locale = useRouterState({
+		select: (s) => getLocaleFromPathname(s.location.pathname),
+	});
+
+	return (
+		<html lang={locale} className={theme} suppressHydrationWarning>
+			<head>
+				<HeadContent />
+			</head>
+			<body suppressHydrationWarning>
+				<QueryProvider client={queryClient}>
+					<ThemeProvider theme={theme}>
+						<I18nProvider>
+							{children}
+							<ToasterProvider />
+						</I18nProvider>
+					</ThemeProvider>
+				</QueryProvider>
+				<TanStackDevtools
+					config={{
+						position: "bottom-right",
+					}}
+					plugins={[
+						{
+							name: "Tanstack Router",
+							render: <TanStackRouterDevtoolsPanel />,
+						},
+					]}
+				/>
+				<Scripts />
+			</body>
+		</html>
+	);
+};
+
 export const Route = createRootRouteWithContext<IRouterContext>()({
 	head: () => {
 		const title = SITE_CONFIG.metadata.title;
@@ -98,41 +136,3 @@ export const Route = createRootRouteWithContext<IRouterContext>()({
 	notFoundComponent: NotFound,
 	errorComponent: ErrorFallback,
 });
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-	const theme = Route.useLoaderData();
-	const { queryClient } = Route.useRouteContext();
-	const locale = useRouterState({
-		select: (s) => getLocaleFromPathname(s.location.pathname),
-	});
-
-	return (
-		<html lang={locale} className={theme} suppressHydrationWarning>
-			<head>
-				<HeadContent />
-			</head>
-			<body suppressHydrationWarning>
-				<QueryProvider client={queryClient}>
-					<ThemeProvider theme={theme}>
-						<I18nProvider>
-							{children}
-							<ToasterProvider />
-						</I18nProvider>
-					</ThemeProvider>
-				</QueryProvider>
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-					]}
-				/>
-				<Scripts />
-			</body>
-		</html>
-	);
-}

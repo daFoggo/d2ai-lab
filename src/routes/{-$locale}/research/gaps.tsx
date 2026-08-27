@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { TResearchGap } from "@/features/research";
 import { ResearchGaps } from "@/features/research";
 
-export const Route = createFileRoute("/{-$locale}/research/gaps")({
-	component: ResearchGapsPage,
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const GAPS: TResearchGap[] = [
 	{
@@ -59,7 +55,7 @@ const GAPS: TResearchGap[] = [
 	},
 ];
 
-function ResearchGapsPage() {
+const ResearchGapsPage = () => {
 	return (
 		<ResearchGaps
 			eyebrow="Research gaps"
@@ -68,4 +64,8 @@ function ResearchGapsPage() {
 			gaps={GAPS}
 		/>
 	);
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/research/gaps")({
+	component: ResearchGapsPage,
+});

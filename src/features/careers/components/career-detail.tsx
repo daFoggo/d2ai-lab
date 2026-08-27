@@ -13,7 +13,7 @@ export interface ICareerDetailProps {
 	className?: string;
 }
 
-function DetailList({ items }: { items: string[] }) {
+const DetailList = ({ items }: { items: string[] }) => {
 	return (
 		<div className="flex flex-col gap-4">
 			{items.map((item) => (
@@ -21,13 +21,13 @@ function DetailList({ items }: { items: string[] }) {
 			))}
 		</div>
 	);
-}
+};
 
-export function CareerDetail({
+export const CareerDetail = ({
 	career,
 	locale,
 	className,
-}: ICareerDetailProps) {
+}: ICareerDetailProps) => {
 	const breadcrumbItems = [
 		{ label: "Home", to: "/{-$locale}", params: { locale } },
 		{ label: "Careers", to: "/{-$locale}/careers", params: { locale } },
@@ -134,4 +134,4 @@ export function CareerDetail({
 			</div>
 		</section>
 	);
-}
+};

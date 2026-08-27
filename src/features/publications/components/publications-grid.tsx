@@ -29,13 +29,13 @@ export interface IPublicationsProps {
 	className?: string;
 }
 
-function PublicationCard({
+const PublicationCard = ({
 	publication,
 	featured = false,
 }: {
 	publication: TPublication;
 	featured?: boolean;
-}) {
+}) => {
 	const { locale } = useI18n();
 
 	return (
@@ -85,15 +85,15 @@ function PublicationCard({
 			)}
 		</article>
 	);
-}
+};
 
-export function Publications({
+export const Publications = ({
 	eyebrow = "Publications",
 	title = "The latest research from the lab",
 	description,
 	publications,
 	className,
-}: IPublicationsProps) {
+}: IPublicationsProps) => {
 	const [q, setQ] = useState("");
 	const [year, setYear] = useState<number | undefined>();
 
@@ -119,7 +119,8 @@ export function Publications({
 		setYear(undefined);
 	};
 
-	const [featured, ...rest] = filtered;
+	const featured = filtered.at(0);
+	const rest = filtered.slice(1);
 
 	return (
 		<section
@@ -221,4 +222,4 @@ export function Publications({
 			</div>
 		</section>
 	);
-}
+};

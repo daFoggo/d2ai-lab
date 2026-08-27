@@ -1,12 +1,5 @@
-import {
-	type Icon,
-	IconAntenna,
-	IconArrowUpRight,
-	IconBrain,
-	IconLeaf,
-	IconSchool,
-	IconShieldCheck,
-} from "@tabler/icons-react";
+import type { Icon } from "@tabler/icons-react";
+import { IconArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
@@ -22,53 +15,19 @@ export interface ILandingDomainItem {
 export interface ILandingDomainsProps {
 	title?: string;
 	description?: string;
-	domains?: ILandingDomainItem[];
+	domains: ILandingDomainItem[];
 	/** Nút CTA do route compose sẵn (Button + Link). */
 	cta?: ReactNode;
 	className?: string;
 }
 
-/* Landing shows a curated handful, not the full catalogue — the header CTA links out to the rest. */
-const DOMAIN_ITEMS: ILandingDomainItem[] = [
-	{
-		id: "ai-ml",
-		tag: "NEURAL ARCHITECTURES",
-		title: "AI/ML Foundations",
-		icon: IconBrain,
-	},
-	{
-		id: "smart-education",
-		tag: "ADAPTIVE SYSTEMS",
-		title: "Smart Education",
-		icon: IconSchool,
-	},
-	{
-		id: "ambient-iot",
-		tag: "TELEMETRY & SENSORS",
-		title: "Ambient IoT",
-		icon: IconAntenna,
-	},
-	{
-		id: "responsible-ai",
-		tag: "ETHICAL ML",
-		title: "Responsible AI",
-		icon: IconShieldCheck,
-	},
-	{
-		id: "climate-ecology",
-		tag: "SPATIAL SENSING",
-		title: "Climate & Ecology",
-		icon: IconLeaf,
-	},
-];
-
-function DomainIconMark({
+const DomainIconMark = ({
 	icon: DomainIcon,
 	className,
 }: {
 	icon?: Icon;
 	className?: string;
-}) {
+}) => {
 	if (!DomainIcon) return null;
 
 	return (
@@ -84,9 +43,9 @@ function DomainIconMark({
 			/>
 		</div>
 	);
-}
+};
 
-function DomainCell({
+const DomainCell = ({
 	domain,
 	index,
 	size,
@@ -94,7 +53,7 @@ function DomainCell({
 	domain: ILandingDomainItem;
 	index: number;
 	size: "lg" | "sm";
-}) {
+}) => {
 	const { locale } = useI18n();
 	const indexLabel = String(index + 1).padStart(2, "0");
 	const isLarge = size === "lg";
@@ -143,15 +102,15 @@ function DomainCell({
 			/>
 		</Link>
 	);
-}
+};
 
-export function LandingDomains({
-	title = "We work across domains",
-	description = "Our vast breadth of work covers AI/ML foundations, responsible human-centric technology, science & societal impact, computing paradigms, and algorithms & optimization.",
-	domains = DOMAIN_ITEMS,
+export const LandingDomains = ({
+	title,
+	description,
+	domains,
 	cta,
 	className,
-}: ILandingDomainsProps) {
+}: ILandingDomainsProps) => {
 	return (
 		<section
 			data-slot="landing-domains"
@@ -198,4 +157,4 @@ export function LandingDomains({
 			</div>
 		</section>
 	);
-}
+};

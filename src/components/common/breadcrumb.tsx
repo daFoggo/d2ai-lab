@@ -13,13 +13,13 @@ export interface IBreadcrumbProps {
 	className?: string;
 }
 
-function BreadcrumbItem({
+const BreadcrumbItem = ({
 	item,
 	isLast,
 }: {
 	item: IBreadcrumbItem;
 	isLast: boolean;
-}) {
+}) => {
 	const content = isLast ? (
 		<span className="text-foreground" aria-current="page">
 			{item.label}
@@ -42,9 +42,9 @@ function BreadcrumbItem({
 			)}
 		</li>
 	);
-}
+};
 
-export function Breadcrumb({ items, className }: IBreadcrumbProps) {
+export const Breadcrumb = ({ items, className }: IBreadcrumbProps) => {
 	return (
 		<nav
 			data-slot="breadcrumb"
@@ -62,4 +62,4 @@ export function Breadcrumb({ items, className }: IBreadcrumbProps) {
 			</ol>
 		</nav>
 	);
-}
+};

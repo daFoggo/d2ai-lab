@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useI18n } from "@/lib/i18n";
 import { getMeQueryOptions } from "../queries";
-import { AuthDialog, type AuthDialogTab } from "./auth-dialog";
+import type { AuthDialogTab } from "./auth-dialog";
+import { AuthDialog } from "./auth-dialog";
 
 export interface AuthButtonProps {
 	variant?: "default" | "outline" | "split";
@@ -22,12 +23,12 @@ export interface AuthButtonProps {
 	dashboardHref?: string;
 }
 
-export function AuthButton({
+export const AuthButton = ({
 	variant = "default",
 	size = "default",
 	className,
 	dashboardHref = "/dashboard",
-}: AuthButtonProps) {
+}: AuthButtonProps) => {
 	const { data: user, isLoading } = useQuery(getMeQueryOptions());
 	const { t } = useI18n("auth");
 
@@ -40,7 +41,7 @@ export function AuthButton({
 	};
 
 	if (isLoading) {
-		return <Skeleton className="h-8 w-28" />;
+		return <Skeleton className="h-8 w-20" />;
 	}
 
 	// 1. Authenticated State: Simple "Go to dashboard" button
@@ -97,4 +98,4 @@ export function AuthButton({
 			/>
 		</>
 	);
-}
+};

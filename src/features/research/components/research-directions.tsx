@@ -11,13 +11,13 @@ export interface IResearchDirectionsProps {
 	className?: string;
 }
 
-function DirectionSection({
+const DirectionSection = ({
 	direction,
 	className,
 }: {
 	direction: TResearchDirection;
 	className?: string;
-}) {
+}) => {
 	return (
 		<article
 			data-slot="research-direction-section"
@@ -48,15 +48,15 @@ function DirectionSection({
 			</div>
 		</article>
 	);
-}
+};
 
-export function ResearchDirections({
+export const ResearchDirections = ({
 	eyebrow = "Research directions",
 	title = "Long-term vision and strategy",
 	description,
 	directions,
 	className,
-}: IResearchDirectionsProps) {
+}: IResearchDirectionsProps) => {
 	return (
 		<section
 			data-slot="research-directions"
@@ -73,4 +73,4 @@ export function ResearchDirections({
 			</div>
 		</section>
 	);
-}
+};

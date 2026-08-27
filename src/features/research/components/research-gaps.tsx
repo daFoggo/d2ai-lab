@@ -89,7 +89,7 @@ export interface IResearchGapsProps {
 	className?: string;
 }
 
-function GapRow({ gap }: { gap: TResearchGap }) {
+const GapRow = ({ gap }: { gap: TResearchGap }) => {
 	return (
 		<li
 			data-slot="research-gap-row"
@@ -110,15 +110,15 @@ function GapRow({ gap }: { gap: TResearchGap }) {
 			</p>
 		</li>
 	);
-}
+};
 
-export function ResearchGaps({
+export const ResearchGaps = ({
 	eyebrow = "Research gaps",
 	title = "Open challenges we are tackling",
 	description,
 	gaps = FAKE_GAPS,
 	className,
-}: IResearchGapsProps) {
+}: IResearchGapsProps) => {
 	const [q, setQ] = useState("");
 	const [status, setStatus] = useState<TResearchGapStatus | undefined>();
 	const [area, setArea] = useState<string | undefined>();
@@ -271,4 +271,4 @@ export function ResearchGaps({
 			</div>
 		</section>
 	);
-}
+};

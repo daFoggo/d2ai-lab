@@ -37,7 +37,7 @@ Do not run expensive checks repeatedly for every tiny edit unless requested.
 Canonical token rules live in `10_design_tokens.md`. Summary:
 
 - **Nghiêm cấm arbitrary custom values (`className-[...]`)**: tuyệt đối không dùng `w-[460px]`, `max-w-[400px]`, `text-[10px]`, `text-[11px]`, `p-[15px]`, `gap-[10px]`, `min-h-[500px]`, `z-[999]`.
-- Dùng **semantic theme tokens** (`text-foreground`, `text-muted-foreground`, `bg-background`, `border-border`...) — không dùng màu raw (`#fff`, `rgb(...)`, `bg-[#...]`) và không dùng palette Tailwind gốc (`bg-zinc-900`, `text-zinc-300`). Surface luôn-tối (hero/footer/dark cards) áp `HERO_SCOPE_STYLE` để class chuẩn resolve sang brand palette.
+- Dùng **semantic theme tokens** (`text-foreground`, `text-muted-foreground`, `bg-background`, `border-border`...) — không dùng màu raw (`#fff`, `rgb(...)`, `bg-[#...]`) và không dùng palette Tailwind gốc (`bg-zinc-900`, `text-zinc-300`). Surface luôn-tối (hero/footer/dark cards) dùng `bg-primary text-primary-foreground`; navbar khi đè lên hero dùng scope `[data-slot="landing-navbar"][data-over-hero="true"]` (xem `10_design_tokens.md`).
 - Chỉ dùng Tailwind default scale: font `text-xs`..`text-9xl` (tối thiểu `text-xs`), spacing 4px, `gap-*` thay cho `space-*`, `size-*` khi w = h.
 - Không hardcode z-index.
 - Chỉ dùng `@tabler/icons-react` cho icon.

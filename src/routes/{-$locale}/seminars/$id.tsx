@@ -3,17 +3,6 @@ import type { TSeminarDetail } from "@/features/seminars";
 import { SeminarDetail } from "@/features/seminars";
 import { useI18n } from "@/lib/i18n";
 
-export const Route = createFileRoute("/{-$locale}/seminars/$id")({
-	component: SeminarDetailPage,
-	loader: ({ params }) => {
-		const seminar = SEMINARS.find((item) => item.id === params.id);
-		if (!seminar) {
-			throw notFound();
-		}
-		return seminar;
-	},
-});
-
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const SEMINARS: TSeminarDetail[] = [
 	{
@@ -180,8 +169,19 @@ const SEMINARS: TSeminarDetail[] = [
 	},
 ];
 
-function SeminarDetailPage() {
+const SeminarDetailPage = () => {
 	const seminar = Route.useLoaderData();
 	const { locale } = useI18n();
 	return <SeminarDetail seminar={seminar} locale={locale} />;
-}
+};
+
+export const Route = createFileRoute("/{-$locale}/seminars/$id")({
+	component: SeminarDetailPage,
+	loader: ({ params }) => {
+		const seminar = SEMINARS.find((item) => item.id === params.id);
+		if (!seminar) {
+			throw notFound();
+		}
+		return seminar;
+	},
+});

@@ -3,10 +3,10 @@
 		"research": "Research",
 		"researchAreas": "Research Areas",
 		"researchAreasDesc": "Primary scientific domains and core scopes.",
-		"researchGaps": "Research Gaps",
-		"researchGapsDesc": "Addressing open challenges and critical bottlenecks.",
 		"researchDirections": "Research Directions",
 		"researchDirectionsDesc": "Long-term vision and strategic innovation.",
+		"researchGaps": "Research Gaps",
+		"researchGapsDesc": "Addressing open challenges and critical bottlenecks.",
 		"people": "Teams",
 		"publications": "Publications",
 		"projects": "Projects",
@@ -16,9 +16,7 @@
 	"hero": {
 		"titleLine1": "Data to Intelligence,",
 		"titleLine2": "Ideas to Impact.",
-		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society.",
-		"exploreResearch": "Explore Research",
-		"exploreProjects": "View Projects"
+		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society."
 	},
 	"latest": {
 		"title": "Research we're working on",

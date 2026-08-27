@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
-import { HERO_SCOPE_STYLE } from "../constants";
 
 export interface ILandingFilmProps {
 	title?: string;
@@ -13,14 +12,14 @@ export interface ILandingFilmProps {
 	className?: string;
 }
 
-export function LandingFilm({
+export const LandingFilm = ({
 	title = "Amplifying human ingenuity",
 	description = "As we realize new possibilities with AI, we maintain a human-centered approach. We advance scientific progress by publishing impactful research each year and collaborating with universities, NGOs, partners, and communities worldwide.",
 	brandText = "D2AI Lab",
 	thumbnailSrc,
 	cta,
 	className,
-}: ILandingFilmProps) {
+}: ILandingFilmProps) => {
 	return (
 		<section
 			data-slot="landing-film"
@@ -56,10 +55,7 @@ export function LandingFilm({
 									className="h-full w-full object-cover"
 								/>
 							) : (
-								<div
-									style={HERO_SCOPE_STYLE}
-									className="flex h-full w-full items-center justify-center bg-background p-8"
-								>
+								<div className="flex h-full w-full items-center justify-center bg-muted/50 p-8">
 									<span className="font-title text-2xl font-normal text-muted-foreground select-none sm:text-3xl md:text-4xl">
 										{brandText}
 									</span>
@@ -71,4 +67,4 @@ export function LandingFilm({
 			</div>
 		</section>
 	);
-}
+};
