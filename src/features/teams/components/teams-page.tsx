@@ -1,7 +1,9 @@
+import { Fragment } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import type { IInPageNavItem } from "@/components/common/sticky-in-page-nav";
 import { StickyInPageNav } from "@/components/common/sticky-in-page-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { TTeam, TTeamMember } from "../schemas";
 
@@ -43,7 +45,7 @@ const TeamSection = ({ team, index }: { team: TTeam; index: number }) => {
 		<section
 			id={team.id}
 			data-slot="team-section"
-			className="flex scroll-mt-28 flex-col gap-6 border-t border-border pt-8 sm:scroll-mt-32 sm:pt-10"
+			className="flex scroll-mt-28 flex-col gap-6 pt-8 sm:scroll-mt-32 sm:pt-10"
 		>
 			<div className="flex flex-col gap-2">
 				<span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
@@ -102,7 +104,10 @@ export const Teams = ({
 					{/* Team sections */}
 					<div className="flex flex-col gap-12 lg:col-span-9">
 						{teams.map((team, index) => (
-							<TeamSection key={team.id} team={team} index={index} />
+							<Fragment key={team.id}>
+								{index > 0 && <Separator />}
+								<TeamSection team={team} index={index} />
+							</Fragment>
 						))}
 					</div>
 				</div>

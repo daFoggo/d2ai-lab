@@ -1,8 +1,10 @@
 # startcn-base Handbook
 
-This folder is the canonical documentation set for the current frontend architecture and development rules.
+This folder is the canonical documentation set for the reusable base frontend architecture and development rules.
 
-> Docs are written in **SKILL.md format** — each has a `name`/`description` frontmatter so agents can load the matching section as a playbook. Reference docs (`01`, `02`, `design-system`) stay prose.
+> Docs are written in **SKILL.md format** — each has a `name`/`description` frontmatter so agents can load the matching section as a playbook. Reference docs (`01`, `02`, `10`, ...) stay prose.
+>
+> This handbook documents **generic, reusable standards**. Project-specific content (a particular brand, page archetypes for one site, visual references) lives outside the base in `docs/project/`.
 
 ## Reading Order
 
@@ -16,8 +18,17 @@ This folder is the canonical documentation set for the current frontend architec
 | 6 | `06_quality_rules.md` | Consistency rules, checks, and review expectations |
 | 7 | `07_development_checklist.md` | Practical development and review checklist |
 | 8 | `08_zustand_best_practices.md` | Zustand client state management best practices & SSR rules |
-| 9 | `09_i18n.md` | Locale routing (`{-$locale}`) and translation content organization |
-| 10 | `10_design_tokens.md` | Canonical design tokens & styling rules (colors, typography, spacing, radius) |
+| 9 | `09_i18n.md` | Locale routing and translation content organization |
+| 10 | `10_design_tokens.md` | Generic design-token & styling rules (colors, typography, spacing, radius) |
+| 11 | `11_tanstack_form.md` | TanStack Form patterns: validation, submission, `createFormHook` composition |
+| 12 | `12_tanstack_table.md` | TanStack Table (v9) patterns: features/row models, columns, client vs server processing |
+
+Project-specific references (not part of the base, per-project):
+
+| Document | Purpose |
+|---|---|
+| `docs/project/page-patterns.md` | Page archetypes for a specific site (e.g. research-lab A–F) |
+| `docs/project/reference-styles.md` | Visual treatment reference for a specific site/brand |
 
 ## Mandatory Agent Rule Files
 
@@ -29,7 +40,7 @@ Automation agents and coding assistants should read `AGENTS.md` at the project r
 - Feature components receive cross-feature data and actions through props/callbacks; routes or layout containers own those dependencies.
 - `server.ts` is server-only and never exported from feature barrels.
 - Query functions return valid data or throw. Failed queries are not empty states.
-- Route loaders decide criticality: `ensureQueryData` blocks, `prefetchQuery` warms cache.
+- Route loaders decide criticality: `queryClient.query()` awaited blocks, fire-and-forget warms cache.
 - Critical data uses Suspense and route error boundaries.
 - Optional widgets use local `useQuery` states.
 - Supabase client access is centralized in `src/utils/supabase.ts`.

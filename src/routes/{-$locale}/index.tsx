@@ -1,4 +1,4 @@
-import {
+﻿import {
 	IconAntenna,
 	IconArrowUpRight,
 	IconBrain,
@@ -13,20 +13,20 @@ import { Button } from "@/components/ui/button";
 import type {
 	ILandingDomainItem,
 	TLandingDomainsData,
-	TLandingFutureItem,
-	TLandingLatestItem,
+	TLandingOpportunityItem,
+	TLandingPartner,
 	TLandingProjectHero,
 	TLandingProjectItem,
+	TLandingPublicationItem,
 } from "@/features/landing";
 import {
 	LandingDomains,
-	LandingFilm,
-	LandingFuture,
 	LandingHero,
-	LandingHeroStats,
-	LandingLatest,
+	LandingMission,
+	LandingOpportunities,
 	LandingPartners,
 	LandingProjects,
+	LandingPublications,
 	LandingSeminar,
 } from "@/features/landing";
 import type { TSeminar } from "@/features/seminars";
@@ -38,10 +38,10 @@ const CTA_ARROW_CLASS =
 
 /* Content data stays in the source language — only UI chrome is translated. */
 
-const FILM_DATA = {
+const MISSION_DATA = {
 	title: "Amplifying human ingenuity",
 	description:
-		"As we realize new possibilities with AI, we maintain a human-centered approach. We advance scientific progress by publishing impactful research each year and collaborating with universities, NGOs, partners, and communities worldwide. Our goal is to build a world where AI is more than a tool: it's an essential partner for researchers, scientists, clinicians, teachers, users, and businesses.",
+		"We advance scientific progress through AI research, collaborating with universities, NGOs, and partners worldwide.",
 	brandText: "D2AI Lab",
 };
 
@@ -54,7 +54,7 @@ const UPCOMING_SEMINAR: TSeminar = {
 	status: "UPCOMING",
 };
 
-const LATEST_ITEMS: TLandingLatestItem[] = [
+const PUBLICATION_ITEMS: TLandingPublicationItem[] = [
 	{
 		id: "pub-1",
 		title:
@@ -144,12 +144,19 @@ const DOMAIN_ITEMS: ILandingDomainItem[] = [
 	},
 ];
 
-const FUTURE_ITEMS: TLandingFutureItem[] = [
+/* Wordmark placeholders — thay bằng logo thật khi có brand assets. */
+const PARTNERS: TLandingPartner[] = [
+	{ id: "ptit", name: "PTIT" },
+	{ id: "cnu", name: "CNU" },
+	{ id: "uga", name: "UGA" },
+];
+
+const OPPORTUNITY_ITEMS: TLandingOpportunityItem[] = [
 	{
 		id: "future-careers",
 		title: "Career opportunities",
 		description:
-			"From Hanoi to global research networks, we're looking for talented scientists, engineers, interns, and students to join our core AI and intelligent computing labs.",
+			"We're looking for scientists, engineers, interns, and students to join our core AI and intelligent computing labs.",
 		linkLabel: "Learn more about careers",
 		to: "/{-$locale}/careers",
 	},
@@ -157,7 +164,7 @@ const FUTURE_ITEMS: TLandingFutureItem[] = [
 		id: "future-seminars",
 		title: "Seminars & Academic exchange",
 		description:
-			"Join our regular scientific seminar series, guest lectures by international scholars, and technical knowledge exchange workshops.",
+			"Join our seminar series, guest lectures, and technical knowledge exchange workshops.",
 		linkLabel: "View all seminars",
 		to: "/{-$locale}/seminars",
 	},
@@ -186,7 +193,7 @@ const HomePage = () => {
 	const domainsData: TLandingDomainsData = {
 		title: t("landing.domains.title"),
 		description:
-			"Our vast breadth of work covers AI/ML foundations, responsible human-centric technology, science & societal impact, computing paradigms, and algorithms & optimization. Our research teams impact technology used by people all over the world.",
+			"Our research spans AI/ML foundations, responsible human-centric technology, science, and societal impact.",
 	};
 
 	return (
@@ -234,7 +241,7 @@ const HomePage = () => {
 				</div>
 
 				{/* Stats band */}
-				<LandingHeroStats stats={HERO_STATS} />
+				<LandingHero.Stats stats={HERO_STATS} />
 			</LandingHero.Root>
 
 			{/* 2. Upcoming seminar spotlight — first section under the hero */}
@@ -257,11 +264,11 @@ const HomePage = () => {
 				}
 			/>
 
-			{/* 3. Section 1: Amplifying Human Ingenuity & Film */}
-			<LandingFilm
-				title={FILM_DATA.title}
-				description={FILM_DATA.description}
-				brandText={FILM_DATA.brandText}
+			{/* 3. Section 1: Amplifying Human Ingenuity */}
+			<LandingMission
+				title={MISSION_DATA.title}
+				description={MISSION_DATA.description}
+				brandText={MISSION_DATA.brandText}
 				cta={
 					<Button
 						render={
@@ -272,7 +279,7 @@ const HomePage = () => {
 						}
 						nativeButton={false}
 					>
-						{t("landing.film.cta")}
+						{t("landing.mission.cta")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -303,9 +310,9 @@ const HomePage = () => {
 			/>
 
 			{/* 5. Section 3: Research We're Working On (Publications) */}
-			<LandingLatest
-				title={t("landing.latest.title")}
-				items={LATEST_ITEMS}
+			<LandingPublications
+				title={t("landing.publications.title")}
+				items={PUBLICATION_ITEMS}
 				action={
 					<Button
 						render={
@@ -313,7 +320,7 @@ const HomePage = () => {
 						}
 						nativeButton={false}
 					>
-						{t("landing.latest.seeMore")}
+						{t("landing.publications.seeMore")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -354,10 +361,17 @@ const HomePage = () => {
 			/>
 
 			{/* 7. Research partners */}
-			<LandingPartners />
+			<LandingPartners
+				title="Research partners"
+				description="We collaborate with world-class labs and industry leaders to advance AI science."
+				partners={PARTNERS}
+			/>
 
 			{/* 8. Section 6: Help Us Shape The Future */}
-			<LandingFuture title={t("landing.future.title")} items={FUTURE_ITEMS} />
+			<LandingOpportunities
+				title={t("landing.opportunities.title")}
+				items={OPPORTUNITY_ITEMS}
+			/>
 		</>
 	);
 };

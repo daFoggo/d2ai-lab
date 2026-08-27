@@ -18,11 +18,11 @@
 		"titleLine2": "Ideas to Impact.",
 		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society."
 	},
-	"latest": {
+	"publications": {
 		"title": "Research we're working on",
 		"seeMore": "See more publications"
 	},
-	"film": {
+	"mission": {
 		"cta": "Explore research directions"
 	},
 	"domains": {
@@ -41,7 +41,7 @@
 		"featuredApp": "FEATURED APP",
 		"appTag": "APP"
 	},
-	"future": {
+	"opportunities": {
 		"title": "Help us shape the future"
 	},
 	"footer": {

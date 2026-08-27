@@ -35,7 +35,7 @@ const SeminarRow = ({ seminar }: { seminar: TSeminar }) => {
 				className="group flex flex-col gap-3 py-6 transition-colors hover:bg-muted/40 focus:outline-hidden sm:py-7 lg:grid lg:grid-cols-12 lg:gap-8 lg:px-3 lg:-mx-3"
 			>
 				<div className="flex flex-wrap items-center gap-3 lg:col-span-3">
-					<span className="font-mono text-sm text-muted-foreground uppercase">
+					<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 						{seminar.date}
 					</span>
 					<Badge variant={STATUS_VARIANT[seminar.status]}>

@@ -407,17 +407,27 @@ export const useUIStore = create<UIState & UIActions>()((set) => {
 })
 ```
 
-Call `resetAllStores()` in your auth sign-out flow:
+Call `resetAllStores()` in your auth sign-out flow. Pass the active client from `useQueryClient()` in the calling component — never a module-level singleton:
 
 ```ts
 import { resetAllStores } from "@/stores/reset"
-import { queryClient } from "@/lib/query-client"
 import { supabase } from "@/utils/supabase"
+import type { QueryClient } from "@tanstack/react-query"
 
-export async function handleSignOut() {
+export async function handleSignOut(queryClient: QueryClient) {
   await supabase.auth.signOut()
   queryClient.clear()
   resetAllStores()
+}
+```
+
+```tsx
+// In the component that owns the sign-out action
+import { useQueryClient } from "@tanstack/react-query"
+
+function SignOutButton() {
+  const queryClient = useQueryClient()
+  return <Button onClick={() => handleSignOut(queryClient)}>Sign out</Button>
 }
 ```
 

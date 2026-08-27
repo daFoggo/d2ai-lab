@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 export interface IInPageNavItem {
@@ -44,10 +45,18 @@ export const StickyInPageNav = ({
 		return () => observer.disconnect();
 	}, [items]);
 
+	const handleValueChange = (value: string) => {
+		document.getElementById(value)?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
+	};
+
 	return (
-		<nav
-			data-slot="sticky-in-page-nav"
-			aria-label={title ?? "On this page"}
+		<Tabs
+			orientation="vertical"
+			value={activeId}
+			onValueChange={handleValueChange}
 			className={cn("flex flex-col gap-1", className)}
 		>
 			{title && (
@@ -55,20 +64,17 @@ export const StickyInPageNav = ({
 					{title}
 				</span>
 			)}
-			{items.map((item) => (
-				<a
-					key={item.id}
-					href={`#${item.id}`}
-					className={cn(
-						"rounded-lg border-l-2 px-3 py-1.5 text-sm transition-colors",
-						activeId === item.id
-							? "border-primary bg-muted font-semibold text-foreground"
-							: "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
-					)}
-				>
-					{item.label}
-				</a>
-			))}
-		</nav>
+			<TabsList variant="line" className="flex-col items-stretch gap-0.5 p-0">
+				{items.map((item) => (
+					<TabsTrigger
+						key={item.id}
+						value={item.id}
+						className="justify-start rounded-none px-3 py-1.5 text-sm"
+					>
+						{item.label}
+					</TabsTrigger>
+				))}
+			</TabsList>
+		</Tabs>
 	);
 };

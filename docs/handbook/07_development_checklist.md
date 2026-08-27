@@ -37,8 +37,8 @@ description: Review implementation against the project's architecture, data, and
 
 - Query functions return valid data or throw.
 - Do not use `catch -> return null`, `catch -> return []`, or `{ error }` payloads for API failures.
-- Critical route data uses `ensureQueryData` and Suspense.
-- Secondary widgets use `prefetchQuery` or local `useQuery`.
+- Critical route data uses `queryClient.query(...)` (awaited) and Suspense.
+- Secondary widgets use `queryClient.query(...)` fire-and-forget or local `useQuery`.
 - Optional/search/inline queries may use `enabled`.
 - Suspense query options should not use `enabled`.
 - 404 handling should be deliberate: known missing route resources can become `notFound()`, unknown errors rethrow.
@@ -81,7 +81,7 @@ Submit-critical examples:
 - Are cross-feature workflows injected through props/callbacks instead of direct query/mutation imports?
 - Does server-state code throw on failure?
 - Are route loaders aligned with Suspense usage?
-- Is `useSuspenseQuery` backed by `ensureQueryData`?
+- Is `useSuspenseQuery` backed by an awaited `queryClient.query(...)` in the loader?
 - Is `enabled` used only for optional/search/inline queries?
 - Are all local query states represented?
 - Are failed queries prevented from becoming fake empty data?
@@ -97,4 +97,5 @@ Submit-critical examples:
 - Is a compound component (`Object.assign`) present only where sub-parts are actually composed by callers?
 - Are single-use sections plain components with no dead `Root`/`Header`/`Card`/`Preset` exports or unused `className`/`...props` threading?
 - Are errors displayed through `getErrorMessage`?
+- Are source files free of mojibake (encoding corruption)? Scan for `â€¦`, `â€”`, `â€™`, `Ã©`, `Ã¨`, `báº±ng`, `tháº­t`, `Äá»“ng`… — corrupted UTF-8 produced by shell tools (e.g. `Set-Content` in PowerShell) decoding as Latin-1. Re-run the scan after any batch regex/shell edit; fix via the edit tool, not shell writes.
 - Did you run the appropriate checks for the size of the change?

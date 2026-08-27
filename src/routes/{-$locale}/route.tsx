@@ -9,6 +9,15 @@ import {
 } from "@/features/landing";
 import { DEFAULT_LOCALE, isLocale, useI18n } from "@/lib/i18n";
 
+/* Other research teams and initiative areas — placeholder links, thay bằng link thật khi có backend. */
+const FOOTER_LABS = [
+	{ label: "Data Science Hub", href: "#" },
+	{ label: "AI & Multimedia Lab", href: "#" },
+	{ label: "IoT & Ambient Computing", href: "#" },
+	{ label: "Cyber Security & Networks", href: "#" },
+	{ label: "Robotics & Automation", href: "#" },
+];
+
 const LocaleLayout = () => {
 	const { t } = useI18n();
 
@@ -62,7 +71,7 @@ const LocaleLayout = () => {
 				<Outlet />
 			</main>
 
-			<LandingFooter brandName="D2AI Lab" />
+			<LandingFooter brandName="D2AI Lab" labs={FOOTER_LABS} />
 		</LandingLayout>
 	);
 };

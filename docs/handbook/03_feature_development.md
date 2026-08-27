@@ -56,7 +56,7 @@ Use `mutateAsync` only when the component needs to compose follow-up side effect
 When a feature component needs another feature's data:
 
 1. Load the dependency in the route, layout, or route-local container.
-2. Keep critical data in the route loader with `ensureQueryData` and Suspense.
+2. Keep critical data in the route loader with `queryClient.query(...)` (awaited) and Suspense.
 3. Keep optional/search data in the route/container with local `useQuery`.
 4. Pass data, loading flags, error flags, and errors through props.
 5. Disable submit-critical actions while the injected dependency is loading or errored.

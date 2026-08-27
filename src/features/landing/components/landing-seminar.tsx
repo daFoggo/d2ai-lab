@@ -7,11 +7,10 @@ import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface ILandingSeminarProps {
-	title?: string;
+	title: string;
 	description?: string;
 	seminar: TSeminar;
-	viewDetailsLabel?: string;
-	/** Nút CTA do route compose sẵn (Button + Link). */
+	viewDetailsLabel: string;
 	cta?: ReactNode;
 	className?: string;
 }
@@ -22,10 +21,10 @@ const STATUS_VARIANT: Record<TSeminarStatus, "default" | "outline"> = {
 };
 
 export const LandingSeminar = ({
-	title = "Upcoming seminar",
+	title,
 	description,
 	seminar,
-	viewDetailsLabel = "View seminar details",
+	viewDetailsLabel,
 	cta,
 	className,
 }: ILandingSeminarProps) => {
@@ -76,7 +75,7 @@ export const LandingSeminar = ({
 							{seminar.status}
 						</Badge>
 						<div className="flex items-baseline gap-2 sm:mt-4 sm:flex-col sm:items-start sm:gap-0">
-							<span className="font-mono text-sm font-medium tracking-wider text-primary-foreground/80 uppercase">
+							<span className="font-mono text-xs font-medium tracking-wider text-primary-foreground/80 uppercase">
 								{month}
 							</span>
 							<span className="font-mono text-5xl leading-none font-semibold text-primary-foreground sm:text-6xl">

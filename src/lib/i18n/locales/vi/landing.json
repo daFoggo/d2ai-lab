@@ -20,11 +20,11 @@
 		"exploreResearch": "Khám phá nghiên cứu",
 		"exploreProjects": "Xem dự án"
 	},
-	"latest": {
+	"publications": {
 		"title": "Nghiên cứu chúng tôi đang thực hiện",
 		"seeMore": "Xem thêm ấn phẩm"
 	},
-	"film": {
+	"mission": {
 		"cta": "Khám phá hướng nghiên cứu"
 	},
 	"domains": {
@@ -43,7 +43,7 @@
 		"featuredApp": "ỨNG DỤNG TIÊU BIỂU",
 		"appTag": "ỨNG DỤNG"
 	},
-	"future": {
+	"opportunities": {
 		"title": "Giúp chúng tôi định hình tương lai"
 	},
 	"footer": {

@@ -272,10 +272,10 @@ Reusable across many archetypes (put in `src/components/common/`):
 
 - `LandingLayout`, `LandingNavbar` (+ LanguageSwitcher/Actions), `LandingFooter`
   → app shell for every page.
-- `LandingHero`, `LandingDomains`, `LandingProjects`, `LandingLatest`,
-  `LandingQuote`, `LandingFilm`, `LandingFuture` → these ARE the **bands**
-  (`SectionBand`) the topic/detail pages reuse. Rename/alias as generic
-  `SectionBand` variants rather than duplicating.
+- `LandingHero` (+ `.Stats`), `LandingDomains`, `LandingProjects`,
+  `LandingPublications`, `LandingMission`, `LandingOpportunities` → these ARE
+  the **bands** (`SectionBand`) the topic/detail pages reuse. Rename/alias as
+  generic `SectionBand` variants rather than duplicating.
 - `HERO_SCOPE_STYLE` → replaced by `bg-primary text-primary-foreground`
   for always-dark surfaces (hero, footer, dark cards); the navbar-over-hero
   scope lives in `src/styles.css` (`[data-slot="landing-navbar"][data-over-hero="true"]`).
@@ -284,7 +284,7 @@ Reusable across many archetypes (put in `src/components/common/`):
 
 ### Styling rules that always apply
 
-From `10_design_tokens.md`:
+From `../handbook/10_design_tokens.md`:
 
 - Semantic tokens only (`text-foreground`, `text-muted-foreground`, `bg-background`,
   `border-border`, ...). Never raw hex / palette colors.
@@ -300,21 +300,22 @@ From `10_design_tokens.md`:
 
 ## Routing & Data Mapping
 
-Routes own page composition; features own data. See `02_architecture.md`.
+Routes own page composition; features own data. See `../handbook/02_architecture.md`.
 
 ### Theme (marketing) vs Listing (data) split
 
 - **B / C / bands / hero** → primarily marketing shape; content is copy + media.
 - **D / E / F** → data listings; must follow the UI-state rules
-  (`05_ui_state_patterns.md`): loading skeleton, error `Alert`, valid-empty
+  (`../handbook/05_ui_state_patterns.md`): loading skeleton, error `Alert`, valid-empty
   state. Never hide a failed query behind `[]`/`null`.
 
 ### Critical vs secondary data
 
 - **A / B / C** — the page's own record (topic, article) is *critical*:
-  `loader` + `context.queryClient.ensureQueryData(...)` + `useSuspenseQuery`.
+  `loader` + `context.queryClient.query(...)` (awaited) + `useSuspenseQuery`.
 - **D / E / F** — the listing may be *critical* too (it is the page), but the
-  facets / filter options are *secondary/optional*: `prefetchQuery` or local
+  facets / filter options are *secondary/optional*: `queryClient.query(...)`
+  fire-and-forget or local
   `useQuery` with local loading/error states.
 - **Related widgets / bands** (e.g. Featured blogs under a topic) are secondary:
   local `useQuery` with loading/error/empty.

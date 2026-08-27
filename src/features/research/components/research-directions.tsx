@@ -1,5 +1,7 @@
+import { Fragment } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { TResearchDirection } from "../schemas";
 
@@ -22,11 +24,11 @@ const DirectionSection = ({
 		<article
 			data-slot="research-direction-section"
 			className={cn(
-				"grid grid-cols-1 gap-4 border-t border-border py-8 sm:grid-cols-12 sm:gap-8 sm:py-10",
+				"grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:gap-8 sm:py-10",
 				className,
 			)}
 		>
-			<span className="font-mono text-sm text-muted-foreground sm:col-span-2 sm:pt-1.5">
+			<span className="font-mono text-sm tracking-wider text-muted-foreground sm:col-span-2 sm:pt-1.5">
 				{direction.index}
 			</span>
 
@@ -66,8 +68,11 @@ export const ResearchDirections = ({
 				<PageHeader eyebrow={eyebrow} title={title} description={description} />
 
 				<div className="mt-8 sm:mt-10">
-					{directions.map((direction) => (
-						<DirectionSection key={direction.id} direction={direction} />
+					{directions.map((direction, index) => (
+						<Fragment key={direction.id}>
+							{index > 0 && <Separator />}
+							<DirectionSection direction={direction} />
+						</Fragment>
 					))}
 				</div>
 			</div>

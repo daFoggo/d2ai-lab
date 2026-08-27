@@ -316,11 +316,11 @@ export const LandingNavbarNav = ({
 	);
 };
 
-export interface ILandingNavbarLanguageSwitcherProps {
+interface ILandingNavbarLanguageSwitcherProps {
 	className?: string;
 }
 
-export const LandingNavbarLanguageSwitcher = ({
+const LandingNavbarLanguageSwitcher = ({
 	className,
 }: ILandingNavbarLanguageSwitcherProps) => {
 	const { locale, t } = useI18n();
@@ -649,6 +649,5 @@ export const LandingNavbar = Object.assign(LandingNavbarRoot, {
 	Root: LandingNavbarRoot,
 	Brand: LandingNavbarBrand,
 	Nav: LandingNavbarNav,
-	LanguageSwitcher: LandingNavbarLanguageSwitcher,
 	Actions: LandingNavbarActions,
 });

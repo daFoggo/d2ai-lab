@@ -1,30 +1,29 @@
-import { Link } from "@tanstack/react-router";
+﻿import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { TLandingLatestItem } from "../schemas";
+import type { TLandingPublicationItem } from "../schemas";
 
-export interface ILandingLatestProps {
-	title?: string;
-	items: TLandingLatestItem[];
-	/** Nút "see more" do route compose sẵn (Button + Link). */
+export interface ILandingPublicationsProps {
+	title: string;
+	items: TLandingPublicationItem[];
 	action?: ReactNode;
 	className?: string;
 }
 
-const LatestCard = ({
+const PublicationCard = ({
 	item,
 	className,
 }: {
-	item: TLandingLatestItem;
+	item: TLandingPublicationItem;
 	className?: string;
 }) => {
 	const { locale } = useI18n();
 
 	return (
 		<article
-			data-slot="landing-latest-card"
+			data-slot="landing-publications-card"
 			className={cn(
 				"group flex flex-col overflow-hidden transition-all duration-300",
 				className,
@@ -61,8 +60,8 @@ const LatestCard = ({
 				</span>
 				{item.date && (
 					<>
-						<span className="text-xs text-muted-foreground/50">·</span>
-						<span className="font-mono text-xs text-muted-foreground uppercase">
+						<span className="text-xs text-muted-foreground/50">Â·</span>
+						<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 							{item.date}
 						</span>
 					</>
@@ -83,15 +82,15 @@ const LatestCard = ({
 	);
 };
 
-export const LandingLatest = ({
-	title = "Read the latest",
+export const LandingPublications = ({
+	title,
 	items,
 	action,
 	className,
-}: ILandingLatestProps) => {
+}: ILandingPublicationsProps) => {
 	return (
 		<section
-			data-slot="landing-latest"
+			data-slot="landing-publications"
 			className={cn(
 				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
 				className,
@@ -108,7 +107,7 @@ export const LandingLatest = ({
 
 				<div className="mt-6 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
 					{items.map((item, index) => (
-						<LatestCard
+						<PublicationCard
 							key={item.id}
 							item={item}
 							className={cn(index >= 2 && "hidden lg:flex")}

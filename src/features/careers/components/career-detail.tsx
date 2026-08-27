@@ -1,8 +1,16 @@
 import { IconCalendarPlus } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { Breadcrumb } from "@/components/common/breadcrumb";
 import { ProseBody, ProseParagraph } from "@/components/common/prose-body";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { TCareerDetail } from "../schemas";
@@ -28,12 +36,6 @@ export const CareerDetail = ({
 	locale,
 	className,
 }: ICareerDetailProps) => {
-	const breadcrumbItems = [
-		{ label: "Home", to: "/{-$locale}", params: { locale } },
-		{ label: "Careers", to: "/{-$locale}/careers", params: { locale } },
-		{ label: career.title },
-	];
-
 	const handleApply = () => {
 		if (career.applyUrl) {
 			window.open(career.applyUrl, "_blank", "noreferrer");
@@ -56,7 +58,29 @@ export const CareerDetail = ({
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
-				<Breadcrumb items={breadcrumbItems} />
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={<Link to="/{-$locale}" params={{ locale }} />}
+							>
+								Home
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={<Link to="/{-$locale}/careers" params={{ locale }} />}
+							>
+								Careers
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbPage>{career.title}</BreadcrumbPage>
+						</BreadcrumbItem>
+					</BreadcrumbList>
+				</Breadcrumb>
 
 				<div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-12">
 					{/* Main column */}

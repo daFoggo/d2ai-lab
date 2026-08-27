@@ -1,28 +1,17 @@
 import { cn } from "@/lib/utils";
-
-export interface ILandingPartner {
-	id: string;
-	name: string;
-}
+import type { TLandingPartner } from "../schemas";
 
 export interface ILandingPartnersProps {
-	title?: string;
-	description?: string;
-	partners?: ILandingPartner[];
+	title: string;
+	description: string;
+	partners: TLandingPartner[];
 	className?: string;
 }
 
-/* Wordmark placeholders — thay bằng logo thật khi có brand assets. */
-const PARTNERS: ILandingPartner[] = [
-	{ id: "ptit", name: "PTIT" },
-	{ id: "cnu", name: "CNU" },
-	{ id: "uga", name: "UGA" },
-];
-
 export const LandingPartners = ({
-	title = "Research partners",
-	description = "We collaborate with world-class research labs and industry leaders to advance AI science and its real-world impact. Our partners appear on our publication covers and support our research portal.",
-	partners = PARTNERS,
+	title,
+	description,
+	partners,
 	className,
 }: ILandingPartnersProps) => {
 	return (

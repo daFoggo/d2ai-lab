@@ -1,5 +1,4 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
-import { CornerFrame } from "@/components/common/corner-frame";
 import { PageHeader } from "@/components/common/page-header";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ const FeaturedProject = ({ project }: { project: TProject }) => {
 			data-slot="projects-featured"
 			className="mt-8 grid grid-cols-1 items-center gap-6 sm:mt-10 sm:gap-8 md:grid-cols-12 lg:gap-12"
 		>
-			<CornerFrame className="md:col-span-5">
+			<div className="corner-frame md:col-span-5">
 				<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl">
 					<AspectRatio ratio={16 / 10}>
 						{project.thumbnail ? (
@@ -39,7 +38,7 @@ const FeaturedProject = ({ project }: { project: TProject }) => {
 						)}
 					</AspectRatio>
 				</div>
-			</CornerFrame>
+			</div>
 
 			<div className="flex flex-col justify-center md:col-span-7 md:pl-2">
 				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">

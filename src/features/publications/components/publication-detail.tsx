@@ -1,8 +1,16 @@
 import { IconBrandX, IconShare2 } from "@tabler/icons-react";
-import { Breadcrumb } from "@/components/common/breadcrumb";
+import { Link } from "@tanstack/react-router";
 import { ProseBody, ProseParagraph } from "@/components/common/prose-body";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
 import { Badge } from "@/components/ui/badge";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { cn } from "@/lib/utils";
 import type { TPublicationDetail } from "../schemas";
 
@@ -17,16 +25,6 @@ export const PublicationDetail = ({
 	locale,
 	className,
 }: IPublicationDetailProps) => {
-	const breadcrumbItems = [
-		{ label: "Home", to: "/{-$locale}", params: { locale } },
-		{
-			label: "Publications",
-			to: "/{-$locale}/publications",
-			params: { locale },
-		},
-		{ label: publication.title },
-	];
-
 	return (
 		<section
 			data-slot="publication-detail"
@@ -34,7 +32,31 @@ export const PublicationDetail = ({
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				{/* Breadcrumb */}
-				<Breadcrumb items={breadcrumbItems} />
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={<Link to="/{-$locale}" params={{ locale }} />}
+							>
+								Home
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={
+									<Link to="/{-$locale}/publications" params={{ locale }} />
+								}
+							>
+								Publications
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbPage>{publication.title}</BreadcrumbPage>
+						</BreadcrumbItem>
+					</BreadcrumbList>
+				</Breadcrumb>
 
 				<div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-12">
 					{/* Main column */}
@@ -48,7 +70,7 @@ export const PublicationDetail = ({
 								<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 									{publication.venue}
 								</span>
-								<span className="font-mono text-xs text-muted-foreground/60 uppercase">
+								<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
 									{publication.year}
 								</span>
 							</div>

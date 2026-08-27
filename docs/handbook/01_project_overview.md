@@ -5,6 +5,8 @@
 | App framework | TanStack Start |
 | Routing | TanStack Router |
 | Server state | TanStack Query |
+| Forms | TanStack Form |
+| Tables | TanStack Table (v9) |
 | Data platform | Supabase (JS client) |
 | Validation | Zod |
 | Language | TypeScript 7 (native `tsc`) |

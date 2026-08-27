@@ -9,3 +9,5 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - shadcn@4.14.0
+  - '@tanstack/query-core@5.102.8'
+  - '@tanstack/react-query@5.102.8'

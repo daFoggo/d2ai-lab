@@ -151,3 +151,20 @@
   --primary-foreground: oklch(0.3718 0.2366 266.8);
   --ring: oklch(0.985 0 0 / 80%);
 }
+
+/* Decorative corner "+" marks (Vercel-style) — 4 corners, half-outside the block edge. */
+@utility corner-frame {
+  position: relative;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='white' fill-opacity='0.9'/%3E%3Cpath d='M8 3v10M3 8h10' stroke='oklch%280.55%200.06%20266.8%29' stroke-width='1.5' stroke-opacity='0.8' stroke-linecap='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='white' fill-opacity='0.9'/%3E%3Cpath d='M8 3v10M3 8h10' stroke='oklch%280.55%200.06%20266.8%29' stroke-width='1.5' stroke-opacity='0.8' stroke-linecap='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='white' fill-opacity='0.9'/%3E%3Cpath d='M8 3v10M3 8h10' stroke='oklch%280.55%200.06%20266.8%29' stroke-width='1.5' stroke-opacity='0.8' stroke-linecap='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='white' fill-opacity='0.9'/%3E%3Cpath d='M8 3v10M3 8h10' stroke='oklch%280.55%200.06%20266.8%29' stroke-width='1.5' stroke-opacity='0.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position:
+    -8px -8px,
+    calc(100% - 8px) -8px,
+    -8px calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px);
+}

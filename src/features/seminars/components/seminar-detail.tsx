@@ -5,11 +5,19 @@ import {
 	IconRobot,
 	IconUsers,
 } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Breadcrumb } from "@/components/common/breadcrumb";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
 import { Badge } from "@/components/ui/badge";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type {
@@ -112,13 +120,13 @@ export const SeminarSpeakers = ({
 								>
 									<span
 										className={cn(
-											"truncate font-mono text-sm font-medium tracking-wide text-primary-foreground uppercase transition-opacity sm:text-base",
+											"truncate font-mono text-sm font-medium tracking-wider text-primary-foreground uppercase transition-opacity sm:text-base",
 											!isActive && "opacity-40",
 										)}
 									>
 										{speaker.name}
 									</span>
-									<span className="font-mono text-xs uppercase leading-none text-primary-foreground/80 sm:text-sm">
+									<span className="font-mono text-xs font-medium tracking-wider uppercase leading-none text-primary-foreground/80 sm:text-sm">
 										{speaker.role}
 									</span>
 								</button>
@@ -169,12 +177,6 @@ export const SeminarDetail = ({
 	locale,
 	className,
 }: ISeminarDetailProps) => {
-	const breadcrumbItems = [
-		{ label: "Home", to: "/{-$locale}", params: { locale } },
-		{ label: "Seminars", to: "/{-$locale}/seminars", params: { locale } },
-		{ label: seminar.title },
-	];
-
 	const registerLabel = "Register to attend";
 
 	const handleRegister = () => {
@@ -201,7 +203,29 @@ export const SeminarDetail = ({
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
-				<Breadcrumb items={breadcrumbItems} />
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={<Link to="/{-$locale}" params={{ locale }} />}
+							>
+								Home
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbLink
+								render={<Link to="/{-$locale}/seminars" params={{ locale }} />}
+							>
+								Seminars
+							</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbPage>{seminar.title}</BreadcrumbPage>
+						</BreadcrumbItem>
+					</BreadcrumbList>
+				</Breadcrumb>
 
 				<div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-12">
 					{/* Main column */}

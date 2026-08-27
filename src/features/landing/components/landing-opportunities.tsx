@@ -1,28 +1,28 @@
-import { IconArrowUpRight } from "@tabler/icons-react";
+﻿import { IconArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { TLandingFutureItem } from "../schemas";
+import type { TLandingOpportunityItem } from "../schemas";
 
-export interface ILandingFutureProps {
-	title?: string;
-	items: TLandingFutureItem[];
+export interface ILandingOpportunitiesProps {
+	title: string;
+	items: TLandingOpportunityItem[];
 	className?: string;
 }
 
-const FutureCard = ({
+const OpportunityCard = ({
 	item,
 	className,
 }: {
-	item: TLandingFutureItem;
+	item: TLandingOpportunityItem;
 	className?: string;
 }) => {
 	const { locale } = useI18n();
 
 	return (
 		<article
-			data-slot="landing-future-card"
+			data-slot="landing-opportunities-card"
 			className={cn(
 				"group flex flex-col overflow-hidden transition-all duration-300",
 				className,
@@ -72,14 +72,14 @@ const FutureCard = ({
 	);
 };
 
-export const LandingFuture = ({
-	title = "Help us shape the future",
+export const LandingOpportunities = ({
+	title,
 	items,
 	className,
-}: ILandingFutureProps) => {
+}: ILandingOpportunitiesProps) => {
 	return (
 		<section
-			data-slot="landing-future"
+			data-slot="landing-opportunities"
 			className={cn(
 				"w-full overflow-hidden py-10 sm:py-14 lg:py-16",
 				className,
@@ -92,7 +92,7 @@ export const LandingFuture = ({
 
 				<div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:grid-cols-2 sm:gap-6 lg:gap-8">
 					{items.map((item) => (
-						<FutureCard key={item.id} item={item} />
+						<OpportunityCard key={item.id} item={item} />
 					))}
 				</div>
 			</div>

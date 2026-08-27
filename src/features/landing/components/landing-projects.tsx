@@ -6,12 +6,10 @@ import { cn } from "@/lib/utils";
 import type { TLandingProjectHero, TLandingProjectItem } from "../schemas";
 
 export interface ILandingProjectsProps {
-	title?: string;
+	title: string;
 	hero: TLandingProjectHero;
 	items: TLandingProjectItem[];
-	/** Nút "see more" do route compose sẵn (Button + Link). */
 	seeMore?: ReactNode;
-	/** Nút CTA của project nổi bật do route compose sẵn. */
 	heroCta?: ReactNode;
 	className?: string;
 }
@@ -101,7 +99,7 @@ const ProjectsItem = ({
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center p-2 text-center select-none">
-						<span className="font-mono text-xs text-muted-foreground/50 uppercase">
+						<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground/50 uppercase">
 							{t("landing.projects.appTag")}
 						</span>
 					</div>
@@ -128,7 +126,7 @@ const ProjectsItem = ({
 };
 
 export const LandingProjects = ({
-	title = "Our research drives real-world change",
+	title,
 	hero,
 	items,
 	seeMore,

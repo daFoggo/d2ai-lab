@@ -37,28 +37,18 @@ export const landingHeroDataSchema = z.object({
 
 export type TLandingHeroData = z.infer<typeof landingHeroDataSchema>;
 
-/* Section 1: Film Data Schema */
-export const landingFilmDataSchema = z.object({
+/* Section 1: Mission Data Schema */
+export const landingMissionDataSchema = z.object({
 	title: z.string().min(1),
 	description: z.string().min(1),
 	videoThumbnail: z.string().optional(),
 	videoBadgeText: z.string().optional(),
 });
 
-export type TLandingFilmData = z.infer<typeof landingFilmDataSchema>;
+export type TLandingMissionData = z.infer<typeof landingMissionDataSchema>;
 
-/* Section 2: Quote Data Schema */
-export const landingQuoteDataSchema = z.object({
-	quote: z.string().min(1),
-	authorName: z.string().min(1),
-	authorRole: z.string().min(1),
-	authorAvatar: z.string().optional(),
-});
-
-export type TLandingQuoteData = z.infer<typeof landingQuoteDataSchema>;
-
-/* Section 3: Read The Latest Item Schema */
-export const landingLatestItemSchema = z.object({
+/* Section 3: Publications Item Schema */
+export const landingPublicationItemSchema = z.object({
 	id: z.string().min(1),
 	title: z.string().min(1),
 	category: z.string().min(1),
@@ -68,7 +58,9 @@ export const landingLatestItemSchema = z.object({
 	type: z.enum(["BLOG", "RESEARCH", "PAPER", "NEWS"]).default("RESEARCH"),
 });
 
-export type TLandingLatestItem = z.infer<typeof landingLatestItemSchema>;
+export type TLandingPublicationItem = z.infer<
+	typeof landingPublicationItemSchema
+>;
 
 /* Section 4: Projects Showcase Schemas */
 export const landingProjectHeroSchema = z.object({
@@ -100,8 +92,16 @@ export const landingDomainsDataSchema = z.object({
 
 export type TLandingDomainsData = z.infer<typeof landingDomainsDataSchema>;
 
-/* Section 6: Future Opportunities Schema */
-export const landingFutureItemSchema = z.object({
+/* Section 5.5: Research Partners Schema */
+export const landingPartnerSchema = z.object({
+	id: z.string().min(1),
+	name: z.string().min(1),
+});
+
+export type TLandingPartner = z.infer<typeof landingPartnerSchema>;
+
+/* Section 6: Opportunities Schema */
+export const landingOpportunityItemSchema = z.object({
 	id: z.string().min(1),
 	title: z.string().min(1),
 	description: z.string().min(1),
@@ -110,4 +110,6 @@ export const landingFutureItemSchema = z.object({
 	thumbnail: z.string().optional(),
 });
 
-export type TLandingFutureItem = z.infer<typeof landingFutureItemSchema>;
+export type TLandingOpportunityItem = z.infer<
+	typeof landingOpportunityItemSchema
+>;

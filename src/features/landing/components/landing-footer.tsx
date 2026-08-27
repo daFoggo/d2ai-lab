@@ -9,21 +9,15 @@ import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-const DEFAULT_LABS = [
-	{ label: "Data Science Hub", href: "#" },
-	{ label: "AI & Multimedia Lab", href: "#" },
-	{ label: "IoT & Ambient Computing", href: "#" },
-	{ label: "Cyber Security & Networks", href: "#" },
-	{ label: "Robotics & Automation", href: "#" },
-];
-
 export interface ILandingFooterProps {
-	brandName?: string;
+	brandName: string;
+	labs: { label: string; href: string }[];
 	className?: string;
 }
 
 export const LandingFooter = ({
-	brandName = "D2AI Lab",
+	brandName,
+	labs,
 	className,
 }: ILandingFooterProps) => {
 	const { t } = useI18n();
@@ -51,7 +45,7 @@ export const LandingFooter = ({
 						{t("landing.footer.labsLabel")}
 					</span>
 					<div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-						{DEFAULT_LABS.map((lab) => (
+						{labs.map((lab) => (
 							<a
 								key={lab.label}
 								href={lab.href}

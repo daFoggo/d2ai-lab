@@ -144,3 +144,57 @@ Expected shape:
 ## Error Boundaries
 
 Use nested route boundaries for important app areas so one section failure does not replace the whole app shell.
+
+## Router Configuration Patterns
+
+The app shell in `src/router.tsx` already enables several TanStack Router features; keep them documented here:
+
+- **Preloading**: `defaultPreload: "intent"` preloads route data on hover/touch. `defaultPreloadStaleTime: 0` delegates the freshness decision to TanStack Query (avoid the 30s default that would skip refetching).
+- **Scroll restoration**: `scrollRestoration: true`. If a layout uses its own scroll container, declare `scrollToTopSelectors` so it resets too.
+- **Automatic code splitting**: do not export `component`/`loader`/`errorComponent` from route files at module top level — TanStack Router splits them automatically. `__root.tsx` is never split (always rendered).
+
+### Route Tree Conventions
+
+- `__root.tsx` — root route (required name, at the routes directory root).
+- `index.tsx` — index route.
+- `$param` — dynamic segment.
+- `_` prefix (`_layout`) — **pathless layout route** (matches children without adding a URL segment).
+- `_` suffix (`posts_`) — break-out route (excluded from nesting under parent routes).
+- `(folder)` — **route group**, purely organizational, no layout and no URL segment. Do not confuse with Next.js route groups.
+- `-` prefix files/folders — excluded from the route tree (colocate helpers/logic).
+- `$` (`$.tsx`) — splat route (matches rest of path, `_splat` param).
+- `.route.tsx` — route file type marker.
+- Route matching is by specificity, not file order: index → static (most→least specific) → dynamic (longest→shortest) → splat.
+
+### Static Route Data
+
+Use `staticData` for static per-route metadata (titles, nav items, layout visibility) — the app already types it via declaration merging in `src/router.tsx`:
+
+```ts
+declare module "@tanstack/react-router" {
+  interface StaticDataRouteOption {
+    getTitle?: () => string
+    navItems?: NavItem[]
+  }
+}
+```
+
+Rule: static metadata → `staticData`; dynamic/per-request/auth data → router `context` (not `staticData`).
+
+### Document Head
+
+Each route can declare `head: () => ({ title, meta, links })`. Render `<HeadContent />` in `<head>` and `<Scripts />` in `<body>` (already in `__root.tsx`). Nested routes dedupe head tags — the last (deepest) wins. Use `ScriptOnce` for scripts that must run before hydration (theme detection).
+
+### Navigation Blocking (forms)
+
+Use `useBlocker` when a form is dirty to confirm navigation, and enable `enableBeforeUnload` to also guard refresh/close. Custom dialog via `status === "blocked"` + `proceed`/`reset`.
+
+### Mutation / Route-Change Cleanup
+
+Long-lived UI state (optimistic messages, drafts, form state) can resurface when navigating back. Reset it on route resolve:
+
+```ts
+router.subscribe("onResolved", () => {
+  // clear draft/transient Zustand or mutation UI state
+})
+```

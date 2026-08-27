@@ -16,7 +16,6 @@ export interface ILandingDomainsProps {
 	title?: string;
 	description?: string;
 	domains: ILandingDomainItem[];
-	/** Nút CTA do route compose sẵn (Button + Link). */
 	cta?: ReactNode;
 	className?: string;
 }
@@ -33,7 +32,7 @@ const DomainIconMark = ({
 	return (
 		<div
 			className={cn(
-				"flex shrink-0 items-center justify-center border border-border transition-all duration-300 group-hover:-rotate-3 group-hover:scale-105 group-hover:border-primary-foreground/30",
+				"flex shrink-0 items-center justify-center border border-border transition-colors duration-300 group-hover:border-primary-foreground/30",
 				className,
 			)}
 		>

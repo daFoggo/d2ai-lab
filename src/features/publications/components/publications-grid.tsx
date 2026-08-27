@@ -1,7 +1,6 @@
-import { IconChevronDown, IconSearch } from "@tabler/icons-react";
+﻿import { IconChevronDown, IconSearch } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { CornerFrame } from "@/components/common/corner-frame";
 import { PageHeader } from "@/components/common/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,7 +49,7 @@ const PublicationCard = ({
 				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 					{publication.venue}
 				</span>
-				<span className="font-mono text-xs text-muted-foreground/60 uppercase">
+				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground/60 uppercase">
 					{publication.year}
 				</span>
 			</div>
@@ -189,10 +188,8 @@ export const Publications = ({
 
 				{/* Featured + grid */}
 				{featured && (
-					<div className="mt-8 sm:mt-10">
-						<CornerFrame>
-							<PublicationCard publication={featured} featured />
-						</CornerFrame>
+					<div className="corner-frame mt-8 sm:mt-10">
+						<PublicationCard publication={featured} featured />
 					</div>
 				)}
 

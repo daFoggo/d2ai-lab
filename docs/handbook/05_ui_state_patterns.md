@@ -126,7 +126,7 @@ Common failure modes to avoid:
 
 Critical route data:
 
-- route loader uses `ensureQueryData`
+- route loader uses `queryClient.query(...)` (awaited)
 - component uses `useSuspenseQuery`
 - route error boundary owns error UI
 
@@ -153,6 +153,16 @@ Do not show empty state when:
 - Hardcode skeleton count and layout.
 - Skeleton should preserve layout dimensions and avoid content jumps.
 - For compact spaces, an inline skeleton is enough.
+
+## isPending vs isFetching
+
+Distinguish hard loading from background refetch:
+
+- `isPending` (no data yet) → hard loading state (`<Skeleton>`).
+- `isFetching` (background refetch while data exists) → lightweight indicator ("Refreshing…"), never a full skeleton.
+- Global background activity: `useIsFetching()`.
+
+Do not treat a background refetch as a full loading state — data is still on screen.
 
 ## Error Copy
 

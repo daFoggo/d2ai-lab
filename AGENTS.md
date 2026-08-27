@@ -1,91 +1,60 @@
 # Agent Instructions
 
-This file is the fast entry point for agents. The detailed source of truth lives in `docs/handbook/`.
+Fast entry point for agents. The detailed source of truth lives in `docs/handbook/`. Read the matching doc before writing code; this file only lists the invariants you must respect even before opening a doc.
 
 ## Read Order
 
-1. `docs/handbook/00_index.md`
-2. The handbook page that matches the task:
-   - `docs/handbook/01_project_overview.md`
-   - `docs/handbook/02_architecture.md`
-   - `docs/handbook/03_feature_development.md`
-   - `docs/handbook/04_tanstack_start_query_router.md`
-   - `docs/handbook/05_ui_state_patterns.md`
-   - `docs/handbook/06_quality_rules.md`
-   - `docs/handbook/07_development_checklist.md`
-   - `docs/handbook/08_zustand_best_practices.md`
-   - `docs/handbook/09_i18n.md`
-   - `docs/handbook/10_design_tokens.md`
+1. `docs/handbook/00_index.md` — index + core decisions.
+2. The handbook page matching your task:
 
-## Core Architecture Rules
+| Task | Doc |
+|---|---|
+| Stack, environment, TypeScript setup | `docs/handbook/01_project_overview.md` |
+| Architecture, feature boundaries, route orchestration, route tree conventions | `docs/handbook/02_architecture.md` |
+| Building/refactoring a feature module | `docs/handbook/03_feature_development.md` |
+| Data fetching, loaders, SSR, mutations, Supabase, server boundary | `docs/handbook/04_tanstack_start_query_router.md` |
+| Async UI states (loading/error/empty, isPending vs isFetching) | `docs/handbook/05_ui_state_patterns.md` |
+| Quality rules, primitives, styling, checks | `docs/handbook/06_quality_rules.md` |
+| Development & review checklist | `docs/handbook/07_development_checklist.md` |
+| Zustand client state & SSR rules | `docs/handbook/08_zustand_best_practices.md` |
+| i18n / locale routing | `docs/handbook/09_i18n.md` |
+| Design tokens & styling rules | `docs/handbook/10_design_tokens.md` |
+| Forms (TanStack Form) | `docs/handbook/11_tanstack_form.md` |
+| Tables (TanStack Table v9) | `docs/handbook/12_tanstack_table.md` |
 
-- The app uses feature-based architecture under `src/features/`.
-- Routes in `src/routes/` are the orchestration layer. Cross-feature page composition belongs in routes, not inside one feature importing another feature's UI arbitrarily.
-- Feature components should not fetch cross-feature data. Move cross-feature `useQuery` / `useSuspenseQuery` calls to routes or layout/container components, then pass data plus loading/error state through props.
-- Components inside a feature may use their own feature mutation hooks and may use own-feature queries only for deliberately self-contained widgets.
-- Cross-feature workflows should receive injected data/callbacks instead of importing another feature's query or mutation hook directly.
-- Feature barrels (`index.ts`) are client-safe public APIs. Never export `server.ts` or server-only modules from a feature barrel.
-- Use the `@/*` alias for imports instead of long relative paths.
+Project-specific references (not part of the base): `docs/project/`.
 
-## Feature Shape
+## Invariants
 
-```text
-src/features/[feature]/
-|-- components/
-|-- server.ts       # server-only logic
-|-- functions.ts    # createServerFn wrappers
-|-- queries.ts      # query keys, queryOptions, mutations
-|-- schemas.ts      # Zod schemas and exported types
-`-- index.ts        # client-safe public API
+These hold for every change. Details and rationale are in the linked docs.
+
+- **Feature-based architecture**: feature modules own feature-local code under `src/features/[feature]/` (`components/`, `server.ts`, `functions.ts`, `queries.ts`, `schemas.ts`, `index.ts`). Routes own cross-feature page composition. (`02_architecture.md`)
+- **Barrels are client-safe**: `index.ts` must never export `server.ts` or server-only modules. Use `@/*` imports. (`02_architecture.md`, `04`)
+- **Cross-feature data flows through props**: feature components never fetch another feature's data; routes/layouts load it and pass data + loading/error + callbacks. (`02_architecture.md`, `03`)
+- **Query functions resolve valid data or throw** — never return `null`/`[]`/fallbacks for failures. Failed queries are never empty states. (`04`, `05`)
+- **Loader decides criticality**: critical data = `loader` + awaited `context.queryClient.query(...)` + `useSuspenseQuery`; secondary = fire-and-forget `queryClient.query(...).catch(noop)` or local `useQuery` with local states. (`04`)
+- **No module-level `QueryClient` singleton** — use `createQueryClient()` per request lifecycle. (`04`)
+- **Suspense queries don't use `enabled`**; optional/inline queries may. (`04`)
+- **Mutations own cache correctness** (invalidation/optimistic/cache writes); **components own UX** (toasts/dialog/navigation). (`04`)
+- **State boundary**: TanStack Query owns server state; Zustand owns synchronous client UI state only — never mirror server data in Zustand. (`08`)
+- **Every async UI distinguishes loading / error / valid-empty**; loading = `<Skeleton>`, error = `<Alert variant="destructive">` + `getErrorMessage`, empty only for valid empty data. (`05`)
+- **Supabase**: use the shared client in `src/utils/supabase.ts`; check `error` on every response; translate known no-rows (`PGRST116`) into `notFound()`. (`04`)
+- **Server boundary**: a route `beforeLoad` guard is UX, not authorization — protect server functions/endpoints at the boundary. (`04`)
+
+## Checks
+
+Run these after major multi-file work (not after tiny edits):
+
+```bash
+pnpm exec biome check --write
+pnpm typecheck
+pnpm build
+pnpm check:encoding
 ```
 
-## State Management Rules (TanStack Query vs Zustand)
-
-- **TanStack Query**: Owns all server-state caching, loading/error states, and optimistic mutations. Do not duplicate or mirror server data in Zustand.
-- **Zustand**: Owns synchronous client UI state (sidebars, modals, multi-step draft wizards, interactive tool state).
-- Always use granular atomic selectors (`useStore(s => s.item)`) or `useShallow` from `zustand/react/shallow` to prevent unnecessary re-renders.
-- Guard persisted store state (`persist` middleware) with a hydration check to prevent SSR hydration mismatches in TanStack Start.
-- Feature-scoped client stores live in `src/features/[feature]/store.ts` and re-export client-safe hooks via `index.ts`. Global UI stores live in `src/stores/`.
-
-## TanStack Rules
-
-- TanStack Query, Router, and Start are the approved stack for server state, routing, and server functions.
-- Query functions must resolve valid data or throw. Do not return `null`, `[]`, or fallback objects for failures.
-- Use `queryOptions` factories and feature query key factories.
-- Critical route data: `loader` + `context.queryClient.ensureQueryData(...)` + `useSuspenseQuery`.
-- Secondary/optional widgets: `prefetchQuery` or local `useQuery`, with local loading/error/empty states.
-- Required Suspense query options should not use `enabled`; optional/inline component queries may use `enabled`.
-- Shared mutation hooks own cache invalidation, optimistic updates, and cache writes.
-- Components own toast, dialog state, navigation, and local UI side effects.
-- Do not use a module-level `QueryClient` singleton. Use `createQueryClient()` per request lifecycle.
-
-## Supabase Rules
-
-- Use the shared client from `src/utils/supabase.ts`. Do not create ad-hoc clients.
-- Check `error` on every Supabase response; `data` can be `null` on failures.
-- For detail resources use `.single()` and translate known no-row errors (e.g. `PGRST116`) into `notFound()`.
-- Do not swallow errors into empty arrays. `data ?? []` is only valid after a successful empty response.
-- UI and mutation catch blocks should use `getErrorMessage(error, fallback)` from `src/lib/error.ts`.
-
-## UI State Rules
-
-Every async UI must distinguish loading, error, and valid empty data.
-
-- Loading: use `<Skeleton>` with a hardcoded layout.
-- Error: use `<Alert variant="destructive">` and `getErrorMessage(error, fallback)`.
-- Empty: use a full empty state composition when data is valid but empty.
-- Do not silently hide failed queries by defaulting to `[]` or `null`.
-- If a query feeds submit-critical data, disable the action while loading or errored.
-
-## Quality Rules
+## Operational Guardrails
 
 - Prefer small, scoped changes that match existing code patterns.
-- **Design Tokens & Styling**: Strictly use standard Tailwind tokens (`text-xs`..`text-9xl`, `p-2`, `gap-4`, `max-w-md`...). Never use arbitrary custom classes like `className-[...]` (`text-[10px]`, `w-[450px]`, `p-[15px]`). Minimum text size is `text-xs` (12px).
-- **Use UI primitives as-is**: Pick `variant`/`size` props instead of restyling a primitive's built-in appearance. Never add `rounded-full`, `text-xs`, `font-medium`, or `px-4` overrides to a default `Button` — `<Button>Label</Button>` is the norm. `className` on a primitive is only for layout or theme-necessitated overrides.
-- **Compose, don't hand-roll**: Use `InputGroup` + `Input` for search fields, `DropdownMenuTrigger` + `Button` for language/menu triggers, and `Button` for icon-only controls. Internal button-as-link uses `Button render={<Link to="..." />}` (TanStack Router), never a raw `<a>`.
-- **Compound components are minimal**: Only use `Object.assign` compounds when callers actually compose the sub-parts (e.g. `LandingNavbar`, `LandingHero`). Single-use sections are plain components — no dead `Root`/`Header`/`Card`/`Preset` exports, no unused `className`/`...props` threading.
-- Run checks after major multi-file work:
-  - `pnpm exec biome check --write`
-  - `pnpm typecheck`
-  - `pnpm build`
+- Never write source files with PowerShell (`Set-Content`, `Out-File`) — they corrupt UTF-8 into mojibake. Use the edit tool; after a batch regex/shell edit run `pnpm check:encoding`.
 - Do not run expensive checks repeatedly for tiny edits unless requested.
+- Only commit/amend/push/PR when explicitly asked.
