@@ -58,12 +58,16 @@
     "@vitejs/plugin-react": "^6.1.0",
     "eslint": "^10.8.1",
     "jsdom": "^28.1.0",
+    "opentype.js": "^2.0.0",
     "pg": "^8.23.0",
     "playwright": "^1.62.1",
+    "pngjs": "^7.0.0",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vite": "^8.2.2",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "wawoff2": "^2.0.1"
   }
 }

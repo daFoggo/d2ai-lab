@@ -171,6 +171,7 @@ function HomePage() {
 											params={localeParams}
 										/>
 									}
+									nativeButton={false}
 									className="bg-foreground text-background hover:bg-foreground/90 font-medium"
 								>
 									{t("landing.hero.exploreResearch")}
@@ -181,6 +182,7 @@ function HomePage() {
 									render={
 										<Link to="/{-$locale}/projects" params={localeParams} />
 									}
+									nativeButton={false}
 									className="border-foreground/20 text-foreground hover:bg-foreground/10 hover:text-foreground font-medium"
 								>
 									{t("landing.hero.exploreProjects")}
@@ -228,6 +230,7 @@ function HomePage() {
 						render={
 							<Link to="/{-$locale}/publications" params={localeParams} />
 						}
+						nativeButton={false}
 					>
 						{t("landing.latest.seeMore")}
 					</Button>
@@ -243,6 +246,7 @@ function HomePage() {
 						render={
 							<Link to="/{-$locale}/research/areas" params={localeParams} />
 						}
+						nativeButton={false}
 					>
 						{t("landing.domains.cta")}
 					</Button>
@@ -257,6 +261,7 @@ function HomePage() {
 				seeMore={
 					<Button
 						render={<Link to="/{-$locale}/projects" params={localeParams} />}
+						nativeButton={false}
 					>
 						{t("landing.projects.seeMore")}
 					</Button>
@@ -264,6 +269,7 @@ function HomePage() {
 				heroCta={
 					<Button
 						render={<Link to="/{-$locale}/projects" params={localeParams} />}
+						nativeButton={false}
 					>
 						{PROJECT_HERO.ctaLabel}
 					</Button>
