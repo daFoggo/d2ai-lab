@@ -32,6 +32,7 @@ const SEMINARS: TSeminarDetail[] = [
 				id: "sp-1",
 				name: "Ms. Sarah Chen",
 				role: "Professor, University of Toronto",
+				photo: "/demo-seminar/dat.jpg",
 				socials: [
 					{ type: "x", label: "X profile", href: "https://x.com" },
 					{
@@ -45,7 +46,39 @@ const SEMINARS: TSeminarDetail[] = [
 				id: "sp-2",
 				name: "Mr. James Wright",
 				role: "Postdoc Researcher, D2AI Lab",
+				photo: "/demo-seminar/quang.jpg",
 				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
+			},
+			{
+				id: "sp-3",
+				name: "Dr. Elisa Moreau",
+				role: "Associate Professor, Sorbonne",
+				socials: [
+					{
+						type: "linkedin",
+						label: "LinkedIn profile",
+						href: "https://linkedin.com",
+					},
+				],
+			},
+			{
+				id: "sp-4",
+				name: "Prof. Nguyen Minh Khoa",
+				role: "Head of AI, D2AI Lab",
+				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
+			},
+			{
+				id: "sp-5",
+				name: "Dr. Aman Sethi",
+				role: "Senior Researcher, Google DeepMind",
+				socials: [
+					{ type: "x", label: "X profile", href: "https://x.com" },
+					{
+						type: "linkedin",
+						label: "LinkedIn profile",
+						href: "https://linkedin.com",
+					},
+				],
 			},
 		],
 		registrationUrl: "https://forms.gle/example",

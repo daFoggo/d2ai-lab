@@ -9,7 +9,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Breadcrumb } from "@/components/common/breadcrumb";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { HERO_SCOPE_STYLE } from "@/lib/brand-scope";
@@ -88,12 +87,13 @@ export function SeminarSpeakers({
 				{title}
 			</h2>
 
+			{/* Base layout: list shares a fixed frame height; photo panel fills it */}
 			<div
 				style={HERO_SCOPE_STYLE}
-				className="overflow-hidden rounded-3xl border border-border bg-background text-foreground lg:grid lg:grid-cols-12"
+				className="overflow-hidden rounded-3xl border border-border bg-background text-foreground lg:flex lg:h-135 lg:items-stretch"
 			>
 				{/* Left: speaker list */}
-				<ul className="flex flex-col lg:col-span-8 lg:h-full">
+				<ul className="flex min-w-0 flex-col lg:flex-1">
 					{speakers.map((speaker) => {
 						const isActive = speaker.id === active.id;
 						const socialLinks =
@@ -102,61 +102,60 @@ export function SeminarSpeakers({
 						return (
 							<li
 								key={speaker.id}
-								className="flex-1 border-b border-border last:border-b-0"
+								className={cn(
+									"flex flex-1 items-center justify-between gap-4 border-b border-border px-6 py-5 transition-colors last:border-b-0 sm:px-8",
+									isActive ? "bg-muted/40" : "bg-transparent",
+								)}
 							>
-								<div
-									className={cn(
-										"flex h-full w-full items-center justify-between gap-4 px-6 py-6 transition-colors sm:px-8",
-										isActive ? "bg-muted" : "bg-transparent",
-									)}
+								<button
+									type="button"
+									onMouseEnter={() => setActiveId(speaker.id)}
+									onFocus={() => setActiveId(speaker.id)}
+									aria-pressed={isActive}
+									className="flex min-w-0 flex-1 flex-col gap-1.5 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
 								>
-									<button
-										type="button"
-										onMouseEnter={() => setActiveId(speaker.id)}
-										onFocus={() => setActiveId(speaker.id)}
-										aria-pressed={isActive}
-										className="flex min-w-0 flex-1 flex-col gap-1 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+									<span
+										className={cn(
+											"truncate font-mono text-sm font-medium tracking-wide text-foreground uppercase transition-opacity sm:text-base",
+											!isActive && "opacity-40",
+										)}
 									>
-										<span
-											className={cn(
-												"font-title text-base font-medium tracking-wide text-foreground uppercase sm:text-lg",
-												!isActive && "text-foreground/60",
-											)}
-										>
-											{speaker.name}
-										</span>
-										<span className="text-sm text-muted-foreground">
-											{speaker.role}
-										</span>
-									</button>
+										{speaker.name}
+									</span>
+									<span className="font-mono text-xs uppercase leading-none text-muted-foreground sm:text-sm">
+										{speaker.role}
+									</span>
+								</button>
 
-									{socialLinks.length > 0 && (
-										<span className="flex shrink-0 items-center gap-2">
-											{socialLinks.map((social) => (
-												<a
-													key={social.type}
-													href={social.href}
-													target="_blank"
-													rel="noreferrer"
-													aria-label={social.label}
-													className="text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 outline-none"
-												>
-													<SpeakerSocialIcon type={social.type} />
-												</a>
-											))}
-										</span>
-									)}
-								</div>
+								{socialLinks.length > 0 && (
+									<span
+										className={cn(
+											"flex shrink-0 items-center gap-2 transition-opacity",
+											isActive ? "opacity-100" : "opacity-30",
+										)}
+									>
+										{socialLinks.map((social) => (
+											<a
+												key={social.type}
+												href={social.href}
+												target="_blank"
+												rel="noreferrer"
+												aria-label={social.label}
+												className="text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 outline-none"
+											>
+												<SpeakerSocialIcon type={social.type} />
+											</a>
+										))}
+									</span>
+								)}
 							</li>
 						);
 					})}
 				</ul>
 
-				{/* Right: speaker portrait */}
-				<div className="flex flex-col justify-center bg-background lg:col-span-4">
-					<AspectRatio ratio={3 / 4}>
-						<SpeakerPortrait speaker={active} />
-					</AspectRatio>
+				{/* Right: fixed-width photo panel filling the frame */}
+				<div className="relative h-80 w-full shrink-0 overflow-hidden bg-background sm:h-96 lg:h-full lg:w-80 xl:w-96">
+					<SpeakerPortrait speaker={active} />
 				</div>
 			</div>
 		</div>
