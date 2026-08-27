@@ -21,12 +21,21 @@
 		"exploreProjects": "Xem dự án"
 	},
 	"latest": {
-		"title": "Đọc tin mới nhất",
+		"title": "Nghiên cứu chúng tôi đang thực hiện",
 		"seeMore": "Xem thêm ấn phẩm"
+	},
+	"film": {
+		"cta": "Khám phá hướng nghiên cứu"
 	},
 	"domains": {
 		"title": "Chúng tôi hoạt động trên nhiều lĩnh vực",
 		"cta": "Khám phá lĩnh vực nghiên cứu"
+	},
+	"seminar": {
+		"title": "Hội thảo sắp tới",
+		"description": "Tham gia chuỗi hội thảo định kỳ và kết nối với các học giả quốc tế cùng thành viên phòng lab.",
+		"cta": "Xem tất cả hội thảo",
+		"viewDetails": "Xem chi tiết hội thảo"
 	},
 	"projects": {
 		"title": "Nền tảng ứng dụng & sáng kiến",

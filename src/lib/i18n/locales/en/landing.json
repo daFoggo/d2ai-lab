@@ -21,12 +21,21 @@
 		"exploreProjects": "View Projects"
 	},
 	"latest": {
-		"title": "Read the latest",
+		"title": "Research we're working on",
 		"seeMore": "See more publications"
+	},
+	"film": {
+		"cta": "Explore research directions"
 	},
 	"domains": {
 		"title": "We work across domains",
 		"cta": "Explore research areas"
+	},
+	"seminar": {
+		"title": "Upcoming seminar",
+		"description": "Join our regular seminar series and connect with international scholars and lab members.",
+		"cta": "View all seminars",
+		"viewDetails": "View seminar details"
 	},
 	"projects": {
 		"title": "Applied platforms & initiatives",

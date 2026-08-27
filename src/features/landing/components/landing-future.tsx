@@ -31,7 +31,7 @@ function FutureCard({
 		>
 			{/* Thumbnail with Standardized AspectRatio and No Border */}
 			<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl">
-				<AspectRatio ratio={16 / 10}>
+				<AspectRatio ratio={2 / 1}>
 					{item.thumbnail ? (
 						<img
 							src={item.thumbnail}
@@ -52,16 +52,16 @@ function FutureCard({
 			</div>
 
 			{/* Content */}
-			<h3 className="mt-4 font-title text-xl font-normal tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-2xl">
+			<h3 className="mt-3 font-title text-lg font-normal tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-xl">
 				{item.title}
 			</h3>
-			<p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+			<p className="mt-1.5 text-xs leading-relaxed text-muted-foreground sm:text-sm">
 				{item.description}
 			</p>
 
 			{/* Link with Clean Arrow */}
 			{item.to && (
-				<div className="mt-4 flex items-center gap-1.5 font-medium text-foreground">
+				<div className="mt-3 flex items-center gap-1.5 font-medium text-foreground">
 					<Link
 						to={item.to}
 						params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
@@ -85,7 +85,7 @@ export function LandingFuture({
 		<section
 			data-slot="landing-future"
 			className={cn(
-				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
+				"w-full overflow-hidden py-10 sm:py-14 lg:py-16",
 				className,
 			)}
 		>
@@ -94,7 +94,7 @@ export function LandingFuture({
 					{title}
 				</h2>
 
-				<div className="mt-6 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 sm:gap-8 lg:gap-10">
+				<div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:grid-cols-2 sm:gap-6 lg:gap-8">
 					{items.map((item) => (
 						<FutureCard key={item.id} item={item} />
 					))}

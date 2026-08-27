@@ -17,15 +17,22 @@ import {
 	LandingFilm,
 	LandingFuture,
 	LandingHero,
+	LandingHeroStats,
 	LandingLatest,
+	LandingPartners,
 	LandingProjects,
-	LandingQuote,
+	LandingSeminar,
 } from "@/features/landing";
+import type { TSeminar } from "@/features/seminars";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/{-$locale}/")({
 	component: HomePage,
 });
+
+/* Shared hover-arrow treatment for every landing CTA (matches the careers list "View role" affordance). */
+const CTA_ARROW_CLASS =
+	"size-4 transition-transform duration-300 group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5";
 
 /* Content data stays in the source language — only UI chrome is translated. */
 
@@ -36,11 +43,13 @@ const FILM_DATA = {
 	brandText: "D2AI Lab",
 };
 
-const QUOTE_DATA = {
-	quote:
-		"The magic cycle of research is accelerating. Research breakthroughs are leading to greater impact on products, science, and society—with greater opportunities for AI to amplify human ingenuity and capacity.",
-	authorName: "Huynh Phan Ly",
-	authorRole: "Director, D2AI Lab & Faculty of Information Technology",
+const UPCOMING_SEMINAR: TSeminar = {
+	id: "sem-1",
+	title: "From Chain-of-Evidence to verifiable autonomous science",
+	speaker: "Prof. Sarah Chen",
+	role: "University of Toronto",
+	date: "SEP 18",
+	status: "UPCOMING",
 };
 
 const LATEST_ITEMS: TLandingLatestItem[] = [
@@ -118,6 +127,14 @@ const FUTURE_ITEMS: TLandingFutureItem[] = [
 	},
 ];
 
+/* Stats band — số liệu khớp với content thật của site. */
+const HERO_STATS = [
+	{ value: "8", label: "Research areas" },
+	{ value: "7", label: "Publications" },
+	{ value: "6", label: "Active projects" },
+	{ value: "5", label: "Seminars & talks" },
+];
+
 function HomePage() {
 	const { t, locale } = useI18n();
 	const localeParams = {
@@ -175,7 +192,10 @@ function HomePage() {
 									className="bg-foreground text-background hover:bg-foreground/90 font-medium"
 								>
 									{t("landing.hero.exploreResearch")}
-									<IconArrowUpRight data-icon="inline-end" className="size-4" />
+									<IconArrowUpRight
+										data-icon="inline-end"
+										className={CTA_ARROW_CLASS}
+									/>
 								</Button>
 								<Button
 									variant="outline"
@@ -186,6 +206,10 @@ function HomePage() {
 									className="border-foreground/20 text-foreground hover:bg-foreground/10 hover:text-foreground font-medium"
 								>
 									{t("landing.hero.exploreProjects")}
+									<IconArrowUpRight
+										data-icon="inline-end"
+										className={CTA_ARROW_CLASS}
+									/>
 								</Button>
 							</LandingHero.Actions>
 						</div>
@@ -205,39 +229,56 @@ function HomePage() {
 						</div>
 					</LandingHero.Row>
 				</div>
+
+				{/* Stats band */}
+				<LandingHeroStats stats={HERO_STATS} />
 			</LandingHero.Root>
 
-			{/* 2. Section 1: Amplifying Human Ingenuity & Film */}
-			<LandingFilm
-				title={FILM_DATA.title}
-				description={FILM_DATA.description}
-				brandText={FILM_DATA.brandText}
-			/>
-
-			{/* 3. Section 2: Quote / Leader Statement Banner with GSAP Scroll Trigger */}
-			<LandingQuote
-				quote={QUOTE_DATA.quote}
-				authorName={QUOTE_DATA.authorName}
-				authorRole={QUOTE_DATA.authorRole}
-			/>
-
-			{/* 4. Section 3: Read the Latest (Publications) */}
-			<LandingLatest
-				title={t("landing.latest.title")}
-				items={LATEST_ITEMS}
-				action={
+			{/* 2. Upcoming seminar spotlight — first section under the hero */}
+			<LandingSeminar
+				title={t("landing.seminar.title")}
+				description={t("landing.seminar.description")}
+				seminar={UPCOMING_SEMINAR}
+				viewDetailsLabel={t("landing.seminar.viewDetails")}
+				cta={
 					<Button
-						render={
-							<Link to="/{-$locale}/publications" params={localeParams} />
-						}
+						render={<Link to="/{-$locale}/seminars" params={localeParams} />}
 						nativeButton={false}
 					>
-						{t("landing.latest.seeMore")}
+						{t("landing.seminar.cta")}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
 					</Button>
 				}
 			/>
 
-			{/* 5. Section 4: We Work Across Domains */}
+			{/* 3. Section 1: Amplifying Human Ingenuity & Film */}
+			<LandingFilm
+				title={FILM_DATA.title}
+				description={FILM_DATA.description}
+				brandText={FILM_DATA.brandText}
+				cta={
+					<Button
+						render={
+							<Link
+								to="/{-$locale}/research/directions"
+								params={localeParams}
+							/>
+						}
+						nativeButton={false}
+					>
+						{t("landing.film.cta")}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
+					</Button>
+				}
+			/>
+
+			{/* 4. Section 2: We Work Across Domains */}
 			<LandingDomains
 				title={domainsData.title}
 				description={domainsData.description}
@@ -249,6 +290,30 @@ function HomePage() {
 						nativeButton={false}
 					>
 						{t("landing.domains.cta")}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
+					</Button>
+				}
+			/>
+
+			{/* 5. Section 3: Research We're Working On (Publications) */}
+			<LandingLatest
+				title={t("landing.latest.title")}
+				items={LATEST_ITEMS}
+				action={
+					<Button
+						render={
+							<Link to="/{-$locale}/publications" params={localeParams} />
+						}
+						nativeButton={false}
+					>
+						{t("landing.latest.seeMore")}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
 					</Button>
 				}
 			/>
@@ -264,6 +329,10 @@ function HomePage() {
 						nativeButton={false}
 					>
 						{t("landing.projects.seeMore")}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
 					</Button>
 				}
 				heroCta={
@@ -272,11 +341,18 @@ function HomePage() {
 						nativeButton={false}
 					>
 						{PROJECT_HERO.ctaLabel}
+						<IconArrowUpRight
+							data-icon="inline-end"
+							className={CTA_ARROW_CLASS}
+						/>
 					</Button>
 				}
 			/>
 
-			{/* 7. Section 6: Help Us Shape The Future */}
+			{/* 7. Research partners */}
+			<LandingPartners />
+
+			{/* 8. Section 6: Help Us Shape The Future */}
 			<LandingFuture title={t("landing.future.title")} items={FUTURE_ITEMS} />
 		</>
 	);

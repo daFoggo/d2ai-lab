@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
 import { HERO_SCOPE_STYLE } from "../constants";
@@ -7,6 +8,8 @@ export interface ILandingFilmProps {
 	description?: string;
 	brandText?: string;
 	thumbnailSrc?: string;
+	/** Nút CTA do route compose sẵn (Button + Link). */
+	cta?: ReactNode;
 	className?: string;
 }
 
@@ -15,6 +18,7 @@ export function LandingFilm({
 	description = "As we realize new possibilities with AI, we maintain a human-centered approach. We advance scientific progress by publishing impactful research each year and collaborating with universities, NGOs, partners, and communities worldwide.",
 	brandText = "D2AI Lab",
 	thumbnailSrc,
+	cta,
 	className,
 }: ILandingFilmProps) {
 	return (
@@ -37,6 +41,7 @@ export function LandingFilm({
 						<p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:mt-5 sm:text-base md:max-w-xl">
 							{description}
 						</p>
+						{cta && <div className="mt-5 sm:mt-6">{cta}</div>}
 					</div>
 
 					<div
