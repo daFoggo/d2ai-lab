@@ -160,7 +160,7 @@ const table = useTable(
 
 - Read state via `table.state` / table atoms; mutate via setters (`setSorting`, `setPagination`, `setRowSelection`, ...) or controlled `state` + `on*Change` props.
 - Controlled mode is required for server-side processing (state drives the query key).
-- Render only visible rows; add virtualization (TanStack Virtual) for large lists (see `docs/tanstack-docs-reference/table` virtualization guide).
+- Render only visible rows; add virtualization (TanStack Virtual) for large lists (see the TanStack Virtual docs).
 
 ## Async UI States (mandatory)
 
@@ -168,7 +168,7 @@ Tables are async surfaces — follow `05_ui_state_patterns.md`:
 
 - Loading: `<Skeleton>` (or a compact row-skeleton) with hardcoded layout.
 - Error: `<Alert variant="destructive">` + `getErrorMessage(error, fallback)`.
-- Empty: full empty state only after a valid empty response.
+- Empty: the shadcn `Empty` primitive (`@/components/ui/empty`) only after a valid empty response.
 - Do not render an empty table (or `[]`) for a failed query.
 
 ## Key Rules / Anti-patterns

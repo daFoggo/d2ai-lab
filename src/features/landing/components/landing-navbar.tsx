@@ -145,7 +145,6 @@ export const LandingNavbarBrand = ({
 		return (
 			<button
 				type="button"
-				data-slot="landing-navbar-brand"
 				className={cn(
 					"group flex shrink-0 cursor-pointer items-center gap-2 select-none focus:outline-hidden",
 					className,
@@ -175,7 +174,6 @@ export const LandingNavbarBrand = ({
 		<Link
 			to="/{-$locale}"
 			params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
-			data-slot="landing-navbar-brand"
 			className={cn(
 				"group flex shrink-0 items-center gap-2 select-none focus:outline-hidden",
 				className,
@@ -213,11 +211,7 @@ export const LandingNavbarNav = ({
 	const { locale } = useI18n();
 
 	return (
-		<div
-			data-slot="landing-navbar-nav"
-			className={cn("hidden items-center md:flex", className)}
-			{...props}
-		>
+		<div className={cn("hidden items-center md:flex", className)} {...props}>
 			{children || (
 				<NavigationMenu>
 					<NavigationMenuList className="gap-1 lg:gap-2">
@@ -397,7 +391,6 @@ export const LandingNavbarActions = ({
 
 	return (
 		<div
-			data-slot="landing-navbar-actions"
 			className={cn("flex shrink-0 items-center gap-2 sm:gap-2.5", className)}
 			{...props}
 		>
@@ -405,10 +398,7 @@ export const LandingNavbarActions = ({
 			<div className="hidden items-center gap-2 sm:gap-2.5 md:flex">
 				{/* 1. Search Input */}
 				{onSearchClick && (
-					<InputGroup
-						data-slot="landing-search-trigger"
-						className="w-28 sm:w-44 lg:w-56"
-					>
+					<InputGroup className="w-28 sm:w-44 lg:w-56">
 						<InputGroupInput
 							placeholder={resolvedSearch}
 							aria-label={resolvedSearch}
@@ -461,13 +451,10 @@ export const LandingNavbarActions = ({
 					</Button>
 
 					{mobileOpen && (
-						<div
-							data-slot="landing-mobile-drawer"
-							className="absolute top-full left-0 z-50 flex max-h-screen w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2"
-						>
+						<div className="absolute top-full left-0 z-50 flex max-h-screen w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2">
 							{/* Search (mobile) */}
 							{onSearchClick && (
-								<InputGroup data-slot="landing-search-trigger">
+								<InputGroup>
 									<InputGroupInput
 										placeholder={resolvedSearch}
 										aria-label={resolvedSearch}

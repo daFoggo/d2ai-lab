@@ -1,6 +1,7 @@
 export * from "./landing-domains";
 export * from "./landing-footer";
 export * from "./landing-hero";
+export * from "./landing-hero-stats";
 export * from "./landing-layout";
 export * from "./landing-mission";
 export * from "./landing-navbar";

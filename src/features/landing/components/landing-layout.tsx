@@ -13,7 +13,6 @@ export const LandingLayout = ({
 }: ILandingLayoutProps) => {
 	return (
 		<div
-			data-slot="landing-layout"
 			className={cn(
 				"relative flex min-h-screen w-full flex-col bg-background text-foreground antialiased selection:bg-foreground selection:text-background",
 				className,

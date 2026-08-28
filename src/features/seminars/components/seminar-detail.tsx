@@ -86,10 +86,7 @@ export const SeminarSpeakers = ({
 		speakers.find((speaker) => speaker.id === activeId) ?? speakers[0];
 
 	return (
-		<div
-			data-slot="seminar-speakers"
-			className={cn("flex flex-col gap-6", className)}
-		>
+		<div className={cn("flex flex-col gap-6", className)}>
 			<h2 className="font-title text-2xl font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
 				{title}
 			</h2>
@@ -199,7 +196,6 @@ export const SeminarDetail = ({
 
 	return (
 		<section
-			data-slot="seminar-detail"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
@@ -230,10 +226,7 @@ export const SeminarDetail = ({
 				<div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-12">
 					{/* Main column */}
 					<div className="flex flex-col gap-8 lg:col-span-9">
-						<header
-							data-slot="seminar-detail-header"
-							className="flex flex-col gap-6"
-						>
+						<header className="flex flex-col gap-6">
 							{/* Title */}
 							<h1 className="max-w-4xl font-title text-3xl font-normal tracking-tight text-foreground text-balance sm:text-4xl md:text-5xl">
 								{seminar.title}

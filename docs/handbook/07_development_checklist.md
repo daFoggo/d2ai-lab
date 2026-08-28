@@ -47,7 +47,7 @@ description: Review implementation against the project's architecture, data, and
 
 - Every local `useQuery` surface needs loading and error states.
 - Add empty state only for valid empty data.
-- Main content uses `Skeleton`, destructive `Alert`, and a full empty state composition.
+- Main content uses `Skeleton`, destructive `Alert`, and the `Empty` primitive (`@/components/ui/empty`) for valid empty data.
 - Compact spaces use inline `Skeleton`, tiny icon/error text, and compact helper empty text.
 - Do not hide failed queries by defaulting to `[]`, `null`, hidden UI, or fallback values.
 - If a query feeds submit-critical data, disable the action while loading or errored.

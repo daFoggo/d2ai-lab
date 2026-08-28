@@ -23,7 +23,6 @@ const PublicationCard = ({
 
 	return (
 		<article
-			data-slot="landing-publications-card"
 			className={cn(
 				"group flex flex-col overflow-hidden transition-all duration-300",
 				className,
@@ -60,7 +59,7 @@ const PublicationCard = ({
 				</span>
 				{item.date && (
 					<>
-						<span className="text-xs text-muted-foreground/50">Â·</span>
+						<span className="text-xs text-muted-foreground/50">·</span>
 						<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 							{item.date}
 						</span>
@@ -90,7 +89,6 @@ export const LandingPublications = ({
 }: ILandingPublicationsProps) => {
 	return (
 		<section
-			data-slot="landing-publications"
 			className={cn(
 				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
 				className,

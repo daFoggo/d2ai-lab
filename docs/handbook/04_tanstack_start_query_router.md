@@ -105,6 +105,35 @@ const { data } = useSuspenseQuery(searchUsersQueryOptions(query))
 queryClient.invalidateQueries({ queryKey: userKeys.searches() })
 ```
 
+## Important Defaults
+
+TanStack Query ships "aggressive but sane" defaults — know them to avoid surprise refetches:
+
+- **`staleTime: 0`** — cached data is considered stale immediately, so queries refetch on mount, window focus, and reconnect. For SSR, set a higher default `staleTime` (this repo: 5 min) so prefetched data is not refetched on the client.
+  - `staleTime: Infinity` — never refetch unless manually invalidated.
+  - `staleTime: 'static'` — never refetch, **even if `invalidateQueries` is called** (stricter than `Infinity`). Use for immutable data loaded at boot (feature flags, permissions, static reference tables); use `Infinity` when manual invalidation should still work.
+- **`gcTime: 5 min`** — inactive queries (no mounted observers) are garbage collected after this. Set per-query or globally (this repo: 10 min).
+- **Queries retry 3 times** with exponential backoff on failure; mutations do **not** retry by default.
+- **Structural sharing** keeps the previous data reference when nothing changed — only JSON-compatible data benefits.
+
+## Render Optimizations
+
+- **Structural sharing**: unchanged query data keeps its reference across re-renders (enables `useMemo`/`useCallback` stability). Don't disable it.
+- **Tracked properties**: `useQuery` only re-renders when a property you actually read changes (proxy-based). Object-rest destructuring disables this — destructure only the flags you use.
+- **`select`**: subscribe to a subset / transform:
+
+```ts
+export const useTodoCount = () =>
+  useQuery({
+    ...todosQueryOptions(),
+    select: (data) => data.length, // re-renders only when length changes
+  })
+```
+
+  - Inline `select` re-runs every render; wrap in `useCallback` or extract a stable function.
+  - `select` runs on successfully cached data — **not** the place to throw errors; keep error handling in `queryFn`.
+  - When passing query objects inline to `useQueries`/`useSuspenseQueries`, an inline `select` can't infer its `data` type — annotate the parameter or define the query with `queryOptions(...)` (preferred).
+
 ## Route Loader Policy
 
 Routes decide criticality.
@@ -213,6 +242,42 @@ const results = useSuspenseQueries({
 ```
 
 - Dependent queries (`enabled: !!id`) are also a form of waterfall. Flatten the API into a single request when possible.
+- **Nested component waterfall**: if a parent waits for its query before rendering a child that also queries, the child's fetch only starts after the parent's resolves. Hoist the child's query to the parent (or prefetch it) so both fetch in parallel.
+
+## Request Waterfalls
+
+A request waterfall is a fetch that only starts after another fetch finished — each hop adds a network roundtrip (especially costly on high latency). Three common React Query causes:
+
+1. **Serial suspense** — multiple `useSuspenseQuery` in one component (use `useSuspenseQueries`).
+2. **Dependent queries** — `enabled: !!id` waits for a previous query (flatten the API, or move to server where latency is lower).
+3. **Nested components** — parent query → child query. Fix: hoist the child's query into the parent and pass data via props, or prefetch the child's query at the router/loader level.
+
+Check the Network tab for waterfalls. Not every waterfall must be flattened, but watch the high-impact ones. SSR moves these waterfalls to the server (lower latency), but SPA client-side navigation re-introduces them unless you prefetch at the router level.
+
+## Prefetching
+
+Prefetching populates the cache ahead of time to flatten waterfalls and speed up navigation.
+
+- **Route loader** (recommended, integrates with SSR): use `queryClient.query(...)` — `await` critical data, or fire-and-forget `void queryClient.query(...).catch(noop)` for secondary data. Loader prefetched data is served immediately by `useQuery`/`useSuspenseQuery`.
+- **In components**, before a suspense boundary you cannot use `useSuspenseQueries` (it would block render) nor `useQuery` (starts after suspense resolves). Use the dedicated hooks:
+
+```ts
+import { usePrefetchQuery } from "@tanstack/react-query"
+
+function ArticleLayout({ id }) {
+  // Starts fetching immediately, does not block rendering
+  usePrefetchQuery({ queryKey: ["comments", id], queryFn: fetchComments })
+  return <Suspense fallback="Loading"><Article id={id} /></Suspense>
+}
+```
+
+- **In event handlers** (hover/focus on a link): `void queryClient.query({ queryKey, queryFn, staleTime: 60000 }).catch(noop)`.
+- **Prefetch inside a queryFn**: useful when a query almost always needs a related query — fire the dependent prefetch before returning the primary data.
+- `queryClient.query` returns the result and **throws on error**. For non-critical prefetches, swallow with `.catch(noop)`; the subsequent `useQuery` will retry on mount.
+- `setQueryData(key, data)` seeds the cache synchronously when you already have the data (no network).
+
+> [!NOTE]
+> Infinite queries can be prefetched with `queryClient.infiniteQuery(...)` (first page by default, `pages` option to prefetch more) and `usePrefetchInfiniteQuery` in components.
 
 ## placeholderData vs initialData
 

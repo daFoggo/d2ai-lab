@@ -14,6 +14,14 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from "@/components/ui/empty";
+import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
@@ -91,10 +99,7 @@ export interface IResearchGapsProps {
 
 const GapRow = ({ gap }: { gap: TResearchGap }) => {
 	return (
-		<li
-			data-slot="research-gap-row"
-			className="flex flex-col gap-3 border-t border-border py-6 sm:py-7"
-		>
+		<li className="flex flex-col gap-3 border-t border-border py-6 sm:py-7">
 			<div className="flex flex-wrap items-center gap-3">
 				<Badge variant="outline">{gap.status}</Badge>
 				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
@@ -146,7 +151,6 @@ export const ResearchGaps = ({
 
 	return (
 		<section
-			data-slot="research-gaps"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
@@ -251,16 +255,22 @@ export const ResearchGaps = ({
 
 				{/* List or empty state */}
 				{filtered.length === 0 ? (
-					<div className="flex flex-col items-center gap-2 py-16 text-center">
-						<IconSearchOff className="size-12 text-muted-foreground/50" />
-						<p className="text-lg font-medium">No gaps match your filters</p>
-						<p className="text-sm text-muted-foreground">
-							Try a different search term or clear the active filters.
-						</p>
-						<Button variant="outline" className="mt-2" onClick={clearFilters}>
-							Clear filters
-						</Button>
-					</div>
+					<Empty>
+						<EmptyHeader>
+							<EmptyMedia variant="icon">
+								<IconSearchOff />
+							</EmptyMedia>
+							<EmptyTitle>No gaps match your filters</EmptyTitle>
+							<EmptyDescription>
+								Try a different search term or clear the active filters.
+							</EmptyDescription>
+						</EmptyHeader>
+						<EmptyContent>
+							<Button variant="outline" onClick={clearFilters}>
+								Clear filters
+							</Button>
+						</EmptyContent>
+					</Empty>
 				) : (
 					<ul className="mt-4 border-b border-border">
 						{filtered.map((gap) => (

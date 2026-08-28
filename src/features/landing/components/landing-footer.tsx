@@ -29,7 +29,6 @@ export const LandingFooter = ({
 
 	return (
 		<footer
-			data-slot="landing-footer"
 			className={cn(
 				"w-full overflow-hidden border-t border-primary-foreground/15 bg-primary pt-10 pb-8 text-primary-foreground sm:pt-14 sm:pb-10",
 				className,
@@ -37,10 +36,7 @@ export const LandingFooter = ({
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				{/* Other research teams and initiative areas */}
-				<div
-					data-slot="landing-footer-labs"
-					className="flex flex-col justify-between gap-3 text-xs text-primary-foreground/80 sm:flex-row sm:items-center sm:text-sm"
-				>
+				<div className="flex flex-col justify-between gap-3 text-xs text-primary-foreground/80 sm:flex-row sm:items-center sm:text-sm">
 					<span className="font-semibold text-primary-foreground">
 						{t("landing.footer.labsLabel")}
 					</span>
@@ -58,20 +54,14 @@ export const LandingFooter = ({
 				</div>
 
 				{/* Bold Massive Typography */}
-				<div
-					data-slot="landing-footer-bigtext"
-					className="py-8 text-center select-none sm:py-12 lg:py-16"
-				>
+				<div className="py-8 text-center select-none sm:py-12 lg:py-16">
 					<span className="inline-block font-title text-6xl font-bold tracking-tighter text-primary-foreground/90 transition-colors hover:text-primary-foreground sm:text-7xl md:text-8xl lg:text-9xl">
 						{brandName}
 					</span>
 				</div>
 
 				{/* Bottom Bar */}
-				<div
-					data-slot="landing-footer-bottom"
-					className="flex flex-col justify-between gap-4 border-t border-primary-foreground/15 pt-6 text-xs text-primary-foreground/80 sm:flex-row sm:items-center sm:text-sm"
-				>
+				<div className="flex flex-col justify-between gap-4 border-t border-primary-foreground/15 pt-6 text-xs text-primary-foreground/80 sm:flex-row sm:items-center sm:text-sm">
 					{/* Left: Brand + Slogan + Socials */}
 					<div className="flex flex-wrap items-center gap-4 sm:gap-6">
 						<div className="flex items-center gap-2">

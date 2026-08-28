@@ -18,7 +18,6 @@ export const SectionDivider = ({
 }: ISectionDividerProps) => {
 	return (
 		<div
-			data-slot="section-divider"
 			className={cn("flex flex-col items-center gap-3 text-center", className)}
 		>
 			<h2 className="font-title text-3xl font-normal tracking-tight text-primary text-balance sm:text-4xl md:text-5xl">

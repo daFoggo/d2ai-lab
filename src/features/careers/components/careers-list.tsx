@@ -21,7 +21,7 @@ const CareerRow = ({ role }: { role: TCareer }) => {
 	};
 
 	return (
-		<li data-slot="career-row" className="border-t border-border">
+		<li className="border-t border-border">
 			<Link
 				to="/{-$locale}/careers/$id"
 				params={{ ...localeParams, id: role.id }}
@@ -63,7 +63,6 @@ export const Careers = ({
 }: ICareersProps) => {
 	return (
 		<section
-			data-slot="careers"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">

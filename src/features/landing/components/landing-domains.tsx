@@ -61,7 +61,6 @@ const DomainCell = ({
 		<Link
 			to="/{-$locale}/research/areas"
 			params={{ locale: locale === DEFAULT_LOCALE ? undefined : locale }}
-			data-slot="landing-domain-card"
 			className={cn(
 				"group relative flex h-full flex-col justify-between gap-3 overflow-hidden border border-border bg-card p-4 transition-colors duration-300 hover:border-primary hover:bg-primary focus:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50",
 				isLarge && "sm:p-5",
@@ -112,7 +111,6 @@ export const LandingDomains = ({
 }: ILandingDomainsProps) => {
 	return (
 		<section
-			data-slot="landing-domains"
 			className={cn(
 				"w-full overflow-hidden py-12 sm:py-16 lg:py-20",
 				className,

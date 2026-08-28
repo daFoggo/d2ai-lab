@@ -47,7 +47,7 @@ Canonical token rules live in `10_design_tokens.md`. Summary:
 
 - Prefer existing `@/components/ui` and `@/components/common` components.
 - Add a new component only when existing components cannot be composed cleanly.
-- New reusable components should have `data-slot` on the root element.
+- Add `data-slot` only when the root will actually be targeted from outside the component: CSS selectors (`[data-slot="..."]`, `has-data-[slot=...]`, `in-data-[slot=...]`), or JS (`querySelector`/scroll-spy). Do not add it speculatively to every component — a `data-slot` that nothing references is dead weight. shadcn `@/components/ui` primitives already carry their own `data-slot`; leave those untouched.
 - Components with two or more variants should use CVA.
 - Icon-only buttons need `aria-label` or screen-reader text.
 - Inputs must support default, focus, error, disabled, and readonly states.

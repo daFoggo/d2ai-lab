@@ -12,12 +12,14 @@ const EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".json", ".css", ".mjs
 // Built from codepoints so the script never matches its own source.
 //  - â€[x]  : UTF-8 em-dash/ellipsis/quote bytes (… — ' ") decoded as Latin-1
 //  - Ã+high : any UTF-8 char decoded as Latin-1 (Ã© = é, Ã£ = ã, ...)
+//  - Â+high : double-encoded chars (Â· = ·, Â¡ = ¡, ...)
 const P = (c) => String.fromCharCode(c);
 const HIGH = Array.from({ length: 0xbf - 0x80 + 1 }, (_, i) => P(0x80 + i)).join("");
 const MOJIBAKE = new RegExp(
   [
     `${P(0x00e2)}${P(0x20ac)}[^x]`, // â€¦ â€” â€™ â€œ ...
     `${P(0x00c3)}[${HIGH}]`, // Ã + high-Latin byte (mojibake of any UTF-8 char)
+    `${P(0x00c2)}[${HIGH}]`, // Â + high-Latin byte (double-encoded Latin-1 char)
   ].join("|"),
   "g",
 );

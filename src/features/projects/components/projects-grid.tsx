@@ -16,10 +16,7 @@ export interface IProjectsProps {
 
 const FeaturedProject = ({ project }: { project: TProject }) => {
 	return (
-		<div
-			data-slot="projects-featured"
-			className="mt-8 grid grid-cols-1 items-center gap-6 sm:mt-10 sm:gap-8 md:grid-cols-12 lg:gap-12"
-		>
+		<div className="mt-8 grid grid-cols-1 items-center gap-6 sm:mt-10 sm:gap-8 md:grid-cols-12 lg:gap-12">
 			<div className="corner-frame md:col-span-5">
 				<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl">
 					<AspectRatio ratio={16 / 10}>
@@ -63,10 +60,7 @@ const FeaturedProject = ({ project }: { project: TProject }) => {
 
 const ProjectItem = ({ project }: { project: TProject }) => {
 	return (
-		<article
-			data-slot="project-card"
-			className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-border/60 hover:bg-muted/30 sm:p-6"
-		>
+		<article className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-border/60 hover:bg-muted/30 sm:p-6">
 			<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 				{project.category}
 			</span>
@@ -96,7 +90,6 @@ export const Projects = ({
 }: IProjectsProps) => {
 	return (
 		<section
-			data-slot="projects"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">

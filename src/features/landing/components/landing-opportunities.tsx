@@ -22,7 +22,6 @@ const OpportunityCard = ({
 
 	return (
 		<article
-			data-slot="landing-opportunities-card"
 			className={cn(
 				"group flex flex-col overflow-hidden transition-all duration-300",
 				className,
@@ -79,7 +78,6 @@ export const LandingOpportunities = ({
 }: ILandingOpportunitiesProps) => {
 	return (
 		<section
-			data-slot="landing-opportunities"
 			className={cn(
 				"w-full overflow-hidden py-10 sm:py-14 lg:py-16",
 				className,

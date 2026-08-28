@@ -21,7 +21,6 @@ export const LandingMission = ({
 }: ILandingMissionProps) => {
 	return (
 		<section
-			data-slot="landing-mission"
 			className={cn(
 				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
 				className,
@@ -29,10 +28,7 @@ export const LandingMission = ({
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				<div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
-					<div
-						data-slot="landing-mission-content"
-						className="flex flex-col justify-center"
-					>
+					<div className="flex flex-col justify-center">
 						<h2 className="font-title text-2xl leading-tight font-normal tracking-tight text-foreground sm:text-3xl md:text-4xl">
 							{title}
 						</h2>
@@ -42,10 +38,7 @@ export const LandingMission = ({
 						{cta && <div className="mt-5 sm:mt-6">{cta}</div>}
 					</div>
 
-					<div
-						data-slot="landing-mission-video"
-						className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl"
-					>
+					<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl">
 						<AspectRatio ratio={16 / 9}>
 							{thumbnailSrc ? (
 								<img

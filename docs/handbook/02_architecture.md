@@ -106,7 +106,7 @@ const user = useQuery(userMeQueryOptions)
 return (
   <AppSidebar
     user={user.data}
-    isUserLoading={user.isLoading}
+    isUserPending={user.isPending}
     isUserError={user.isError}
     userError={user.error}
   />

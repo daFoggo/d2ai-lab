@@ -20,7 +20,6 @@ const AreaCard = ({
 }) => {
 	return (
 		<article
-			data-slot="research-area-card"
 			className={cn(
 				"group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-border/60 hover:bg-muted/30 sm:p-6",
 				className,
@@ -54,7 +53,6 @@ export const ResearchAreas = ({
 }: IResearchAreasProps) => {
 	return (
 		<section
-			data-slot="research-areas"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">

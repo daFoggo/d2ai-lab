@@ -1,4 +1,5 @@
-﻿import {
+﻿import type { Icon } from "@tabler/icons-react";
+import {
 	IconAntenna,
 	IconArrowUpRight,
 	IconBrain,
@@ -8,28 +9,29 @@
 	IconSparkleHighlight,
 	IconTableSpark,
 } from "@tabler/icons-react";
+import { useSuspenseQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import type {
-	ILandingDomainItem,
-	TLandingDomainsData,
-	TLandingOpportunityItem,
-	TLandingPartner,
-	TLandingProjectHero,
-	TLandingProjectItem,
-	TLandingPublicationItem,
-} from "@/features/landing";
+import type { TLandingDomainsData } from "@/features/landing";
 import {
 	LandingDomains,
 	LandingHero,
+	LandingHeroStats,
 	LandingMission,
 	LandingOpportunities,
 	LandingPartners,
 	LandingProjects,
 	LandingPublications,
 	LandingSeminar,
+	landingDomainsQueryOptions,
+	landingHeroStatsQueryOptions,
+	landingMissionQueryOptions,
+	landingOpportunitiesQueryOptions,
+	landingPartnersQueryOptions,
+	landingProjectsQueryOptions,
+	landingPublicationsQueryOptions,
+	landingUpcomingSeminarQueryOptions,
 } from "@/features/landing";
-import type { TSeminar } from "@/features/seminars";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 
 /* Shared hover-arrow treatment for every landing CTA (matches the careers list "View role" affordance). */
@@ -38,151 +40,43 @@ const CTA_ARROW_CLASS =
 
 /* Content data stays in the source language — only UI chrome is translated. */
 
-const MISSION_DATA = {
-	title: "Amplifying human ingenuity",
-	description:
-		"We advance scientific progress through AI research, collaborating with universities, NGOs, and partners worldwide.",
-	brandText: "D2AI Lab",
+/* Icons cho domains — mapping theo id vì API chỉ trả dữ liệu text, icon là presentation-layer concern. */
+const DOMAIN_ICONS: Record<string, Icon> = {
+	"ai-ml": IconBrain,
+	"smart-education": IconSchool,
+	"ambient-iot": IconAntenna,
+	"responsible-ai": IconShieldCheck,
+	"climate-ecology": IconLeaf,
 };
-
-const UPCOMING_SEMINAR: TSeminar = {
-	id: "sem-1",
-	title: "From Chain-of-Evidence to verifiable autonomous science",
-	speaker: "Prof. Sarah Chen",
-	role: "University of Toronto",
-	date: "SEP 18",
-	status: "UPCOMING",
-};
-
-const PUBLICATION_ITEMS: TLandingPublicationItem[] = [
-	{
-		id: "pub-1",
-		title:
-			"Empty shelves or lost keys? Recall is the bottleneck for parametric factuality",
-		category: "PARAMETRIC FACTUALITY",
-		date: "AUGUST 12",
-		type: "RESEARCH",
-		to: "/{-$locale}/publications/pub-1",
-	},
-	{
-		id: "pub-2",
-		title:
-			"Advancing AMIE towards expert-level audio-visual clinical consultations",
-		category: "CLINICAL AI",
-		date: "AUGUST 11",
-		type: "RESEARCH",
-		to: "/{-$locale}/publications/pub-2",
-	},
-	{
-		id: "pub-3",
-		title:
-			"Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence",
-		category: "CHAIN OF EVIDENCE",
-		date: "JULY 30",
-		type: "RESEARCH",
-		to: "/{-$locale}/publications/pub-3",
-	},
-];
-
-const PROJECT_HERO: TLandingProjectHero = {
-	title: "Adaptive Learning Platform",
-	category: "SMART EDUCATION APP",
-	description:
-		"A personalized learning web application combining cognitive diagnostics and generative curriculum planning to empower students in real-time.",
-	ctaLabel: "View project",
-	to: "/{-$locale}/projects",
-};
-
-const PROJECT_ITEMS: TLandingProjectItem[] = [
-	{
-		id: "app-1",
-		title:
-			"UrbanSense: Real-time environmental sensor dashboard and air quality forecasting system",
-		category: "SMART LIVING APP",
-		to: "/{-$locale}/projects",
-	},
-	{
-		id: "app-2",
-		title:
-			"CivicFlow: Intelligent document triage and automated public administrative assistant",
-		category: "CIVIC TECH APP",
-		to: "/{-$locale}/projects",
-	},
-];
-
-/* Landing shows a curated handful, not the full catalogue — the header CTA links out to the rest. */
-const DOMAIN_ITEMS: ILandingDomainItem[] = [
-	{
-		id: "ai-ml",
-		tag: "NEURAL ARCHITECTURES",
-		title: "AI/ML Foundations",
-		icon: IconBrain,
-	},
-	{
-		id: "smart-education",
-		tag: "ADAPTIVE SYSTEMS",
-		title: "Smart Education",
-		icon: IconSchool,
-	},
-	{
-		id: "ambient-iot",
-		tag: "TELEMETRY & SENSORS",
-		title: "Ambient IoT",
-		icon: IconAntenna,
-	},
-	{
-		id: "responsible-ai",
-		tag: "ETHICAL ML",
-		title: "Responsible AI",
-		icon: IconShieldCheck,
-	},
-	{
-		id: "climate-ecology",
-		tag: "SPATIAL SENSING",
-		title: "Climate & Ecology",
-		icon: IconLeaf,
-	},
-];
-
-/* Wordmark placeholders — thay bằng logo thật khi có brand assets. */
-const PARTNERS: TLandingPartner[] = [
-	{ id: "ptit", name: "PTIT" },
-	{ id: "cnu", name: "CNU" },
-	{ id: "uga", name: "UGA" },
-];
-
-const OPPORTUNITY_ITEMS: TLandingOpportunityItem[] = [
-	{
-		id: "future-careers",
-		title: "Career opportunities",
-		description:
-			"We're looking for scientists, engineers, interns, and students to join our core AI and intelligent computing labs.",
-		linkLabel: "Learn more about careers",
-		to: "/{-$locale}/careers",
-	},
-	{
-		id: "future-seminars",
-		title: "Seminars & Academic exchange",
-		description:
-			"Join our seminar series, guest lectures, and technical knowledge exchange workshops.",
-		linkLabel: "View all seminars",
-		to: "/{-$locale}/seminars",
-	},
-];
-
-/* Stats band — số liệu khớp với content thật của site. */
-const HERO_STATS = [
-	{ value: "8", label: "Research areas" },
-	{ value: "7", label: "Publications" },
-	{ value: "6", label: "Active projects" },
-	{ value: "5", label: "Seminars & talks" },
-];
 
 const HomePage = () => {
 	const { t, locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
 	};
+
+	/* Granular: 8 queries riêng, fetch song song (chống waterfall). Loader đã warm cache nên không refetch. */
+	const [
+		heroStatsQuery,
+		upcomingSeminarQuery,
+		missionQuery,
+		domainsQuery,
+		publicationsQuery,
+		projectsQuery,
+		partnersQuery,
+		opportunitiesQuery,
+	] = useSuspenseQueries({
+		queries: [
+			landingHeroStatsQueryOptions(),
+			landingUpcomingSeminarQueryOptions(),
+			landingMissionQueryOptions(),
+			landingDomainsQueryOptions(),
+			landingPublicationsQueryOptions(),
+			landingProjectsQueryOptions(),
+			landingPartnersQueryOptions(),
+			landingOpportunitiesQueryOptions(),
+		],
+	});
 
 	const heroData = {
 		titleLine1: t("landing.hero.titleLine1"),
@@ -240,15 +134,15 @@ const HomePage = () => {
 					</LandingHero.Row>
 				</div>
 
-				{/* Stats band */}
-				<LandingHero.Stats stats={HERO_STATS} />
+				{/* Stats band — tách riêng để widget tự xử lí fetching data, hero giữ thuần UI */}
+				<LandingHeroStats stats={heroStatsQuery.data} />
 			</LandingHero.Root>
 
 			{/* 2. Upcoming seminar spotlight — first section under the hero */}
 			<LandingSeminar
 				title={t("landing.seminar.title")}
 				description={t("landing.seminar.description")}
-				seminar={UPCOMING_SEMINAR}
+				seminar={upcomingSeminarQuery.data}
 				viewDetailsLabel={t("landing.seminar.viewDetails")}
 				cta={
 					<Button
@@ -266,9 +160,9 @@ const HomePage = () => {
 
 			{/* 3. Section 1: Amplifying Human Ingenuity */}
 			<LandingMission
-				title={MISSION_DATA.title}
-				description={MISSION_DATA.description}
-				brandText={MISSION_DATA.brandText}
+				title={missionQuery.data.title}
+				description={missionQuery.data.description}
+				brandText="D2AI Lab"
 				cta={
 					<Button
 						render={
@@ -292,7 +186,10 @@ const HomePage = () => {
 			<LandingDomains
 				title={domainsData.title}
 				description={domainsData.description}
-				domains={DOMAIN_ITEMS}
+				domains={domainsQuery.data.map((domain) => ({
+					...domain,
+					icon: DOMAIN_ICONS[domain.id],
+				}))}
 				cta={
 					<Button
 						render={
@@ -312,7 +209,7 @@ const HomePage = () => {
 			{/* 5. Section 3: Research We're Working On (Publications) */}
 			<LandingPublications
 				title={t("landing.publications.title")}
-				items={PUBLICATION_ITEMS}
+				items={publicationsQuery.data}
 				action={
 					<Button
 						render={
@@ -332,8 +229,8 @@ const HomePage = () => {
 			{/* 6. Section 5: Projects / Applied Apps */}
 			<LandingProjects
 				title={t("landing.projects.title")}
-				hero={PROJECT_HERO}
-				items={PROJECT_ITEMS}
+				hero={projectsQuery.data.hero}
+				items={projectsQuery.data.items}
 				seeMore={
 					<Button
 						render={<Link to="/{-$locale}/projects" params={localeParams} />}
@@ -351,7 +248,7 @@ const HomePage = () => {
 						render={<Link to="/{-$locale}/projects" params={localeParams} />}
 						nativeButton={false}
 					>
-						{PROJECT_HERO.ctaLabel}
+						{projectsQuery.data.hero.ctaLabel}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -364,18 +261,31 @@ const HomePage = () => {
 			<LandingPartners
 				title="Research partners"
 				description="We collaborate with world-class labs and industry leaders to advance AI science."
-				partners={PARTNERS}
+				partners={partnersQuery.data}
 			/>
 
 			{/* 8. Section 6: Help Us Shape The Future */}
 			<LandingOpportunities
 				title={t("landing.opportunities.title")}
-				items={OPPORTUNITY_ITEMS}
+				items={opportunitiesQuery.data}
 			/>
 		</>
 	);
 };
 
 export const Route = createFileRoute("/{-$locale}/")({
+	loader: async ({ context }) => {
+		/* Critical — await song song để HTML server render đầy đủ (SEO). */
+		await Promise.all([
+			context.queryClient.query(landingHeroStatsQueryOptions()),
+			context.queryClient.query(landingUpcomingSeminarQueryOptions()),
+			context.queryClient.query(landingMissionQueryOptions()),
+			context.queryClient.query(landingDomainsQueryOptions()),
+			context.queryClient.query(landingPublicationsQueryOptions()),
+			context.queryClient.query(landingProjectsQueryOptions()),
+			context.queryClient.query(landingPartnersQueryOptions()),
+			context.queryClient.query(landingOpportunitiesQueryOptions()),
+		]);
+	},
 	component: HomePage,
 });

@@ -54,7 +54,6 @@ export const CareerDetail = ({
 
 	return (
 		<section
-			data-slot="career-detail"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
@@ -86,10 +85,7 @@ export const CareerDetail = ({
 					{/* Main column */}
 					<div className="flex flex-col gap-8 lg:col-span-9">
 						{/* Header */}
-						<header
-							data-slot="career-detail-header"
-							className="flex flex-col gap-4"
-						>
+						<header className="flex flex-col gap-4">
 							<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 								{career.department}
 							</span>

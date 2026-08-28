@@ -17,10 +17,7 @@ export const PageHeader = ({
 	className,
 }: IPageHeaderProps) => {
 	return (
-		<header
-			data-slot="page-header"
-			className={cn("flex flex-col gap-3", className)}
-		>
+		<header className={cn("flex flex-col gap-3", className)}>
 			{eyebrow && (
 				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 					{eyebrow}

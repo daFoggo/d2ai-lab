@@ -24,10 +24,7 @@ const ProjectsHero = ({
 	const { t } = useI18n();
 
 	return (
-		<div
-			data-slot="landing-projects-hero"
-			className="relative mt-6 grid grid-cols-1 items-center gap-6 sm:mt-8 sm:gap-8 md:grid-cols-12 lg:gap-12"
-		>
+		<div className="relative mt-6 grid grid-cols-1 items-center gap-6 sm:mt-8 sm:gap-8 md:grid-cols-12 lg:gap-12">
 			{/* Left Visual Media (Compact AspectRatio) */}
 			<div className="w-full overflow-hidden rounded-2xl shadow-xs sm:rounded-3xl md:col-span-5">
 				<AspectRatio ratio={16 / 10}>
@@ -83,7 +80,6 @@ const ProjectsItem = ({
 
 	return (
 		<div
-			data-slot="landing-projects-item"
 			className={cn(
 				"group flex items-start gap-3.5 rounded-2xl p-2.5 transition-colors hover:bg-muted/30",
 				className,
@@ -137,7 +133,6 @@ export const LandingProjects = ({
 
 	return (
 		<section
-			data-slot="landing-projects"
 			className={cn(
 				"w-full overflow-hidden py-14 sm:py-20 lg:py-24",
 				className,

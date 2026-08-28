@@ -19,14 +19,10 @@ export const ProseBody = ({
 	className,
 }: IProseBodyProps) => {
 	return (
-		<div
-			data-slot="prose-body"
-			className={cn("flex flex-col gap-8", className)}
-		>
+		<div className={cn("flex flex-col gap-8", className)}>
 			{sections?.map((section) => (
 				<section
 					key={section.heading ?? section.eyebrow ?? "section"}
-					data-slot="prose-section"
 					className="flex flex-col gap-3"
 				>
 					{section.eyebrow && (
@@ -56,7 +52,6 @@ export const ProseParagraph = ({
 }) => {
 	return (
 		<p
-			data-slot="prose-paragraph"
 			className={cn(
 				"max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base",
 				className,

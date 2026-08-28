@@ -11,6 +11,13 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyTitle,
+} from "@/components/ui/empty";
+import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
@@ -39,7 +46,6 @@ const PublicationCard = ({
 
 	return (
 		<article
-			data-slot="publication-card"
 			className={cn(
 				"group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-border/60 hover:bg-muted/30 sm:p-6",
 				featured && "lg:p-8",
@@ -123,7 +129,6 @@ export const Publications = ({
 
 	return (
 		<section
-			data-slot="publications"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
@@ -202,19 +207,21 @@ export const Publications = ({
 				)}
 
 				{!featured && (
-					<div className="mt-8 flex flex-col items-center gap-2 py-16 text-center">
-						<p className="text-lg font-medium">
-							No publications match your filters
-						</p>
-						<p className="text-sm text-muted-foreground">
-							Try a different search term or clear the active filters.
-						</p>
+					<Empty className="mt-8">
+						<EmptyHeader>
+							<EmptyTitle>No publications match your filters</EmptyTitle>
+							<EmptyDescription>
+								Try a different search term or clear the active filters.
+							</EmptyDescription>
+						</EmptyHeader>
 						{hasFilters && (
-							<Button variant="outline" className="mt-2" onClick={clearFilters}>
-								Clear filters
-							</Button>
+							<EmptyContent>
+								<Button variant="outline" onClick={clearFilters}>
+									Clear filters
+								</Button>
+							</EmptyContent>
 						)}
-					</div>
+					</Empty>
 				)}
 			</div>
 		</section>

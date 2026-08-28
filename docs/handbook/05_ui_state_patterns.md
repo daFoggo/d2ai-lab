@@ -32,12 +32,23 @@ Use this for pages, lists, tables, grids, cards, and large content panels.
 |---|---|---|
 | Loading | `<Skeleton>` | Hardcode count/layout to match expected content. Do not map unstable indexes from fetched data. |
 | Error | `<Alert variant="destructive">` | Use `getErrorMessage(error, fallback)`. |
-| Empty | Full empty state | Use a centered composition with icon, title, description, and optional action button. |
+| Empty | `Empty` (+ `EmptyHeader` / `EmptyMedia` / `EmptyTitle` / `EmptyDescription` / `EmptyContent`) | Use the shadcn `Empty` primitive from `@/components/ui/empty` — never hand-roll the centered icon/title/description/action markup. |
 
 Example:
 
 ```tsx
-if (isLoading) return <UserListSkeleton />
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "@/components/ui/empty"
+
+const { data: users, isPending, isError, error } = useQuery(usersQueryOptions)
+
+if (isPending) return <UserListSkeleton />
 
 if (isError) {
   return (
@@ -52,16 +63,35 @@ if (isError) {
 
 if (users.length === 0) {
   return (
-    <div className="flex flex-col items-center gap-2 py-12 text-center">
-      <UsersIcon className="size-12 text-muted-foreground/50" />
-      <p className="text-lg font-medium">No users yet</p>
-      <p className="text-sm text-muted-foreground">
-        Add or invite users to start collaborating.
-      </p>
-      <Button className="mt-2">Invite user</Button>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <UsersIcon />
+        </EmptyMedia>
+        <EmptyTitle>No users yet</EmptyTitle>
+        <EmptyDescription>
+          Add or invite users to start collaborating.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button>Invite user</Button>
+      </EmptyContent>
+    </Empty>
   )
 }
+```
+
+Use `isPending` for the hard loading check (TanStack Query v5 canonical order: `isPending` → `isError` → assume data). `isLoading` is an alias equal to `isPending && isFetching`; it is equivalent for the common first-fetch case, but `isPending` is type-safe — checking it plus `isError` is what narrows `data` from `undefined`.
+
+Composition (matches the shadcn `empty` primitive):
+
+```text
+Empty
+├── EmptyHeader
+│   ├── EmptyMedia   (variant="icon" or default, e.g. Avatar)
+│   ├── EmptyTitle
+│   └── EmptyDescription
+└── EmptyContent     (Button / InputGroup / link)
 ```
 
 ## Compact UI Exceptions
@@ -92,7 +122,7 @@ Compact error:
 </div>
 ```
 
-Compact empty:
+Compact empty (the one acceptable hand-rolled `<p>` — full empty states must still use the `Empty` primitive):
 
 ```tsx
 <p className="text-xs text-muted-foreground">No items yet.</p>
@@ -135,6 +165,9 @@ Optional widget data:
 - component uses `useQuery`
 - component owns loading/error/empty UI
 
+> [!IMPORTANT]
+> The `if (isPending)` / `if (isError)` example above is for **`useQuery` only** (component-owned local states). With `useSuspenseQuery` there is no `isPending`/`isError` branching in the component — `data` is always defined, loading is handled by a `Suspense` fallback, and errors are thrown to the nearest error boundary. Only `isFetching` (background refetch) remains meaningful there.
+
 ## Empty State Rules
 
 Only show empty UI when the server returned valid empty data.
@@ -154,15 +187,20 @@ Do not show empty state when:
 - Skeleton should preserve layout dimensions and avoid content jumps.
 - For compact spaces, an inline skeleton is enough.
 
-## isPending vs isFetching
+## Loading Flags: isPending / isLoading / isFetching
 
-Distinguish hard loading from background refetch:
+| Flag | Meaning | Use for |
+|---|---|---|
+| `isPending` | No cached data yet (`status: pending`). **Canonical** hard-loading check. | `<Skeleton>` |
+| `isLoading` | `isPending && isFetching` (no data **and** a fetch in flight). Equivalent for the first fetch; use it if you prefer one flag. | `<Skeleton>` |
+| `isFetching` | A request is in flight, including background refetch (data already on screen). | lightweight "Refreshing…" indicator, never a full skeleton |
+| `useIsFetching()` | Global count of in-flight queries across the app. | top-level progress |
 
-- `isPending` (no data yet) → hard loading state (`<Skeleton>`).
-- `isFetching` (background refetch while data exists) → lightweight indicator ("Refreshing…"), never a full skeleton.
-- Global background activity: `useIsFetching()`.
+Rules:
 
-Do not treat a background refetch as a full loading state — data is still on screen.
+- Use `isPending` (or `isLoading`) → `<Skeleton>`; they are interchangeable for the first-load case.
+- Use `isFetching` → a lightweight indicator when data is already on screen — never replace existing content with a skeleton.
+- Do not treat a background refetch as a full loading state.
 
 ## Error Copy
 

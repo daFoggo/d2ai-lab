@@ -21,10 +21,7 @@ export const StickyRightRail = ({
 	className,
 }: IStickyRightRailProps) => {
 	return (
-		<aside
-			data-slot="sticky-right-rail"
-			className={cn("flex flex-col gap-3", className)}
-		>
+		<aside className={cn("flex flex-col gap-3", className)}>
 			{title && (
 				<span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
 					{title}

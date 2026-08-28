@@ -36,7 +36,6 @@ export const LandingSeminar = ({
 
 	return (
 		<section
-			data-slot="landing-seminar"
 			className={cn(
 				"w-full overflow-hidden py-12 sm:py-16 lg:py-20",
 				className,
@@ -59,10 +58,7 @@ export const LandingSeminar = ({
 				</div>
 
 				{/* Spotlight: a single ticket-stub card — date block + event details, split by a dashed rule */}
-				<div
-					data-slot="landing-seminar-card"
-					className="mt-6 flex flex-col overflow-hidden bg-primary text-primary-foreground sm:mt-8 sm:flex-row"
-				>
+				<div className="mt-6 flex flex-col overflow-hidden bg-primary text-primary-foreground sm:mt-8 sm:flex-row">
 					<div className="flex shrink-0 flex-row items-center gap-4 border-b-2 border-dashed border-primary-foreground/25 p-6 sm:w-52 sm:flex-col sm:items-start sm:justify-center sm:border-r-2 sm:border-b-0 sm:p-8">
 						<Badge
 							variant={STATUS_VARIANT[seminar.status]}

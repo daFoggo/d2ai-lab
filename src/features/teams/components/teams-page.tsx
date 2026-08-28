@@ -17,10 +17,7 @@ export interface ITeamsProps {
 
 const MemberCard = ({ member }: { member: TTeamMember }) => {
 	return (
-		<article
-			data-slot="team-member-card"
-			className="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-muted/30"
-		>
+		<article className="flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-muted/30">
 			<Avatar size="lg">
 				{member.image && <AvatarImage src={member.image} alt={member.name} />}
 				<AvatarFallback>{member.initials}</AvatarFallback>
@@ -44,7 +41,6 @@ const TeamSection = ({ team, index }: { team: TTeam; index: number }) => {
 	return (
 		<section
 			id={team.id}
-			data-slot="team-section"
 			className="flex scroll-mt-28 flex-col gap-6 pt-8 sm:scroll-mt-32 sm:pt-10"
 		>
 			<div className="flex flex-col gap-2">
@@ -85,7 +81,6 @@ export const Teams = ({
 
 	return (
 		<section
-			data-slot="teams"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">

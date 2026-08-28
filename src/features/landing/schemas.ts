@@ -113,3 +113,31 @@ export const landingOpportunityItemSchema = z.object({
 export type TLandingOpportunityItem = z.infer<
 	typeof landingOpportunityItemSchema
 >;
+
+/* Hero stats band — số liệu được fetch từ API thật. */
+export const landingHeroStatSchema = z.object({
+	value: z.string().min(1),
+	label: z.string().min(1),
+});
+
+export type TLandingHeroStat = z.infer<typeof landingHeroStatSchema>;
+
+/* Domain item — server chỉ trả text; icon là presentation-layer concern, map ở route/component. */
+export const landingDomainItemSchema = z.object({
+	id: z.string().min(1),
+	tag: z.string().min(1),
+	title: z.string().min(1),
+});
+
+export type TLandingDomainItem = z.infer<typeof landingDomainItemSchema>;
+
+/*
+ * NOTE — phân quyền feature (TẠM THỜI):
+ * Mock hiện gom toàn bộ data vào landing/server.ts cho dễ xử lí.
+ * Khi có backend thật, data phải được fetch từ feature SỞ HỮU:
+ *   - upcomingSeminar  → features/seminars
+ *   - publications     → features/publications
+ *   - projects         → features/projects
+ *   - (stats/mission/domains/partners/opportunities thuộc landing)
+ * Mỗi section sẽ có 1 queryOptions + 1 key riêng (xem queries.ts).
+ */

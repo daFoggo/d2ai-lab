@@ -22,7 +22,6 @@ const DirectionSection = ({
 }) => {
 	return (
 		<article
-			data-slot="research-direction-section"
 			className={cn(
 				"grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:gap-8 sm:py-10",
 				className,
@@ -61,7 +60,6 @@ export const ResearchDirections = ({
 }: IResearchDirectionsProps) => {
 	return (
 		<section
-			data-slot="research-directions"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">

@@ -28,7 +28,7 @@ const SeminarRow = ({ seminar }: { seminar: TSeminar }) => {
 	};
 
 	return (
-		<li data-slot="seminar-row" className="border-t border-border">
+		<li className="border-t border-border">
 			<Link
 				to="/{-$locale}/seminars/$id"
 				params={{ ...localeParams, id: seminar.id }}
@@ -69,7 +69,6 @@ export const Seminars = ({
 }: ISeminarsProps) => {
 	return (
 		<section
-			data-slot="seminars"
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
 		>
 			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
