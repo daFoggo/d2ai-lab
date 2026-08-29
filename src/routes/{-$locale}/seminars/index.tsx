@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { TSeminar } from "@/features/seminars";
-import { Seminars } from "@/features/seminars";
+import { Seminars } from "./-components/seminars-list";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const SEMINARS: TSeminar[] = [

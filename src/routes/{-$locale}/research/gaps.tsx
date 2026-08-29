@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { TResearchGap } from "@/features/research";
-import { ResearchGaps } from "@/features/research";
+import { ResearchGaps } from "./-components/research-gaps";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const GAPS: TResearchGap[] = [

@@ -1,2 +1,1 @@
-export * from "./seminar-detail";
-export * from "./seminars-list";
+export * from "./seminar-spotlight";

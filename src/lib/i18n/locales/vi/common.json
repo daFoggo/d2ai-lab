@@ -7,5 +7,27 @@
 	"language": {
 		"en": "English",
 		"vi": "Tiếng Việt"
+	},
+	"nav": {
+		"research": "Nghiên cứu",
+		"researchAreas": "Lĩnh vực nghiên cứu",
+		"researchAreasDesc": "Các lĩnh vực khoa học cốt lõi và phạm vi chính.",
+		"researchDirections": "Hướng nghiên cứu",
+		"researchDirectionsDesc": "Tầm nhìn dài hạn và đổi mới chiến lược.",
+		"researchGaps": "Khoảng trống nghiên cứu",
+		"researchGapsDesc": "Giải quyết các thách thức mở và nút thắt quan trọng.",
+		"people": "Đội ngũ",
+		"publications": "Ấn phẩm",
+		"projects": "Dự án",
+		"seminars": "Hội thảo",
+		"careers": "Tuyển dụng"
+	},
+	"footer": {
+		"labsLabel": "Các nhóm nghiên cứu và lĩnh vực sáng kiến khác",
+		"slogan": "Từ Dữ liệu đến Trí tuệ, Từ Ý tưởng đến Tác động."
+	},
+	"toast": {
+		"search": "Tìm kiếm Ấn phẩm & Nghiên cứu",
+		"searchDesc": "Truy cập bài báo, kho mã nguồn mở và lưu trữ dự án của phòng lab."
 	}
 }

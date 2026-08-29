@@ -27,3 +27,16 @@ export const publicationDetailSchema = publicationSchema.extend({
 });
 
 export type TPublicationDetail = z.infer<typeof publicationDetailSchema>;
+
+/* Preview/teaser cho home page — compact version của TPublication. */
+export const publicationPreviewSchema = z.object({
+	id: z.string().min(1),
+	title: z.string().min(1),
+	category: z.string().min(1),
+	date: z.string().min(1),
+	thumbnail: z.string().optional(),
+	to: z.string().optional(),
+	type: z.enum(["BLOG", "RESEARCH", "PAPER", "NEWS"]).default("RESEARCH"),
+});
+
+export type TPublicationPreview = z.infer<typeof publicationPreviewSchema>;

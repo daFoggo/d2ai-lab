@@ -9,6 +9,15 @@ export const researchAreaSchema = z.object({
 
 export type TResearchArea = z.infer<typeof researchAreaSchema>;
 
+/* Preview/teaser cho home page — mosaic chỉ cần id/tag/title, icon map ở route. */
+export const researchAreaPreviewSchema = z.object({
+	id: z.string().min(1),
+	tag: z.string().min(1),
+	title: z.string().min(1),
+});
+
+export type TResearchAreaPreview = z.infer<typeof researchAreaPreviewSchema>;
+
 export const researchGapStatusSchema = z.enum([
 	"OPEN",
 	"IN PROGRESS",

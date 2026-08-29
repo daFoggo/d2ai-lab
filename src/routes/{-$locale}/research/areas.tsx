@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { TResearchArea } from "@/features/research";
-import { ResearchAreas } from "@/features/research";
+import { ResearchAreas } from "./-components/research-areas";
 
 /* Content data stays in the source language — only UI chrome is translated. */
 

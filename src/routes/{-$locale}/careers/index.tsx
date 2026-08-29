@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { TCareer } from "@/features/careers";
-import { Careers } from "@/features/careers";
+import { Careers } from "./-components/careers-list";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const ROLES: TCareer[] = [

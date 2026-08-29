@@ -1,7 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import type { TPublicationDetail } from "@/features/publications";
-import { PublicationDetail } from "@/features/publications";
 import { useI18n } from "@/lib/i18n";
+import { PublicationDetail } from "./-components/publication-detail";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const PUBLICATIONS: TPublicationDetail[] = [

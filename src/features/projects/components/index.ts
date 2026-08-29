@@ -1,1 +1,1 @@
-export * from "./projects-grid";
+export * from "./projects-preview";

@@ -30,7 +30,7 @@ Standard feature shape:
 
 ```text
 src/features/[feature]/
-|-- components/
+|-- components/      # cross-page / shared / cross-cutting feature UI
 |-- server.ts
 |-- functions.ts
 |-- queries.ts
@@ -46,8 +46,10 @@ Responsibilities:
 | `functions.ts` | `createServerFn` wrappers and validation |
 | `queries.ts` | Query key factories, `queryOptions`, mutation hooks |
 | `schemas.ts` | Zod schemas and exported types |
-| `components/` | Feature UI |
+| `components/` | Cross-page / shared / cross-cutting feature UI |
 | `index.ts` | Client-safe public API |
+
+A feature is a **vertical slice**: it owns the data contract AND the UI that renders that data where the UI crosses page boundaries (a preview used on the home page and its own page, a dialog triggered from many places, an auth button). Page-local views of a feature's data live with the route that renders them (see Component Placement Rule below).
 
 ## Barrel Rule
 
@@ -68,6 +70,27 @@ import { userMeQueryOptions } from "@/features/users/queries"
 Exception: direct imports may be used when there is an intentional internal boundary, but do not make that the default.
 
 Never export `server.ts` or modules marked with `"@tanstack/react-start/server-only"` from `index.ts`.
+
+## Component Placement Rule
+
+Where UI and data live is decided by **scope of reuse + domain coupling**, not by "is it UI or logic". The same rule applies to components **and** to data (schemas, `server.ts`, `functions.ts`, `queries.ts`):
+
+| Kind | Home |
+|---|---|
+| Implements a **cross-cutting capability** (auth, search, analytics) or is **used from ≥2 places** (routes, other features, app shell) | `features/[feature]/components/` and `features/[feature]/*.ts` |
+| Page-local views (rendered by exactly one route) | `routes/<area>/-components/` |
+| Static page content (marketing copy, logo lists, CTA cards) | Inline const data in the route file |
+| Domain-agnostic, app-wide UI (layout, shell, section chrome) | `components/common/` |
+| Primitives | `components/ui/` |
+
+Rules:
+
+- **Private sub-parts stay put.** A form used only inside a feature dialog, or an internal cell of a feature view, stays in the feature regardless of consumer count. The rule applies at the route-vs-feature boundary, not inside a feature.
+- **Promote, don't predict.** When a route-local component or data module gains a second consumer, promote it to the owning feature (move file + update imports). This is a mechanical, low-cost step; do not pre-place single-consumer UI/data in a feature speculatively.
+- **Route colocation is a first-class pattern** — the `-` prefix is TanStack Router's official convention: files/folders prefixed with `-` inside `routes/` are excluded from the route tree. Use `routes/<area>/-components/` for page-local views.
+- **Static content ≠ data.** Marketing copy, logo lists, and CTA cards are static page content: keep them as plain const data in the route file (or `-components/` view props), never through `createServerFn`/queries. Only genuinely dynamic data (records from a backend, aggregate counts) goes through the data layer.
+- **Dynamic data that is page-local → feature when it crosses pages.** E.g. hero stats are aggregate counts used by both the home page and a future admin dashboard → they live in a `features/analytics` module, not in the route.
+- A "page" like the home/landing page is **not a feature**: it is a route that composes features. Its page-local sections live in `routes/.../-components/`, and its content is either static inline data or data owned by the owning feature.
 
 ## Route Orchestration
 

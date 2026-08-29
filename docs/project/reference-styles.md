@@ -112,7 +112,7 @@ Dark footer with a centered command (`curl …` / `pip …`) + copy button, a
 
 - For the lab: centered CTA + tagline + language switcher + legal footer row
   with a centered `CodeBlock`-style install line.
-- Extends the existing `LandingFooter`.
+- Extends the existing `AppFooter`.
 
 ## What to Avoid
 

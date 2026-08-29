@@ -46,6 +46,7 @@ Canonical token rules live in `10_design_tokens.md`. Summary:
 ## Component Rules
 
 - Prefer existing `@/components/ui` and `@/components/common` components.
+- Place components by scope of reuse + domain coupling (`02_architecture.md` → Component Placement Rule): page-local views go in `routes/<area>/-components/`, cross-page feature views in `features/[f]/components/`, domain-agnostic app-wide UI in `components/common`. Promote a route-local component into a feature when it gains a second consumer.
 - Add a new component only when existing components cannot be composed cleanly.
 - Add `data-slot` only when the root will actually be targeted from outside the component: CSS selectors (`[data-slot="..."]`, `has-data-[slot=...]`, `in-data-[slot=...]`), or JS (`querySelector`/scroll-spy). Do not add it speculatively to every component — a `data-slot` that nothing references is dead weight. shadcn `@/components/ui` primitives already carry their own `data-slot`; leave those untouched.
 - Components with two or more variants should use CVA.
@@ -70,7 +71,7 @@ Canonical token rules live in `10_design_tokens.md`. Summary:
 
 ### Compound Component Rules (Vercel Composition, Minimal)
 
-Compound components (`Object.assign(Comp, { SubComp })`) are only justified when callers genuinely compose the sub-parts in more than one way (e.g. `LandingNavbar.Root/.Brand/.Nav/.Actions`, `LandingHero.Root/.Title/.Row/.Description`).
+Compound components (`Object.assign(Comp, { SubComp })`) are only justified when callers genuinely compose the sub-parts in more than one way (e.g. `AppNavbar.Root/.Brand/.Nav/.Actions`, `HomeHero.Root/.Title/.Row/.Description`).
 
 - Do NOT create a `Root`/`Header`/`Card`/`Item`/`Preset` compound for a section that is only ever rendered as one unit. Export a single component instead.
 - Keep large internal visual blocks as private (non-exported) helper functions in the same file when that improves readability.

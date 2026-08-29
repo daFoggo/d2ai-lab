@@ -12,35 +12,39 @@ import {
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import type { TLandingDomainsData } from "@/features/landing";
+import { siteStatsQueryOptions } from "@/features/analytics";
 import {
-	LandingDomains,
-	LandingHero,
-	LandingHeroStats,
-	LandingMission,
-	LandingOpportunities,
-	LandingPartners,
-	LandingProjects,
-	LandingPublications,
-	LandingSeminar,
-	landingDomainsQueryOptions,
-	landingHeroStatsQueryOptions,
-	landingMissionQueryOptions,
-	landingOpportunitiesQueryOptions,
-	landingPartnersQueryOptions,
-	landingProjectsQueryOptions,
-	landingPublicationsQueryOptions,
-	landingUpcomingSeminarQueryOptions,
-} from "@/features/landing";
+	ProjectsPreview,
+	projectPreviewQueryOptions,
+} from "@/features/projects";
+import {
+	PublicationsPreview,
+	publicationPreviewQueryOptions,
+} from "@/features/publications";
+import {
+	ResearchAreasPreview,
+	researchAreaPreviewQueryOptions,
+} from "@/features/research";
+import {
+	SeminarSpotlight,
+	upcomingSeminarQueryOptions,
+} from "@/features/seminars";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
+import {
+	HomeHero,
+	HomeHeroStats,
+	HomeMission,
+	HomeOpportunities,
+	HomePartners,
+} from "./-components";
 
-/* Shared hover-arrow treatment for every landing CTA (matches the careers list "View role" affordance). */
+/* Shared hover-arrow treatment for every home CTA (matches the careers list "View role" affordance). */
 const CTA_ARROW_CLASS =
 	"size-4 transition-transform duration-300 group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5";
 
 /* Content data stays in the source language — only UI chrome is translated. */
 
-/* Icons cho domains — mapping theo id vì API chỉ trả dữ liệu text, icon là presentation-layer concern. */
+/* Icons cho domains mosaic — mapping theo id vì API chỉ trả dữ liệu text, icon là presentation-layer concern. */
 const DOMAIN_ICONS: Record<string, Icon> = {
 	"ai-ml": IconBrain,
 	"smart-education": IconSchool,
@@ -49,43 +53,69 @@ const DOMAIN_ICONS: Record<string, Icon> = {
 	"climate-ecology": IconLeaf,
 };
 
+/* Static page content — hardcoded như HTML thật, không qua API/query. */
+const MISSION = {
+	title: "Amplifying human ingenuity",
+	description:
+		"We advance scientific progress through AI research, collaborating with universities, NGOs, and partners worldwide.",
+};
+
+const PARTNERS = [
+	{ id: "ptit", name: "PTIT" },
+	{ id: "cnu", name: "CNU" },
+	{ id: "uga", name: "UGA" },
+];
+
+const OPPORTUNITIES = [
+	{
+		id: "future-careers",
+		title: "Career opportunities",
+		description:
+			"We're looking for scientists, engineers, interns, and students to join our core AI and intelligent computing labs.",
+		linkLabel: "Learn more about careers",
+		to: "/{-$locale}/careers",
+	},
+	{
+		id: "future-seminars",
+		title: "Seminars & Academic exchange",
+		description:
+			"Join our seminar series, guest lectures, and technical knowledge exchange workshops.",
+		linkLabel: "View all seminars",
+		to: "/{-$locale}/seminars",
+	},
+];
+
 const HomePage = () => {
 	const { t, locale } = useI18n();
 	const localeParams = {
 		locale: locale === DEFAULT_LOCALE ? undefined : locale,
 	};
 
-	/* Granular: 8 queries riêng, fetch song song (chống waterfall). Loader đã warm cache nên không refetch. */
+	/* Granular: mỗi section dynamic 1 query riêng, fetch song song (chống waterfall). Loader đã warm cache nên không refetch. */
 	const [
 		heroStatsQuery,
 		upcomingSeminarQuery,
-		missionQuery,
 		domainsQuery,
 		publicationsQuery,
 		projectsQuery,
-		partnersQuery,
-		opportunitiesQuery,
 	] = useSuspenseQueries({
 		queries: [
-			landingHeroStatsQueryOptions(),
-			landingUpcomingSeminarQueryOptions(),
-			landingMissionQueryOptions(),
-			landingDomainsQueryOptions(),
-			landingPublicationsQueryOptions(),
-			landingProjectsQueryOptions(),
-			landingPartnersQueryOptions(),
-			landingOpportunitiesQueryOptions(),
+			siteStatsQueryOptions(),
+			upcomingSeminarQueryOptions(),
+			researchAreaPreviewQueryOptions(),
+			publicationPreviewQueryOptions(),
+			projectPreviewQueryOptions(),
 		],
 	});
 
 	const heroData = {
-		titleLine1: t("landing.hero.titleLine1"),
-		titleLine2: t("landing.hero.titleLine2"),
-		description: t("landing.hero.description"),
+		titleLine1: t("home.hero.titleLine1"),
+		titleLine2: t("home.hero.titleLine2"),
+		description: t("home.hero.description"),
 	};
 
-	const domainsData: TLandingDomainsData = {
-		title: t("landing.domains.title"),
+	const domainsData = {
+		title: t("home.domains.title"),
 		description:
 			"Our research spans AI/ML foundations, responsible human-centric technology, science, and societal impact.",
 	};
@@ -93,11 +123,11 @@ const HomePage = () => {
 	return (
 		<>
 			{/* 1. Full-Width Typography Hero */}
-			<LandingHero.Root>
+			<HomeHero.Root>
 				<div className="flex flex-col gap-6 sm:gap-10 lg:gap-14 xl:gap-18">
 					{/* Row 1: Line 1 + Pure IconTableSpark */}
 					<div className="flex items-center gap-3 sm:gap-6 md:gap-8 lg:gap-10">
-						<LandingHero.Title>{heroData.titleLine1}</LandingHero.Title>
+						<HomeHero.Title>{heroData.titleLine1}</HomeHero.Title>
 
 						<div
 							aria-hidden="true"
@@ -111,11 +141,11 @@ const HomePage = () => {
 					</div>
 
 					{/* Row 2: Description + Actions on Left (or below on mobile), Pure IconSparkleHighlight in Center, Line 2 on Right */}
-					<LandingHero.Row className="gap-6 sm:gap-8 lg:gap-8 xl:gap-14 2xl:gap-18">
+					<HomeHero.Row className="gap-6 sm:gap-8 lg:gap-8 xl:gap-14 2xl:gap-18">
 						<div className="order-2 flex w-full max-w-sm flex-col gap-4 sm:max-w-md lg:order-1 lg:max-w-xs xl:max-w-sm 2xl:max-w-md lg:shrink-0 lg:pb-1.5">
-							<LandingHero.Description>
+							<HomeHero.Description>
 								{heroData.description}
-							</LandingHero.Description>
+							</HomeHero.Description>
 						</div>
 
 						<div
@@ -129,27 +159,27 @@ const HomePage = () => {
 						</div>
 
 						<div className="order-1 flex items-end lg:order-3 lg:shrink-0">
-							<LandingHero.Title>{heroData.titleLine2}</LandingHero.Title>
+							<HomeHero.Title>{heroData.titleLine2}</HomeHero.Title>
 						</div>
-					</LandingHero.Row>
+					</HomeHero.Row>
 				</div>
 
-				{/* Stats band — tách riêng để widget tự xử lí fetching data, hero giữ thuần UI */}
-				<LandingHeroStats stats={heroStatsQuery.data} />
-			</LandingHero.Root>
+				{/* Stats band — dynamic aggregate counts, fetch qua query */}
+				<HomeHeroStats stats={heroStatsQuery.data} />
+			</HomeHero.Root>
 
 			{/* 2. Upcoming seminar spotlight — first section under the hero */}
-			<LandingSeminar
-				title={t("landing.seminar.title")}
-				description={t("landing.seminar.description")}
+			<SeminarSpotlight
+				title={t("seminars.spotlight.title")}
+				description={t("seminars.spotlight.description")}
 				seminar={upcomingSeminarQuery.data}
-				viewDetailsLabel={t("landing.seminar.viewDetails")}
+				viewDetailsLabel={t("seminars.spotlight.viewDetails")}
 				cta={
 					<Button
 						render={<Link to="/{-$locale}/seminars" params={localeParams} />}
 						nativeButton={false}
 					>
-						{t("landing.seminar.cta")}
+						{t("seminars.spotlight.cta")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -158,10 +188,10 @@ const HomePage = () => {
 				}
 			/>
 
-			{/* 3. Section 1: Amplifying Human Ingenuity */}
-			<LandingMission
-				title={missionQuery.data.title}
-				description={missionQuery.data.description}
+			{/* 3. Section 1: Amplifying Human Ingenuity — static content */}
+			<HomeMission
+				title={MISSION.title}
+				description={MISSION.description}
 				brandText="D2AI Lab"
 				cta={
 					<Button
@@ -173,7 +203,7 @@ const HomePage = () => {
 						}
 						nativeButton={false}
 					>
-						{t("landing.mission.cta")}
+						{t("home.mission.cta")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -183,7 +213,7 @@ const HomePage = () => {
 			/>
 
 			{/* 4. Section 2: We Work Across Domains */}
-			<LandingDomains
+			<ResearchAreasPreview
 				title={domainsData.title}
 				description={domainsData.description}
 				domains={domainsQuery.data.map((domain) => ({
@@ -197,7 +227,7 @@ const HomePage = () => {
 						}
 						nativeButton={false}
 					>
-						{t("landing.domains.cta")}
+						{t("home.domains.cta")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -207,8 +237,8 @@ const HomePage = () => {
 			/>
 
 			{/* 5. Section 3: Research We're Working On (Publications) */}
-			<LandingPublications
-				title={t("landing.publications.title")}
+			<PublicationsPreview
+				title={t("publications.preview.title")}
 				items={publicationsQuery.data}
 				action={
 					<Button
@@ -217,7 +247,7 @@ const HomePage = () => {
 						}
 						nativeButton={false}
 					>
-						{t("landing.publications.seeMore")}
+						{t("publications.preview.seeMore")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -227,8 +257,8 @@ const HomePage = () => {
 			/>
 
 			{/* 6. Section 5: Projects / Applied Apps */}
-			<LandingProjects
-				title={t("landing.projects.title")}
+			<ProjectsPreview
+				title={t("projects.preview.title")}
 				hero={projectsQuery.data.hero}
 				items={projectsQuery.data.items}
 				seeMore={
@@ -236,7 +266,7 @@ const HomePage = () => {
 						render={<Link to="/{-$locale}/projects" params={localeParams} />}
 						nativeButton={false}
 					>
-						{t("landing.projects.seeMore")}
+						{t("projects.preview.seeMore")}
 						<IconArrowUpRight
 							data-icon="inline-end"
 							className={CTA_ARROW_CLASS}
@@ -257,17 +287,17 @@ const HomePage = () => {
 				}
 			/>
 
-			{/* 7. Research partners */}
-			<LandingPartners
+			{/* 7. Research partners — static content */}
+			<HomePartners
 				title="Research partners"
 				description="We collaborate with world-class labs and industry leaders to advance AI science."
-				partners={partnersQuery.data}
+				partners={PARTNERS}
 			/>
 
-			{/* 8. Section 6: Help Us Shape The Future */}
-			<LandingOpportunities
-				title={t("landing.opportunities.title")}
-				items={opportunitiesQuery.data}
+			{/* 8. Section 6: Help Us Shape The Future — static content */}
+			<HomeOpportunities
+				title={t("home.opportunities.title")}
+				items={OPPORTUNITIES}
 			/>
 		</>
 	);
@@ -277,14 +307,11 @@ export const Route = createFileRoute("/{-$locale}/")({
 	loader: async ({ context }) => {
 		/* Critical — await song song để HTML server render đầy đủ (SEO). */
 		await Promise.all([
-			context.queryClient.query(landingHeroStatsQueryOptions()),
-			context.queryClient.query(landingUpcomingSeminarQueryOptions()),
-			context.queryClient.query(landingMissionQueryOptions()),
-			context.queryClient.query(landingDomainsQueryOptions()),
-			context.queryClient.query(landingPublicationsQueryOptions()),
-			context.queryClient.query(landingProjectsQueryOptions()),
-			context.queryClient.query(landingPartnersQueryOptions()),
-			context.queryClient.query(landingOpportunitiesQueryOptions()),
+			context.queryClient.query(siteStatsQueryOptions()),
+			context.queryClient.query(upcomingSeminarQueryOptions()),
+			context.queryClient.query(researchAreaPreviewQueryOptions()),
+			context.queryClient.query(publicationPreviewQueryOptions()),
+			context.queryClient.query(projectPreviewQueryOptions()),
 		]);
 	},
 	component: HomePage,

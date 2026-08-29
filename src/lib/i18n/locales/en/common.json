@@ -7,5 +7,27 @@
 	"language": {
 		"en": "English",
 		"vi": "Tiếng Việt"
+	},
+	"nav": {
+		"research": "Research",
+		"researchAreas": "Research Areas",
+		"researchAreasDesc": "Primary scientific domains and core scopes.",
+		"researchDirections": "Research Directions",
+		"researchDirectionsDesc": "Long-term vision and strategic innovation.",
+		"researchGaps": "Research Gaps",
+		"researchGapsDesc": "Addressing open challenges and critical bottlenecks.",
+		"people": "Teams",
+		"publications": "Publications",
+		"projects": "Projects",
+		"seminars": "Seminars",
+		"careers": "Careers"
+	},
+	"footer": {
+		"labsLabel": "Other research teams and initiative areas",
+		"slogan": "Data to Intelligence, Ideas to Impact."
+	},
+	"toast": {
+		"search": "Search Publications & Research",
+		"searchDesc": "Access papers, open-source repositories, and lab project archives."
 	}
 }

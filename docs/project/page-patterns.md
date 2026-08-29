@@ -270,15 +270,22 @@ Reusable across many archetypes (put in `src/components/common/`):
 
 ### Already exist (reuse as-is)
 
-- `LandingLayout`, `LandingNavbar` (+ LanguageSwitcher/Actions), `LandingFooter`
-  → app shell for every page.
-- `LandingHero` (+ `.Stats`), `LandingDomains`, `LandingProjects`,
-  `LandingPublications`, `LandingMission`, `LandingOpportunities` → these ARE
-  the **bands** (`SectionBand`) the topic/detail pages reuse. Rename/alias as
-  generic `SectionBand` variants rather than duplicating.
-- `HERO_SCOPE_STYLE` → replaced by `bg-primary text-primary-foreground`
-  for always-dark surfaces (hero, footer, dark cards); the navbar-over-hero
-  scope lives in `src/styles.css` (`[data-slot="landing-navbar"][data-over-hero="true"]`).
+- `AppLayout`, `AppNavbar` (+ LanguageSwitcher/Actions), `AppFooter`
+  → app shell for every page (`src/components/common/app-shell/`).
+- Home page sections live in `routes/{-$locale}/-components/`
+  (`HomeHero` + `HomeHeroStats`, `HomeMission`, `HomePartners`,
+  `HomeOpportunities`). Static content (mission/partners/opportunities) is
+  inline const data in the route; hero stats are dynamic counts owned by
+  `features/analytics`. The home page is a route, not a feature.
+- Cross-feature **previews** are owned by the feature whose data they render:
+  `SeminarSpotlight` (`features/seminars`), `PublicationsPreview`
+  (`features/publications`), `ProjectsPreview` (`features/projects`),
+  `ResearchAreasPreview` (`features/research`). These ARE the compact **bands**
+  the topic/detail pages reuse; when an archetype needs the same shape,
+  import the preview rather than duplicating.
+- Always-dark surfaces (hero, footer, dark cards) use `bg-primary
+  text-primary-foreground`; the navbar-over-hero scope lives in
+  `src/styles.css` (`[data-slot="app-navbar"][data-over-hero="true"]`).
 - `InputGroup` + `Input` → search inputs; `DropdownMenu` + `Button` → sort &
   filter triggers; `Button` → CTA / icon controls.
 
@@ -324,12 +331,16 @@ Routes own page composition; features own data. See `../handbook/02_architecture
 
 ```text
 src/routes/{-$locale}/
-|-- index.tsx                    # home = landing composition
-|-- <feature>/route.tsx          # composes an archetype + queries
-|-- <feature>/$id/route.tsx      # detail archetype (B / C)
+|-- index.tsx                    # home = route composition of features
+|-- -components/                 # page-local home sections (hero, mission, ...)
+|-- <feature>/index.tsx          # composes an archetype + queries
+|-- <feature>/$id.tsx            # detail archetype (B / C)
+`-- <feature>/-components/       # page-local views of that content type
 ```
 
 The `feature` folder name is the *content type*; the route picks the archetype.
+Page-local views live next to their route in `-components/` (TanStack Router
+colocation, `-` prefix); views reused across routes/pages live in the feature.
 
 ---
 
@@ -346,19 +357,25 @@ Do not build page by page. Build the reusable layer first:
 4. **Archetype A (Collection Index)** — adds StickyInPageNav to B.
 5. **Archetypes D → E → F** — share FilterSidebar/FilterToolbar; D dense,
    E card variant, F list-with-preview.
-6. Extract the hard-coded landing data into `server.ts` / `queries.ts` per
+6. Extract the hard-coded data into `server.ts` / `queries.ts` per owning
    feature so SSR/SSG and caches work correctly.
 
-> Note: where the new templates live (new feature folders vs. expanding
-> `landing`) is intentionally left open. Pick it when we start coding. For
-> layout analysis, the archetypes and blocks above are the source of truth.
+> Note: where the new templates live follows the Component Placement Rule
+> (`../handbook/02_architecture.md`): canonical views of a domain live in the
+> feature (and are reused across archetypes); page-local compositions live in
+> `routes/<area>/-components/`.
 
 ---
 
 ## Open Questions (to resolve before coding)
 
-- Should the bands be promoted out of `features/landing` into a generic
-  `components/common` `SectionBand` set, or stay in `landing` and be imported?
+- **Resolved — bands**: previews render another feature's data, so each lives in
+  its owning feature (`SeminarSpotlight`, `PublicationsPreview`,
+  `ProjectsPreview`, `ResearchAreasPreview`). The generic section chrome
+  (title + description + CTA header) repeats across bands and is the candidate
+  for a shared `SectionHeader` / `SectionBand` primitive in `components/common`
+  when extracted. The home page itself is a route (`routes/{-$locale}/-components`),
+  not a feature.
 - Full-text search across page types: one global search surface (popover) or
   per-page `FilterToolbar` search only?
 - Data source: is the lab's content in Supabase (`src/utils/supabase.ts`), or

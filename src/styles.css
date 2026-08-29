@@ -137,8 +137,8 @@
     }
 }
 
-/* Chỉ dành cho landing navbar khi đè lên hero (data-over-hero). Không tái sử dụng. */
-[data-slot="landing-navbar"][data-over-hero="true"] {
+/* Chỉ dành cho app navbar khi đè lên home hero (data-over-hero). Không tái sử dụng. */
+[data-slot="app-navbar"][data-over-hero="true"] {
   --background: oklch(0.3718 0.2366 266.8);
   --foreground: oklch(0.985 0 0);
   --muted: oklch(0.985 0 0 / 12%);

@@ -1,7 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import type { TCareerDetail } from "@/features/careers";
-import { CareerDetail } from "@/features/careers";
 import { useI18n } from "@/lib/i18n";
+import { CareerDetail } from "./-components/career-detail";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const ROLES: TCareerDetail[] = [

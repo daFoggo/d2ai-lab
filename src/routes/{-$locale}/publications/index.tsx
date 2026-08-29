@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { TPublication } from "@/features/publications";
-import { Publications } from "@/features/publications";
+import { Publications } from "./-components/publications-grid";
 
 /* Fake data giả định — khi có backend sẽ thay bằng query thật. */
 const PUBLICATIONS: TPublication[] = [

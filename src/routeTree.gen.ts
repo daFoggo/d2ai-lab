@@ -11,10 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
-import { Route as Char123LocaleChar125ProjectsRouteImport } from './routes/{-$locale}/projects'
-import { Route as Char123LocaleChar125TeamsRouteImport } from './routes/{-$locale}/teams'
 import { Route as Char123LocaleChar125CareersIndexRouteImport } from './routes/{-$locale}/careers/index'
 import { Route as Char123LocaleChar125CareersIdRouteImport } from './routes/{-$locale}/careers/$id'
+import { Route as Char123LocaleChar125ProjectsIndexRouteImport } from './routes/{-$locale}/projects/index'
 import { Route as Char123LocaleChar125PublicationsIndexRouteImport } from './routes/{-$locale}/publications/index'
 import { Route as Char123LocaleChar125PublicationsIdRouteImport } from './routes/{-$locale}/publications/$id'
 import { Route as Char123LocaleChar125ResearchAreasRouteImport } from './routes/{-$locale}/research/areas'
@@ -22,6 +21,7 @@ import { Route as Char123LocaleChar125ResearchDirectionsRouteImport } from './ro
 import { Route as Char123LocaleChar125ResearchGapsRouteImport } from './routes/{-$locale}/research/gaps'
 import { Route as Char123LocaleChar125SeminarsIndexRouteImport } from './routes/{-$locale}/seminars/index'
 import { Route as Char123LocaleChar125SeminarsIdRouteImport } from './routes/{-$locale}/seminars/$id'
+import { Route as Char123LocaleChar125TeamsIndexRouteImport } from './routes/{-$locale}/teams/index'
 
 const Char123LocaleChar125RouteRoute =
   Char123LocaleChar125RouteRouteImport.update({
@@ -35,18 +35,6 @@ const Char123LocaleChar125IndexRoute =
     path: '/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
-const Char123LocaleChar125ProjectsRoute =
-  Char123LocaleChar125ProjectsRouteImport.update({
-    id: '/projects',
-    path: '/projects',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
-  } as any)
-const Char123LocaleChar125TeamsRoute =
-  Char123LocaleChar125TeamsRouteImport.update({
-    id: '/teams',
-    path: '/teams',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
-  } as any)
 const Char123LocaleChar125CareersIndexRoute =
   Char123LocaleChar125CareersIndexRouteImport.update({
     id: '/careers/',
@@ -57,6 +45,12 @@ const Char123LocaleChar125CareersIdRoute =
   Char123LocaleChar125CareersIdRouteImport.update({
     id: '/careers/$id',
     path: '/careers/$id',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ProjectsIndexRoute =
+  Char123LocaleChar125ProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125PublicationsIndexRoute =
@@ -101,11 +95,15 @@ const Char123LocaleChar125SeminarsIdRoute =
     path: '/seminars/$id',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125TeamsIndexRoute =
+  Char123LocaleChar125TeamsIndexRouteImport.update({
+    id: '/teams/',
+    path: '/teams/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/projects': typeof Char123LocaleChar125ProjectsRoute
-  '/{-$locale}/teams': typeof Char123LocaleChar125TeamsRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
   '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
@@ -114,12 +112,12 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
   '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
   '/{-$locale}/careers/': typeof Char123LocaleChar125CareersIndexRoute
+  '/{-$locale}/projects/': typeof Char123LocaleChar125ProjectsIndexRoute
   '/{-$locale}/publications/': typeof Char123LocaleChar125PublicationsIndexRoute
   '/{-$locale}/seminars/': typeof Char123LocaleChar125SeminarsIndexRoute
+  '/{-$locale}/teams/': typeof Char123LocaleChar125TeamsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/{-$locale}/projects': typeof Char123LocaleChar125ProjectsRoute
-  '/{-$locale}/teams': typeof Char123LocaleChar125TeamsRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
   '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
@@ -128,14 +126,14 @@ export interface FileRoutesByTo {
   '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
   '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
   '/{-$locale}/careers': typeof Char123LocaleChar125CareersIndexRoute
+  '/{-$locale}/projects': typeof Char123LocaleChar125ProjectsIndexRoute
   '/{-$locale}/publications': typeof Char123LocaleChar125PublicationsIndexRoute
   '/{-$locale}/seminars': typeof Char123LocaleChar125SeminarsIndexRoute
+  '/{-$locale}/teams': typeof Char123LocaleChar125TeamsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/projects': typeof Char123LocaleChar125ProjectsRoute
-  '/{-$locale}/teams': typeof Char123LocaleChar125TeamsRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
   '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
@@ -144,15 +142,15 @@ export interface FileRoutesById {
   '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
   '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
   '/{-$locale}/careers/': typeof Char123LocaleChar125CareersIndexRoute
+  '/{-$locale}/projects/': typeof Char123LocaleChar125ProjectsIndexRoute
   '/{-$locale}/publications/': typeof Char123LocaleChar125PublicationsIndexRoute
   '/{-$locale}/seminars/': typeof Char123LocaleChar125SeminarsIndexRoute
+  '/{-$locale}/teams/': typeof Char123LocaleChar125TeamsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/{-$locale}'
-    | '/{-$locale}/projects'
-    | '/{-$locale}/teams'
     | '/{-$locale}/'
     | '/{-$locale}/careers/$id'
     | '/{-$locale}/publications/$id'
@@ -161,12 +159,12 @@ export interface FileRouteTypes {
     | '/{-$locale}/research/gaps'
     | '/{-$locale}/seminars/$id'
     | '/{-$locale}/careers/'
+    | '/{-$locale}/projects/'
     | '/{-$locale}/publications/'
     | '/{-$locale}/seminars/'
+    | '/{-$locale}/teams/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/{-$locale}/projects'
-    | '/{-$locale}/teams'
     | '/{-$locale}'
     | '/{-$locale}/careers/$id'
     | '/{-$locale}/publications/$id'
@@ -175,13 +173,13 @@ export interface FileRouteTypes {
     | '/{-$locale}/research/gaps'
     | '/{-$locale}/seminars/$id'
     | '/{-$locale}/careers'
+    | '/{-$locale}/projects'
     | '/{-$locale}/publications'
     | '/{-$locale}/seminars'
+    | '/{-$locale}/teams'
   id:
     | '__root__'
     | '/{-$locale}'
-    | '/{-$locale}/projects'
-    | '/{-$locale}/teams'
     | '/{-$locale}/'
     | '/{-$locale}/careers/$id'
     | '/{-$locale}/publications/$id'
@@ -190,8 +188,10 @@ export interface FileRouteTypes {
     | '/{-$locale}/research/gaps'
     | '/{-$locale}/seminars/$id'
     | '/{-$locale}/careers/'
+    | '/{-$locale}/projects/'
     | '/{-$locale}/publications/'
     | '/{-$locale}/seminars/'
+    | '/{-$locale}/teams/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,20 +214,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/{-$locale}/projects': {
-      id: '/{-$locale}/projects'
-      path: '/projects'
-      fullPath: '/{-$locale}/projects'
-      preLoaderRoute: typeof Char123LocaleChar125ProjectsRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
-    }
-    '/{-$locale}/teams': {
-      id: '/{-$locale}/teams'
-      path: '/teams'
-      fullPath: '/{-$locale}/teams'
-      preLoaderRoute: typeof Char123LocaleChar125TeamsRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
-    }
     '/{-$locale}/careers/': {
       id: '/{-$locale}/careers/'
       path: '/careers'
@@ -240,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/careers/$id'
       fullPath: '/{-$locale}/careers/$id'
       preLoaderRoute: typeof Char123LocaleChar125CareersIdRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/projects/': {
+      id: '/{-$locale}/projects/'
+      path: '/projects'
+      fullPath: '/{-$locale}/projects/'
+      preLoaderRoute: typeof Char123LocaleChar125ProjectsIndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/publications/': {
@@ -291,12 +284,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125SeminarsIdRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/teams/': {
+      id: '/{-$locale}/teams/'
+      path: '/teams'
+      fullPath: '/{-$locale}/teams/'
+      preLoaderRoute: typeof Char123LocaleChar125TeamsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
   }
 }
 
 interface Char123LocaleChar125RouteRouteChildren {
-  Char123LocaleChar125ProjectsRoute: typeof Char123LocaleChar125ProjectsRoute
-  Char123LocaleChar125TeamsRoute: typeof Char123LocaleChar125TeamsRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
   Char123LocaleChar125CareersIdRoute: typeof Char123LocaleChar125CareersIdRoute
   Char123LocaleChar125PublicationsIdRoute: typeof Char123LocaleChar125PublicationsIdRoute
@@ -305,14 +303,14 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125ResearchGapsRoute: typeof Char123LocaleChar125ResearchGapsRoute
   Char123LocaleChar125SeminarsIdRoute: typeof Char123LocaleChar125SeminarsIdRoute
   Char123LocaleChar125CareersIndexRoute: typeof Char123LocaleChar125CareersIndexRoute
+  Char123LocaleChar125ProjectsIndexRoute: typeof Char123LocaleChar125ProjectsIndexRoute
   Char123LocaleChar125PublicationsIndexRoute: typeof Char123LocaleChar125PublicationsIndexRoute
   Char123LocaleChar125SeminarsIndexRoute: typeof Char123LocaleChar125SeminarsIndexRoute
+  Char123LocaleChar125TeamsIndexRoute: typeof Char123LocaleChar125TeamsIndexRoute
 }
 
 const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
   {
-    Char123LocaleChar125ProjectsRoute: Char123LocaleChar125ProjectsRoute,
-    Char123LocaleChar125TeamsRoute: Char123LocaleChar125TeamsRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
     Char123LocaleChar125CareersIdRoute: Char123LocaleChar125CareersIdRoute,
     Char123LocaleChar125PublicationsIdRoute:
@@ -326,10 +324,13 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125SeminarsIdRoute: Char123LocaleChar125SeminarsIdRoute,
     Char123LocaleChar125CareersIndexRoute:
       Char123LocaleChar125CareersIndexRoute,
+    Char123LocaleChar125ProjectsIndexRoute:
+      Char123LocaleChar125ProjectsIndexRoute,
     Char123LocaleChar125PublicationsIndexRoute:
       Char123LocaleChar125PublicationsIndexRoute,
     Char123LocaleChar125SeminarsIndexRoute:
       Char123LocaleChar125SeminarsIndexRoute,
+    Char123LocaleChar125TeamsIndexRoute: Char123LocaleChar125TeamsIndexRoute,
   }
 
 const Char123LocaleChar125RouteRouteWithChildren =

@@ -1,0 +1,17 @@
+{
+	"hero": {
+		"titleLine1": "Data to Intelligence,",
+		"titleLine2": "Ideas to Impact.",
+		"description": "Our mission is to advance AI and data science, driving real-world breakthroughs that benefit society."
+	},
+	"mission": {
+		"cta": "Explore research directions"
+	},
+	"domains": {
+		"title": "We work across domains",
+		"cta": "Explore research areas"
+	},
+	"opportunities": {
+		"title": "Help us shape the future"
+	}
+}
