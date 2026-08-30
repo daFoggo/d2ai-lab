@@ -27,7 +27,6 @@ Project-specific references (not part of the base, per-project):
 
 | Document | Purpose |
 |---|---|
-| `docs/project/page-patterns.md` | Page archetypes for a specific site (e.g. research-lab A–F) |
 | `docs/project/reference-styles.md` | Visual treatment reference for a specific site/brand |
 
 ## Mandatory Agent Rule Files

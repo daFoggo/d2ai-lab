@@ -29,6 +29,7 @@ Project-specific references (not part of the base): `docs/project/`.
 These hold for every change. Details and rationale are in the linked docs.
 
 - **Feature-based architecture**: feature modules own feature-local code under `src/features/[feature]/` (`components/`, `server.ts`, `functions.ts`, `queries.ts`, `schemas.ts`, `index.ts`). Routes own cross-feature page composition. (`02_architecture.md`)
+- **Component Placement Rule**: UI and data live by scope of reuse + domain coupling — cross-cutting (≥2 consumers) → `features/[feature]/`; page-local views → `routes/<area>/-components/`; static page content → inline const in the route (never a query); app-wide → `components/common/`; primitives → `components/ui/`. Promote, don't predict. (`02_architecture.md`)
 - **Barrels are client-safe**: `index.ts` must never export `server.ts` or server-only modules. Use `@/*` imports. (`02_architecture.md`, `04`)
 - **Cross-feature data flows through props**: feature components never fetch another feature's data; routes/layouts load it and pass data + loading/error + callbacks. (`02_architecture.md`, `03`)
 - **Query functions resolve valid data or throw** — never return `null`/`[]`/fallbacks for failures. Failed queries are never empty states. (`04`, `05`)

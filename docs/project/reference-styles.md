@@ -1,6 +1,6 @@
 ---
 name: reference-styles
-description: Reference analysis of the /dev/notion style system, distilled into adoptable patterns for the lab site. Use when choosing visual treatment for a section or page — backgrounds, code blocks, ornament, logo walls, section dividers. Complements ../handbook/10_design_tokens.md and page-patterns.md.
+description: Reference analysis of the /dev/notion style system, distilled into adoptable patterns for the lab site. Use when choosing visual treatment for a section or page — backgrounds, code blocks, ornament, logo walls, section dividers. Complements ../handbook/10_design_tokens.md.
 ---
 
 # Reference Styles (from /dev/notion)
@@ -128,7 +128,7 @@ Dark footer with a centered command (`curl …` / `pip …`) + copy button, a
 
 `CodeBlock` · `SectionDivider` · `LogoWall` · `StatusCard` / `CalloutCard` ·
 `LinkCard` · decorative `bg-dot` utility. Add to the inventory in
-`page-patterns.md` when building.
+`docs/handbook/02_architecture.md` when building.
 
 ## Rule Summary
 

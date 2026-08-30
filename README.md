@@ -118,6 +118,32 @@ pnpm check:encoding
 
 ## Tech Stack & Architecture
 
+### Component Placement Rule
+
+Where UI and data live is decided by **scope of reuse + domain coupling**, not by "is it UI or logic". The same rule applies to components **and** to data (schemas, `server.ts`, `functions.ts`, `queries.ts`):
+
+| Kind | Home |
+|---|---|
+| Cross-cutting capability (auth, search, analytics) or used from ≥2 places | `features/[feature]/components/` + `features/[feature]/*.ts` |
+| Page-local views (rendered by exactly one route) | `routes/<area>/-components/` |
+| Static page content (marketing copy, logo lists, CTA cards) | Inline const data in the route file |
+| Domain-agnostic, app-wide UI (layout, shell, section chrome) | `components/common/` |
+| Primitives | `components/ui/` |
+
+The `-` prefix inside `routes/` is TanStack Router's official colocation convention — those files/folders are excluded from the route tree. See `docs/handbook/02_architecture.md` for the full rule (promote-don't-predict, static content ≠ data, feature shape).
+
+### Feature shape
+
+```text
+src/features/[feature]/
+|-- components/        # cross-cutting UI owned by this domain
+|-- schemas.ts         # Zod schemas + inferred types
+|-- server.ts          # server-only data access (never exported from barrel)
+|-- functions.ts       # createServerFn wrappers + validation
+|-- queries.ts         # query options + query keys
+`-- index.ts           # client-safe barrel (functions/queries/schemas/components, NOT server.ts)
+```
+
 ```mermaid
 flowchart LR
     subgraph Client["🎨 Client & UI"]
