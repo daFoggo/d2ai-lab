@@ -103,6 +103,36 @@ Routes own page-level composition:
 
 Feature A should not import Feature B's page widget just to compose a route. Put that composition in `src/routes`.
 
+## Layout Organization (Multiple App Shells)
+
+When a project has more than one visual shell — e.g. a **marketing** shell (navbar + footer) and a **dashboard** shell (sidebar + topbar) — organize them with **pathless layout routes** (`_` prefix). This is the TanStack-native mechanism for applying a different layout without changing the URL.
+
+```text
+src/routes/
+├── __root.tsx                  # root: fonts, theme, QueryClient provider
+├── {-$locale}/                 # optional locale segment (matches / and /vi)
+│   ├── route.tsx               # locale layout: i18n provider + locale guard only
+│   ├── _marketing/             # pathless layout — no URL segment
+│   │   ├── route.tsx           # AppLayout + AppNavbar + AppFooter + <Outlet />
+│   │   ├── index.tsx           # home (URL: /)
+│   │   ├── research/areas.tsx  # URL: /research/areas
+│   │   └── ...
+│   └── _dashboard/             # pathless layout — no URL segment
+│       ├── route.tsx           # DashboardLayout: sidebar + topbar + <Outlet />
+│       ├── admin/index.tsx     # URL: /admin
+│       └── ...
+```
+
+Rules:
+
+- **Pathless layout route (`_name/route.tsx`)** is the unit of shell selection. Each shell's `route.tsx` renders its chrome + `<Outlet />`; children live in that folder and inherit the shell. It does **not** add a URL segment.
+- **Route groups `(name)/` do NOT apply layouts** in TanStack Router — they are purely organizational and invisible to the route tree. Do not confuse them with Next.js route groups (a common trap).
+- **Keep concern-separation between locale and shell**: `{-$locale}/route.tsx` stays the i18n/locale layer; each shell is a separate pathless child. This lets marketing and dashboard pages share the same locale routing while having entirely different chrome.
+- **Shell components live in `components/common/app-shell/`** — one folder per shell (`AppLayout` for marketing, `DashboardLayout` for dashboard), reusing the same `components/common/` + `components/ui/` primitives. App-specific layout is never a feature.
+- **Nest further when needed**: a complex area (e.g. a settings sub-area) can add another pathless layout `_dashboard/settings/route.tsx`, mirroring multi-tier shells (AppLayout → ProjectLayout → FeatureLayout).
+- **Scope providers to the layout tier** (Supabase pattern): wrap `SessionProvider` / area context inside `_dashboard/route.tsx`, not the root — memory is released when leaving that area. Keep URL as the source of truth for active nav state (read the matched segment, don't store it in global state).
+- **Monorepo is optional**: split into `apps/*` only when bundle/complexity demands (Supabase separates `www` vs `studio`). For a mid-size project, pathless layouts in a single app are the right default; defer monorepo until a real second app exists.
+
 ## Feature Data Boundary
 
 Feature components should not fetch data from another feature.
@@ -181,9 +211,9 @@ The app shell in `src/router.tsx` already enables several TanStack Router featur
 - `__root.tsx` — root route (required name, at the routes directory root).
 - `index.tsx` — index route.
 - `$param` — dynamic segment.
-- `_` prefix (`_layout`) — **pathless layout route** (matches children without adding a URL segment).
+- `_` prefix (`_layout`) — **pathless layout route** (matches children without adding a URL segment). See [Layout Organization](#layout-organization-multiple-app-shells).
 - `_` suffix (`posts_`) — break-out route (excluded from nesting under parent routes).
-- `(folder)` — **route group**, purely organizational, no layout and no URL segment. Do not confuse with Next.js route groups.
+- `(folder)` — **route group**, purely organizational, no layout and no URL segment. Do not confuse with Next.js route groups; use `_name/route.tsx` when you actually need a layout.
 - `-` prefix files/folders — excluded from the route tree (colocate helpers/logic).
 - `$` (`$.tsx`) — splat route (matches rest of path, `_splat` param).
 - `.route.tsx` — route file type marker.
