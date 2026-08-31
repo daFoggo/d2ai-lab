@@ -32,4 +32,23 @@ const { useAppTable, createAppColumnHelper } = createTableHook({
 	enableSortingRemoval: false,
 });
 
-export { createAppColumnHelper, useAppTable };
+/* Server-side table: KHÔNG dùng client row models — chỉ state/API pagination.
+ * Dữ liệu đã phân trang server (Supabase .range), dùng manualPagination. */
+const serverFeatures = tableFeatures({
+	rowPaginationFeature,
+});
+
+const {
+	useAppTable: useAppServerTable,
+	createAppColumnHelper: createAppServerColumnHelper,
+} = createTableHook({
+	features: serverFeatures,
+	debugTable: false,
+});
+
+export {
+	createAppColumnHelper,
+	createAppServerColumnHelper,
+	useAppServerTable,
+	useAppTable,
+};

@@ -17,6 +17,16 @@ const CareersPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/careers/")({
+	head: () => ({
+		meta: [
+			{ title: "Careers — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Explore career and internship opportunities at D2AI Lab across AI, ML, and intelligent systems.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(careersQueryOptions());
 	},

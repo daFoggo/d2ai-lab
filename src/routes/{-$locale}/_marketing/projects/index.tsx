@@ -18,6 +18,16 @@ const ProjectsPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/projects/")({
+	head: () => ({
+		meta: [
+			{ title: "Projects & Platforms — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Explore applied platforms, open tools, and intelligent software initiatives built by D2AI Lab.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(projectsQueryOptions());
 	},

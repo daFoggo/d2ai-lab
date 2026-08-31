@@ -2,7 +2,12 @@ import "@tanstack/react-start/server-only";
 
 import { notFound } from "@tanstack/react-router";
 import { supabase } from "@/utils/supabase";
-import type { TSeminar, TSeminarAdminItem, TSeminarDetail } from "./schemas";
+import type {
+	TPaginatedAdminSeminars,
+	TPaginatedSeminars,
+	TSeminar,
+	TSeminarDetail,
+} from "./schemas";
 
 /*
  * Query contract: trả data hợp lệ hoặc throw, không bao giờ trả fallback che lỗi.
@@ -39,7 +44,7 @@ interface SeminarRow {
 	id: string;
 	title: string;
 	starts_at: string;
-	seminar_speakers?: { name: string; role: string }[];
+	seminar_speakers?: { name: string | null; role: string | null }[];
 }
 
 const toSeminar = ({
@@ -59,38 +64,55 @@ const toSeminar = ({
 	};
 };
 
-export async function getSeminars(): Promise<TSeminar[]> {
-	const { data, error } = await supabase
+const pageRange = (page: number, pageSize: number) => {
+	const from = (page - 1) * pageSize;
+	return { from, to: from + pageSize - 1 };
+};
+
+export async function getSeminars(
+	page: number,
+	pageSize: number,
+): Promise<TPaginatedSeminars> {
+	const { from, to } = pageRange(page, pageSize);
+	const { data, count, error } = await supabase
 		.from("seminars")
-		.select("id, title, starts_at, seminar_speakers(name, role)")
+		.select("id, title, starts_at, seminar_speakers(name, role)", {
+			count: "exact",
+		})
 		.order("starts_at", { ascending: false })
-		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true })
+		.limit(1, { foreignTable: "seminar_speakers" })
+		.range(from, to);
 
 	if (error) throw error;
-	return (data ?? []).map((row) => toSeminar(row as SeminarRow));
+	return {
+		items: (data ?? []).map((row) => toSeminar(row as SeminarRow)),
+		total: count ?? 0,
+	};
 }
 
-export async function getUpcomingSeminar(): Promise<TSeminar> {
+export async function getUpcomingSeminar(): Promise<TSeminar | null> {
 	const { data, error } = await supabase
 		.from("seminars")
 		.select("id, title, starts_at, seminar_speakers(name, role)")
 		.gt("starts_at", new Date().toISOString())
 		.order("starts_at", { ascending: true })
 		.limit(1)
-		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true })
+		.limit(1, { foreignTable: "seminar_speakers" });
 
 	if (error) throw error;
 	const row = (data ?? [])[0];
 	if (!row) {
-		throw new Error("No upcoming seminar");
+		return null;
 	}
 	return toSeminar(row as SeminarRow);
 }
 
 interface SpeakerRow {
 	id: string;
-	name: string;
-	role: string;
+	name: string | null;
+	role: string | null;
 	photo_url: string | null;
 	sort_order: number;
 	/* Mỗi URL 1 dòng (text) — UI detect platform. */
@@ -125,10 +147,11 @@ export async function getSeminarDetail(id: string): Promise<TSeminarDetail> {
 
 	const speakers = (seminar.seminar_speakers ?? [])
 		.sort((a, b) => a.sort_order - b.sort_order)
+		.filter((speaker) => speaker.name?.trim())
 		.map((speaker) => ({
 			id: speaker.id,
-			name: speaker.name,
-			role: speaker.role,
+			name: speaker.name as string,
+			role: speaker.role ?? undefined,
 			photo: speaker.photo_url ?? undefined,
 			socials: (speaker.socials ?? "")
 				.split("\n")
@@ -159,22 +182,32 @@ export async function getSeminarDetail(id: string): Promise<TSeminarDetail> {
 }
 
 /* Admin list — kèm số lượng speaker + startsAtIso (sort/table). */
-export async function getAdminSeminars(): Promise<TSeminarAdminItem[]> {
-	const { data, error } = await supabase
+export async function getAdminSeminars(
+	page: number,
+	pageSize: number,
+): Promise<TPaginatedAdminSeminars> {
+	const { from, to } = pageRange(page, pageSize);
+	const { data, count, error } = await supabase
 		.from("seminars")
-		.select("id, title, starts_at, location, seminar_speakers(name, role)")
+		.select("id, title, starts_at, location, seminar_speakers(name, role)", {
+			count: "exact",
+		})
 		.order("starts_at", { ascending: false })
-		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true })
+		.range(from, to);
 
 	if (error) throw error;
-	return (data ?? []).map((row) => {
-		const rowData = row as SeminarRow & { location: string | null };
-		const speakers = rowData.seminar_speakers ?? [];
-		return {
-			...toSeminar(rowData),
-			speakerCount: speakers.length,
-			startsAtIso: rowData.starts_at,
-			location: rowData.location ?? undefined,
-		};
-	});
+	return {
+		items: (data ?? []).map((row) => {
+			const rowData = row as SeminarRow & { location: string | null };
+			const speakers = rowData.seminar_speakers ?? [];
+			return {
+				...toSeminar(rowData),
+				speakerCount: speakers.length,
+				startsAtIso: rowData.starts_at,
+				location: rowData.location ?? undefined,
+			};
+		}),
+		total: count ?? 0,
+	};
 }

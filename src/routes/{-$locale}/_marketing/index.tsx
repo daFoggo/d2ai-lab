@@ -1,4 +1,4 @@
-﻿import type { Icon } from "@tabler/icons-react";
+import type { Icon } from "@tabler/icons-react";
 import {
 	IconAntenna,
 	IconArrowUpRight,
@@ -167,24 +167,26 @@ const HomePage = () => {
 			</HomeHero.Root>
 
 			{/* 2. Upcoming seminar spotlight — first section under the hero */}
-			<SeminarSpotlight
-				title={t("seminars.spotlight.title")}
-				description={t("seminars.spotlight.description")}
-				seminar={upcomingSeminarQuery.data}
-				viewDetailsLabel={t("seminars.spotlight.viewDetails")}
-				cta={
-					<Button
-						render={<Link to="/{-$locale}/seminars" params={localeParams} />}
-						nativeButton={false}
-					>
-						{t("seminars.spotlight.cta")}
-						<IconArrowUpRight
-							data-icon="inline-end"
-							className={CTA_ARROW_CLASS}
-						/>
-					</Button>
-				}
-			/>
+			{upcomingSeminarQuery.data && (
+				<SeminarSpotlight
+					title={t("seminars.spotlight.title")}
+					description={t("seminars.spotlight.description")}
+					seminar={upcomingSeminarQuery.data}
+					viewDetailsLabel={t("seminars.spotlight.viewDetails")}
+					cta={
+						<Button
+							render={<Link to="/{-$locale}/seminars" params={localeParams} />}
+							nativeButton={false}
+						>
+							{t("seminars.spotlight.cta")}
+							<IconArrowUpRight
+								data-icon="inline-end"
+								className={CTA_ARROW_CLASS}
+							/>
+						</Button>
+					}
+				/>
+			)}
 
 			{/* 3. Section 1: Amplifying Human Ingenuity — static content */}
 			<HomeMission
@@ -302,6 +304,16 @@ const HomePage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/")({
+	head: () => ({
+		meta: [
+			{ title: "D2AI Lab — AI Research & Scientific Intelligence" },
+			{
+				name: "description",
+				content:
+					"Advancing scientific progress through foundational and applied AI research.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		/* Critical — await song song để HTML server render đầy đủ (SEO). */
 		await Promise.all([

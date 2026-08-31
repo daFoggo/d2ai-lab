@@ -17,6 +17,16 @@ const TeamsPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/teams/")({
+	head: () => ({
+		meta: [
+			{ title: "People & Teams — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Meet the researchers, engineers, and faculty members advancing scientific computing at D2AI Lab.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(teamsQueryOptions());
 	},

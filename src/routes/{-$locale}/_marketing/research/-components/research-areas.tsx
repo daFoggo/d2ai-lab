@@ -1,6 +1,8 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/common/page-header";
 import type { TResearchArea } from "@/features/research";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface IResearchAreasProps {
@@ -18,6 +20,11 @@ const AreaCard = ({
 	area: TResearchArea;
 	className?: string;
 }) => {
+	const { locale } = useI18n();
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
+
 	return (
 		<article
 			className={cn(
@@ -34,11 +41,15 @@ const AreaCard = ({
 			<p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
 				{area.description}
 			</p>
-			<div className="mt-auto flex items-center gap-1.5 pt-2 font-medium text-foreground">
-				<span className="text-xs transition-colors group-hover:text-foreground/80 sm:text-sm">
-					Learn more
-				</span>
-				<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+			<div className="mt-auto pt-2">
+				<Link
+					to="/{-$locale}/research/directions"
+					params={localeParams}
+					className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground transition-colors hover:text-foreground/80 sm:text-sm"
+				>
+					<span>Learn more</span>
+					<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+				</Link>
 			</div>
 		</article>
 	);

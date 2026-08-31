@@ -17,6 +17,16 @@ const ResearchAreasPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/research/areas")({
+	head: () => ({
+		meta: [
+			{ title: "Research Areas — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Discover our core areas of scientific research spanning neural architectures, smart education, ambient IoT, and responsible AI.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(researchAreasQueryOptions());
 	},

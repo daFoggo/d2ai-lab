@@ -1,5 +1,4 @@
 {
-	"search": "Search",
 	"signIn": "Sign in",
 	"backToTop": "Back to top",
 	"languageLabel": "Language",
@@ -25,9 +24,5 @@
 	"footer": {
 		"labsLabel": "Other research teams and initiative areas",
 		"slogan": "Data to Intelligence, Ideas to Impact."
-	},
-	"toast": {
-		"search": "Search Publications & Research",
-		"searchDesc": "Access papers, open-source repositories, and lab project archives."
 	}
 }

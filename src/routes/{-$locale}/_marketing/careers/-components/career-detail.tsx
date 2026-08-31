@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import type { TCareerDetail } from "@/features/careers";
+import { DEFAULT_LOCALE } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface ICareerDetailProps {
@@ -36,6 +37,10 @@ export const CareerDetail = ({
 	locale,
 	className,
 }: ICareerDetailProps) => {
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
+
 	const handleApply = () => {
 		if (career.applyUrl) {
 			window.open(career.applyUrl, "_blank", "noreferrer");
@@ -61,7 +66,7 @@ export const CareerDetail = ({
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink
-								render={<Link to="/{-$locale}" params={{ locale }} />}
+								render={<Link to="/{-$locale}" params={localeParams} />}
 							>
 								Home
 							</BreadcrumbLink>
@@ -69,7 +74,7 @@ export const CareerDetail = ({
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink
-								render={<Link to="/{-$locale}/careers" params={{ locale }} />}
+								render={<Link to="/{-$locale}/careers" params={localeParams} />}
 							>
 								Careers
 							</BreadcrumbLink>

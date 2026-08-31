@@ -1,8 +1,11 @@
 {
 	"spotlight": {
 		"title": "Hội thảo sắp tới",
-		"description": "Tham gia chuỗi hội thảo định kỳ và kết nối với các học giả quốc tế cùng thành viên phòng lab.",
+		"description": "Tham gia chuỗi hội thảo định kỳ của chúng tôi và kết nối với các học giả quốc tế cùng thành viên phòng lab.",
 		"cta": "Xem tất cả hội thảo",
 		"viewDetails": "Xem chi tiết hội thảo"
-	}
+	},
+	"previous": "Trước",
+	"next": "Sau",
+	"page": "Trang {page} / {totalPages}"
 }

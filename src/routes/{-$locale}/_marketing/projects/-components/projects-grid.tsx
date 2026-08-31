@@ -24,6 +24,8 @@ const FeaturedProject = ({ project }: { project: TProject }) => {
 							<img
 								src={project.thumbnail}
 								alt={project.title}
+								loading="eager"
+								decoding="async"
 								className="h-full w-full object-cover"
 							/>
 						) : (
@@ -48,7 +50,19 @@ const FeaturedProject = ({ project }: { project: TProject }) => {
 					{project.description}
 				</p>
 				<div className="mt-4 sm:mt-6">
-					<Button>
+					<Button
+						render={
+							// biome-ignore lint/a11y/useAnchorContent: Base UI Button passes text content to render prop slot
+							<a
+								href={project.href || "#"}
+								target={project.href?.startsWith("http") ? "_blank" : undefined}
+								rel={
+									project.href?.startsWith("http") ? "noreferrer" : undefined
+								}
+							/>
+						}
+						nativeButton={false}
+					>
 						Explore project
 						<IconArrowUpRight data-icon="inline-end" />
 					</Button>
@@ -70,11 +84,17 @@ const ProjectItem = ({ project }: { project: TProject }) => {
 			<p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
 				{project.description}
 			</p>
-			<div className="mt-auto flex items-center gap-1.5 pt-2 font-medium text-primary">
-				<span className="text-xs transition-colors group-hover:text-primary/80 sm:text-sm">
-					Learn more
-				</span>
-				<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+			<div className="mt-auto pt-2">
+				{/* biome-ignore lint/a11y/noAmbiguousAnchorText: Context is provided by the surrounding article card */}
+				<a
+					href={project.href || "#"}
+					target={project.href?.startsWith("http") ? "_blank" : undefined}
+					rel={project.href?.startsWith("http") ? "noreferrer" : undefined}
+					className="inline-flex items-center gap-1.5 text-xs font-medium text-primary transition-colors hover:text-primary/80 sm:text-sm"
+				>
+					<span>Learn more</span>
+					<IconArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+				</a>
 			</div>
 		</article>
 	);

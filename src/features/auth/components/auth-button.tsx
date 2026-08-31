@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { getMeQueryOptions } from "../queries";
-import type { AuthDialogTab } from "./auth-dialog";
 import { AuthDialog } from "./auth-dialog";
 
 export interface AuthButtonProps {
-	variant?: "default" | "outline" | "split";
+	variant?: "default" | "outline";
 	size?:
 		| "default"
 		| "xs"
@@ -33,12 +32,6 @@ export const AuthButton = ({
 	const { t, locale } = useI18n("auth");
 
 	const [dialogOpen, setDialogOpen] = React.useState(false);
-	const [defaultTab, setDefaultTab] = React.useState<AuthDialogTab>("signin");
-
-	const handleOpen = (tab: AuthDialogTab) => {
-		setDefaultTab(tab);
-		setDialogOpen(true);
-	};
 
 	if (isLoading) {
 		return <Skeleton className="h-8 w-20" />;
@@ -62,43 +55,19 @@ export const AuthButton = ({
 		);
 	}
 
-	// 2. Unauthenticated State: Sign In / Sign Up Trigger Buttons
+	// 2. Unauthenticated State: Sign In only (admin được tạo qua Supabase)
 	return (
 		<>
-			{variant === "split" ? (
-				<div className="flex items-center gap-2">
-					<Button
-						variant="outline"
-						size={size}
-						className={className}
-						onClick={() => handleOpen("signin")}
-					>
-						{t("signIn")}
-					</Button>
-					<Button
-						size={size}
-						className={className}
-						onClick={() => handleOpen("signup")}
-					>
-						{t("signUp")}
-					</Button>
-				</div>
-			) : (
-				<Button
-					variant={variant}
-					size={size}
-					className={className}
-					onClick={() => handleOpen("signin")}
-				>
-					{t("signIn")}
-				</Button>
-			)}
+			<Button
+				variant={variant}
+				size={size}
+				className={className}
+				onClick={() => setDialogOpen(true)}
+			>
+				{t("signIn")}
+			</Button>
 
-			<AuthDialog
-				open={dialogOpen}
-				onOpenChange={setDialogOpen}
-				defaultTab={defaultTab}
-			/>
+			<AuthDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 		</>
 	);
 };

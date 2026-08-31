@@ -54,8 +54,11 @@
 			"speaker": "Diễn giả",
 			"location": "Địa điểm",
 			"speakers": "Diễn giả",
-			"actions": "Thao tác"
+			"actions": "Thao tác",
+			"view": "Xem"
 		},
+		"prevPage": "Trước",
+		"nextPage": "Sau",
 		"form": {
 			"basicInfo": "Thông tin cơ bản",
 			"schedule": "Lịch diễn ra",

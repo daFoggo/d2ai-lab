@@ -21,6 +21,16 @@ const ResearchDirectionsPage = () => {
 export const Route = createFileRoute(
 	"/{-$locale}/_marketing/research/directions",
 )({
+	head: () => ({
+		meta: [
+			{ title: "Research Directions — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Long-term vision and strategic directions connecting foundational AI science to measurable societal impact.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(researchDirectionsQueryOptions());
 	},

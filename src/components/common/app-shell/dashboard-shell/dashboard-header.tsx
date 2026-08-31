@@ -14,7 +14,6 @@ import {
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { DEFAULT_LOCALE, type MessageKey, useI18n } from "@/lib/i18n";
 import { buildDashboardNav, getActiveNavItem } from "./dashboard-nav";
@@ -82,8 +81,10 @@ export const DashboardHeader = () => {
 			data-slot="dashboard-header"
 			className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur supports-backdrop-filter:backdrop-blur md:px-6"
 		>
-			<DashboardSidebarTrigger />
-			<Separator orientation="vertical" className="my-5" />
+			{/* Toggle sidebar chỉ hiện trên mobile (desktop dùng Ctrl+B / resize handle). */}
+			<div className="md:hidden">
+				<DashboardSidebarTrigger />
+			</div>
 			<Breadcrumb>
 				<BreadcrumbList>
 					{crumbs.map((crumb, index) => {

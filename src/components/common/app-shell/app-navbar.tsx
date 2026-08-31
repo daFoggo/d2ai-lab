@@ -3,7 +3,6 @@ import {
 	IconChevronDown,
 	IconLanguage,
 	IconMenu2,
-	IconSearch,
 	IconX,
 } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
@@ -16,12 +15,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupButton,
-	InputGroupInput,
-} from "@/components/ui/input-group";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -259,6 +252,7 @@ export const AppNavbarNav = ({
 														<NavigationMenuLink
 															key={subItem.href ?? subItem.to}
 															{...subLinkProps}
+															closeOnClick
 															onClick={() => onItemClick?.(item)}
 															className="group/subitem flex flex-col items-start gap-1 rounded-xl p-3 transition-colors hover:bg-muted"
 														>
@@ -380,8 +374,6 @@ const AppNavbarLanguageSwitcher = ({
 
 export interface IAppNavbarActionsProps extends ComponentProps<"div"> {
 	children?: ReactNode;
-	searchLabel?: string;
-	onSearchClick?: () => void;
 	loginLabel?: string;
 	onLoginClick?: () => void;
 	items?: IAppNavItem[];
@@ -391,8 +383,6 @@ export interface IAppNavbarActionsProps extends ComponentProps<"div"> {
 
 export const AppNavbarActions = ({
 	children,
-	searchLabel,
-	onSearchClick,
 	loginLabel,
 	onLoginClick,
 	items,
@@ -402,7 +392,6 @@ export const AppNavbarActions = ({
 }: IAppNavbarActionsProps) => {
 	const { t, locale } = useI18n();
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const resolvedSearch = searchLabel ?? t("common.search");
 	const resolvedLogin = loginLabel ?? t("common.signIn");
 
 	return (
@@ -412,32 +401,7 @@ export const AppNavbarActions = ({
 		>
 			{/* Desktop controls — hidden on mobile, moved into the drawer */}
 			<div className="hidden items-center gap-2 sm:gap-2.5 md:flex">
-				{/* 1. Search Input */}
-				{onSearchClick && (
-					<InputGroup className="w-28 sm:w-44 lg:w-56">
-						<InputGroupInput
-							placeholder={resolvedSearch}
-							aria-label={resolvedSearch}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									e.preventDefault();
-									onSearchClick();
-								}
-							}}
-						/>
-						<InputGroupAddon align="inline-end">
-							<InputGroupButton
-								size="icon-sm"
-								onClick={onSearchClick}
-								aria-label={resolvedSearch}
-							>
-								<IconSearch />
-							</InputGroupButton>
-						</InputGroupAddon>
-					</InputGroup>
-				)}
-
-				{/* 2. Dropdown Language Switcher */}
+				{/* 1. Dropdown Language Switcher */}
 				<AppNavbarLanguageSwitcher />
 
 				{/* 3. Sign In / Auth Button */}
@@ -468,35 +432,6 @@ export const AppNavbarActions = ({
 
 					{mobileOpen && (
 						<div className="absolute top-full left-0 z-50 flex max-h-screen w-full animate-in flex-col gap-3 overflow-y-auto border-b border-border bg-background p-4 shadow-lg fade-in slide-in-from-top-2">
-							{/* Search (mobile) */}
-							{onSearchClick && (
-								<InputGroup>
-									<InputGroupInput
-										placeholder={resolvedSearch}
-										aria-label={resolvedSearch}
-										onKeyDown={(e) => {
-											if (e.key === "Enter") {
-												e.preventDefault();
-												onSearchClick();
-												setMobileOpen(false);
-											}
-										}}
-									/>
-									<InputGroupAddon align="inline-end">
-										<InputGroupButton
-											size="icon-sm"
-											onClick={() => {
-												onSearchClick();
-												setMobileOpen(false);
-											}}
-											aria-label={resolvedSearch}
-										>
-											<IconSearch />
-										</InputGroupButton>
-									</InputGroupAddon>
-								</InputGroup>
-							)}
-
 							{items.map((item) => {
 								if (item.items && item.items.length > 0) {
 									return (

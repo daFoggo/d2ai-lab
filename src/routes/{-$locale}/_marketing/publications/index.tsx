@@ -17,6 +17,16 @@ const PublicationsPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/publications/")({
+	head: () => ({
+		meta: [
+			{ title: "Publications — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Peer-reviewed papers, preprints, and research articles from D2AI Lab scientists.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(publicationsQueryOptions());
 	},

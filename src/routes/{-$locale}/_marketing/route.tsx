@@ -1,10 +1,8 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { useState } from "react";
 import type { IAppNavItem } from "@/components/common/app-shell";
 import { AppFooter, AppLayout, AppNavbar } from "@/components/common/app-shell";
 import { AuthButton } from "@/features/auth";
-import { SearchDialog, type SearchItem } from "@/features/search";
-import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 
 /* Other research teams and initiative areas — placeholder links, thay bằng link thật khi có backend. */
 const FOOTER_LABS = [
@@ -16,11 +14,7 @@ const FOOTER_LABS = [
 ];
 
 const MarketingLayout = () => {
-	const { t, locale } = useI18n();
-	const [searchOpen, setSearchOpen] = useState(false);
-	const localeParams = {
-		locale: locale === DEFAULT_LOCALE ? undefined : locale,
-	};
+	const { t } = useI18n();
 
 	const navItems: IAppNavItem[] = [
 		{
@@ -50,50 +44,6 @@ const MarketingLayout = () => {
 		{ label: t("common.nav.careers"), to: "/{-$locale}/careers" },
 	];
 
-	/* Quick-nav destinations cho SearchDialog (Cmd+K). */
-	const searchItems: SearchItem[] = [
-		{
-			label: t("common.nav.researchAreas"),
-			to: "/{-$locale}/research/areas",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.researchDirections"),
-			to: "/{-$locale}/research/directions",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.researchGaps"),
-			to: "/{-$locale}/research/gaps",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.people"),
-			to: "/{-$locale}/teams",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.publications"),
-			to: "/{-$locale}/publications",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.projects"),
-			to: "/{-$locale}/projects",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.seminars"),
-			to: "/{-$locale}/seminars",
-			params: localeParams,
-		},
-		{
-			label: t("common.nav.careers"),
-			to: "/{-$locale}/careers",
-			params: localeParams,
-		},
-	];
-
 	return (
 		<AppLayout>
 			<AppNavbar.Root>
@@ -101,10 +51,7 @@ const MarketingLayout = () => {
 					<AppNavbar.Brand name="D2AI Lab" hasDropdown={false} />
 					<AppNavbar.Nav items={navItems} />
 				</div>
-				<AppNavbar.Actions
-					onSearchClick={() => setSearchOpen(true)}
-					items={navItems}
-				>
+				<AppNavbar.Actions items={navItems}>
 					<AuthButton />
 				</AppNavbar.Actions>
 			</AppNavbar.Root>
@@ -114,12 +61,6 @@ const MarketingLayout = () => {
 			</main>
 
 			<AppFooter brandName="D2AI Lab" labs={FOOTER_LABS} />
-
-			<SearchDialog
-				open={searchOpen}
-				onOpenChange={setSearchOpen}
-				items={searchItems}
-			/>
 		</AppLayout>
 	);
 };

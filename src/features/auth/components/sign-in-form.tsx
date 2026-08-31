@@ -6,7 +6,6 @@ import {
 } from "@tabler/icons-react";
 import { useForm } from "@tanstack/react-form";
 import * as React from "react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,7 +44,6 @@ export const SignInForm = ({ onSuccess }: SignInFormProps) => {
 			setServerError(null);
 			try {
 				await loginMutation.mutateAsync(value);
-				toast.success(t("signInSuccess"));
 				onSuccess?.();
 			} catch (err) {
 				setServerError(getErrorMessage(err, t("signInError")));

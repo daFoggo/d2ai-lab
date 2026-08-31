@@ -54,8 +54,11 @@
 			"speaker": "Speaker",
 			"location": "Location",
 			"speakers": "Speakers",
-			"actions": "Actions"
+			"actions": "Actions",
+			"view": "View"
 		},
+		"prevPage": "Previous",
+		"nextPage": "Next",
 		"form": {
 			"basicInfo": "Basic info",
 			"schedule": "Schedule",

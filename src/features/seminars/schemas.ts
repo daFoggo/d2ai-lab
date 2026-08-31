@@ -7,7 +7,7 @@ export type TSeminarStatus = z.infer<typeof seminarStatusSchema>;
 export const seminarSpeakerSchema = z.object({
 	id: z.string().min(1),
 	name: z.string().min(1),
-	role: z.string().min(1),
+	role: z.string().optional(),
 	photo: z.string().optional(),
 	/* List URLs — UI detect platform (X/LinkedIn) từ định dạng đường dẫn. */
 	socials: z.array(z.string()).optional(),
@@ -55,8 +55,8 @@ export const seminarSpeakerFormSchema = z.object({
 	id: z.string().optional(),
 	/* key client-side (React list key) — không gửi lên DB. */
 	key: z.string().optional(),
-	name: z.string().min(1, "Name is required").max(200),
-	role: z.string().min(1, "Role is required").max(300),
+	name: z.string().max(200).optional(),
+	role: z.string().max(300).optional(),
 	photoUrl: z.string().max(500).optional(),
 	/* Mỗi URL 1 dòng (textarea). UI detect platform từ đường dẫn. */
 	socials: z.string().max(2000).optional(),
@@ -74,5 +74,29 @@ export const seminarUpsertInputSchema = z.object({
 	registrationUrl: z.string().max(500).optional(),
 	speakers: z.array(seminarSpeakerFormSchema).max(20).optional(),
 });
+
+/* ── Pagination (Supabase: .range + count exact) ─────────────────────────── */
+export const seminarPageSchema = z.object({
+	page: z.coerce.number().int().min(1).default(1),
+	pageSize: z.coerce.number().int().min(1).max(50).default(10),
+});
+
+export type TSeminarPage = z.infer<typeof seminarPageSchema>;
+
+export const paginatedSeminarsSchema = z.object({
+	items: z.array(seminarSchema),
+	total: z.number().int().min(0),
+});
+
+export type TPaginatedSeminars = z.infer<typeof paginatedSeminarsSchema>;
+
+export const paginatedAdminSeminarsSchema = z.object({
+	items: z.array(seminarAdminItemSchema),
+	total: z.number().int().min(0),
+});
+
+export type TPaginatedAdminSeminars = z.infer<
+	typeof paginatedAdminSeminarsSchema
+>;
 
 export type TSeminarUpsertInput = z.infer<typeof seminarUpsertInputSchema>;

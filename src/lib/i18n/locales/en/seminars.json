@@ -4,5 +4,8 @@
 		"description": "Join our regular seminar series and connect with international scholars and lab members.",
 		"cta": "View all seminars",
 		"viewDetails": "View seminar details"
-	}
+	},
+	"previous": "Previous",
+	"next": "Next",
+	"page": "Page {page} of {totalPages}"
 }

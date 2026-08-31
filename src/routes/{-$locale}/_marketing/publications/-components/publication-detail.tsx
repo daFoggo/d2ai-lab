@@ -1,5 +1,6 @@
 import { IconBrandX, IconShare2 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { ProseBody, ProseParagraph } from "@/components/common/prose-body";
 import { StickyRightRail } from "@/components/common/sticky-right-rail";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +13,7 @@ import {
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import type { TPublicationDetail } from "@/features/publications";
+import { DEFAULT_LOCALE } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface IPublicationDetailProps {
@@ -25,6 +27,28 @@ export const PublicationDetail = ({
 	locale,
 	className,
 }: IPublicationDetailProps) => {
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
+
+	const handleShare = async () => {
+		if (typeof window !== "undefined") {
+			try {
+				if (navigator.share) {
+					await navigator.share({
+						title: publication.title,
+						url: window.location.href,
+					});
+					return;
+				}
+				await navigator.clipboard.writeText(window.location.href);
+				toast.success("Link copied to clipboard!");
+			} catch {
+				/* user cancelled or share failed */
+			}
+		}
+	};
+
 	return (
 		<section
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
@@ -35,7 +59,7 @@ export const PublicationDetail = ({
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink
-								render={<Link to="/{-$locale}" params={{ locale }} />}
+								render={<Link to="/{-$locale}" params={localeParams} />}
 							>
 								Home
 							</BreadcrumbLink>
@@ -44,7 +68,7 @@ export const PublicationDetail = ({
 						<BreadcrumbItem>
 							<BreadcrumbLink
 								render={
-									<Link to="/{-$locale}/publications" params={{ locale }} />
+									<Link to="/{-$locale}/publications" params={localeParams} />
 								}
 							>
 								Publications
@@ -123,11 +147,15 @@ export const PublicationDetail = ({
 							className="sticky top-24"
 							links={publication.links ?? []}
 						>
-							<div className="flex items-center gap-1.5 border-t border-border py-2.5 text-sm">
+							<button
+								type="button"
+								onClick={handleShare}
+								className="flex w-full cursor-pointer items-center gap-1.5 border-t border-border py-2.5 text-sm text-left transition-colors hover:text-foreground/80 focus:outline-hidden"
+							>
 								<IconBrandX className="size-4 text-muted-foreground" />
 								<span className="font-medium text-foreground">Share</span>
 								<IconShare2 className="ml-auto size-4 text-muted-foreground" />
-							</div>
+							</button>
 						</StickyRightRail>
 					</div>
 				</div>

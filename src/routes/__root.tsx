@@ -1,13 +1,11 @@
 /** biome-ignore-all lint/security/noDangerouslySetInnerHtml: <idk> */
 
-import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
 	createRootRouteWithContext,
 	HeadContent,
 	Scripts,
 	useRouterState,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { ErrorFallback, NotFound } from "@/components/common/error-pages";
 import { QueryProvider } from "@/components/common/query-provider";
 import { ThemeProvider } from "@/components/common/theme-provider";
@@ -39,17 +37,6 @@ const RootDocument = ({ children }: { children: React.ReactNode }) => {
 						</I18nProvider>
 					</ThemeProvider>
 				</QueryProvider>
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-					]}
-				/>
 				<Scripts />
 			</body>
 		</html>

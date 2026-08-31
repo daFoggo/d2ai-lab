@@ -22,7 +22,6 @@ import type { AuthUser } from "@/features/auth";
 import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { useDashboardUIStore } from "@/stores/dashboard-ui-store";
 import { buildDashboardNav, DashboardNav } from "./dashboard-nav";
-import { DashboardResizeHandle } from "./dashboard-resize-handle";
 
 interface IDashboardSidebarProps {
 	user?: AuthUser | null;
@@ -128,10 +127,10 @@ export const DashboardSidebar = ({
 									if (isMobile) setOpenMobile(false);
 								}}
 							>
-								<span className="sidebar-brand-full font-title text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+								<span className="sidebar-brand-full font-title text-lg text-primary font-semibold tracking-tight sm:text-xl">
 									{SITE_CONFIG.app.title}
 								</span>
-								<span className="sidebar-brand-initial font-title text-lg font-semibold tracking-tight text-foreground">
+								<span className="sidebar-brand-initial text-primary font-title text-lg font-semibold tracking-tight">
 									{SITE_CONFIG.app.title.charAt(0)}
 								</span>
 							</Link>
@@ -151,8 +150,8 @@ export const DashboardSidebar = ({
 					onSignOut={onSignOut}
 				/>
 			</SidebarFooter>
-
-			<DashboardResizeHandle />
+			{/* 
+			<DashboardResizeHandle /> */}
 		</Sidebar>
 	);
 };

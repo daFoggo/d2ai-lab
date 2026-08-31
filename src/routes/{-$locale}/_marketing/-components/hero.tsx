@@ -29,7 +29,7 @@ export const HomeHeroRoot = ({
 				<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 rounded-full bg-primary-foreground/4 blur-3xl sm:size-96 lg:size-125" />
 			</div>
 
-			<div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24">
+			<div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-32">
 				{children}
 			</div>
 		</section>

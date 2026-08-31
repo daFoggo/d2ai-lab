@@ -30,9 +30,11 @@ const AdminSeminarsPage = () => {
 	const [deleteTarget, setDeleteTarget] = useState<TSeminarAdminItem | null>(
 		null,
 	);
+	const [page, setPage] = useState(1);
+	const PAGE_SIZE = 10;
 
 	const { data, isPending, isError, error } = useQuery(
-		adminSeminarsQueryOptions(),
+		adminSeminarsQueryOptions(page, PAGE_SIZE),
 	);
 
 	const openEdit = (seminar: TSeminarAdminItem) => {
@@ -44,7 +46,7 @@ const AdminSeminarsPage = () => {
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex items-center justify-end">
+			<div className="flex items-center justify-start">
 				<Button
 					size="sm"
 					render={
@@ -68,7 +70,7 @@ const AdminSeminarsPage = () => {
 				<div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
 					{getErrorMessage(error, t("dashboard.seminars.loadFailed"))}
 				</div>
-			) : (data?.length ?? 0) === 0 ? (
+			) : (data?.items?.length ?? 0) === 0 ? (
 				<Empty className="rounded-xl border border-border py-12">
 					<EmptyHeader>
 						<EmptyMedia variant="icon">
@@ -84,7 +86,11 @@ const AdminSeminarsPage = () => {
 				</Empty>
 			) : (
 				<SeminarsTable
-					seminars={data ?? []}
+					seminars={data?.items ?? []}
+					total={data?.total ?? 0}
+					page={page}
+					pageSize={PAGE_SIZE}
+					onPageChange={setPage}
 					onEdit={openEdit}
 					onDelete={setDeleteTarget}
 				/>
@@ -102,5 +108,14 @@ const AdminSeminarsPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_dashboard/admin/seminars/")({
+	head: () => ({
+		meta: [
+			{ title: "Manage Seminars — Admin — D2AI Lab" },
+			{
+				name: "description",
+				content: "Manage and schedule seminars for D2AI Lab.",
+			},
+		],
+	}),
 	component: AdminSeminarsPage,
 });

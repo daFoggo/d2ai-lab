@@ -14,16 +14,18 @@ import type { TSeminarSpeakerForm, TSeminarUpsertInput } from "./schemas";
 
 export const seminarKeys = {
 	all: ["seminars"] as const,
-	list: () => [...seminarKeys.all, "list"] as const,
+	list: (page: number, pageSize: number) =>
+		[...seminarKeys.all, "list", { page, pageSize }] as const,
 	detail: (id: string) => [...seminarKeys.all, "detail", id] as const,
 	upcoming: () => [...seminarKeys.all, "upcoming"] as const,
-	adminList: () => [...seminarKeys.all, "admin-list"] as const,
+	adminList: (page: number, pageSize: number) =>
+		[...seminarKeys.all, "admin-list", { page, pageSize }] as const,
 };
 
-export const seminarsQueryOptions = () =>
+export const seminarsQueryOptions = (page: number, pageSize: number) =>
 	queryOptions({
-		queryKey: seminarKeys.list(),
-		queryFn: () => getSeminarsFn(),
+		queryKey: seminarKeys.list(page, pageSize),
+		queryFn: () => getSeminarsFn({ data: { page, pageSize } }),
 		staleTime: 1000 * 60 * 5,
 	});
 
@@ -42,11 +44,11 @@ export const upcomingSeminarQueryOptions = () =>
 		staleTime: 1000 * 60 * 5,
 	});
 
-/* Admin list (dashboard) — tất cả seminars kèm speaker đầu + số lượng. */
-export const adminSeminarsQueryOptions = () =>
+/* Admin list (dashboard) — server-side pagination. */
+export const adminSeminarsQueryOptions = (page: number, pageSize: number) =>
 	queryOptions({
-		queryKey: seminarKeys.adminList(),
-		queryFn: () => getAdminSeminarsFn(),
+		queryKey: seminarKeys.adminList(page, pageSize),
+		queryFn: () => getAdminSeminarsFn({ data: { page, pageSize } }),
 		staleTime: 1000 * 60 * 5,
 	});
 
@@ -60,6 +62,14 @@ const toSeminarRow = (input: TSeminarUpsertInput) => ({
 	registration_url: input.registrationUrl?.trim() || null,
 });
 
+/* Slug id từ title (URL đẹp, nhất quán với content khác). */
+const slugify = (title: string): string =>
+	title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-+|-+$/g, "")
+		.slice(0, 80) || `sem-${Date.now()}`;
+
 const insertSpeakers = async (
 	seminarId: string,
 	speakers: TSeminarSpeakerForm[],
@@ -69,8 +79,8 @@ const insertSpeakers = async (
 	const { error } = await supabase.from("seminar_speakers").insert(
 		speakers.map((speaker, index) => ({
 			seminar_id: seminarId,
-			name: speaker.name,
-			role: speaker.role,
+			name: speaker.name?.trim() || null,
+			role: speaker.role?.trim() || null,
 			photo_url: speaker.photoUrl?.trim() || null,
 			socials: speaker.socials?.trim() || null,
 			sort_order: index,
@@ -86,7 +96,7 @@ export const useCreateSeminarMutation = () => {
 		mutationFn: async (input: TSeminarUpsertInput) => {
 			const { data: seminar, error } = await supabase
 				.from("seminars")
-				.insert(toSeminarRow(input))
+				.insert({ id: slugify(input.title), ...toSeminarRow(input) })
 				.select("id")
 				.single();
 			if (error) throw error;

@@ -1,4 +1,3 @@
-import type { Icon } from "@tabler/icons-react";
 import {
 	IconBriefcase,
 	IconCalendarEvent,
@@ -8,7 +7,6 @@ import {
 } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ComponentProps } from "react";
 import {
 	Card,
 	CardContent,
@@ -17,44 +15,37 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { siteStatsQueryOptions } from "@/features/analytics";
-import { DEFAULT_LOCALE, type MessageKey, useI18n } from "@/lib/i18n";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 
-type TLinkTo = ComponentProps<typeof Link>["to"];
-
-const QUICK_ACTIONS: {
-	titleKey: MessageKey;
-	descriptionKey: MessageKey;
-	to: string;
-	icon: Icon;
-}[] = [
+const QUICK_ACTIONS = [
 	{
-		titleKey: "dashboard.nav.publications",
-		descriptionKey: "dashboard.placeholder.description",
-		to: "/admin/publications",
+		titleKey: "dashboard.nav.publications" as const,
+		descriptionKey: "dashboard.placeholder.description" as const,
+		to: "/{-$locale}/admin/publications" as const,
 		icon: IconFileText,
 	},
 	{
-		titleKey: "dashboard.nav.seminars",
-		descriptionKey: "dashboard.placeholder.description",
-		to: "/admin/seminars",
+		titleKey: "dashboard.nav.seminars" as const,
+		descriptionKey: "dashboard.placeholder.description" as const,
+		to: "/{-$locale}/admin/seminars" as const,
 		icon: IconCalendarEvent,
 	},
 	{
-		titleKey: "dashboard.nav.careers",
-		descriptionKey: "dashboard.placeholder.description",
-		to: "/admin/careers",
+		titleKey: "dashboard.nav.careers" as const,
+		descriptionKey: "dashboard.placeholder.description" as const,
+		to: "/{-$locale}/admin/careers" as const,
 		icon: IconBriefcase,
 	},
 	{
-		titleKey: "dashboard.nav.teams",
-		descriptionKey: "dashboard.placeholder.description",
-		to: "/admin/teams",
+		titleKey: "dashboard.nav.teams" as const,
+		descriptionKey: "dashboard.placeholder.description" as const,
+		to: "/{-$locale}/admin/teams" as const,
 		icon: IconUsers,
 	},
 	{
-		titleKey: "dashboard.nav.projects",
-		descriptionKey: "dashboard.placeholder.description",
-		to: "/admin/projects",
+		titleKey: "dashboard.nav.projects" as const,
+		descriptionKey: "dashboard.placeholder.description" as const,
+		to: "/{-$locale}/admin/projects" as const,
 		icon: IconRocket,
 	},
 ];
@@ -90,8 +81,8 @@ const AdminIndexPage = () => {
 							className="transition-colors hover:bg-muted/40"
 						>
 							<Link
-								to={`/{-$locale}${action.to}` as TLinkTo}
-								params={params as never}
+								to={action.to}
+								params={params}
 								className="flex h-full flex-col"
 							>
 								<CardHeader>
@@ -114,6 +105,15 @@ const AdminIndexPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_dashboard/admin/")({
+	head: () => ({
+		meta: [
+			{ title: "Admin Dashboard — D2AI Lab" },
+			{
+				name: "description",
+				content: "Overview and administration dashboard for D2AI Lab.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(siteStatsQueryOptions());
 	},

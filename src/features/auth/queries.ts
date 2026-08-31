@@ -4,7 +4,7 @@ import {
 	useQueryClient,
 } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
-import type { AuthUser, LoginInput, SignUpInput } from "./schemas";
+import type { AuthUser, LoginInput } from "./schemas";
 
 export const authKeys = {
 	all: ["auth"] as const,
@@ -56,34 +56,6 @@ export const useLoginMutation = () => {
 				email: data.user.email ?? "",
 				createdAt: data.user.created_at,
 			});
-			await queryClient.invalidateQueries({ queryKey: authKeys.me() });
-		},
-	});
-};
-
-/**
- * Mutation Hook xử lý đăng ký tài khoản
- */
-export const useSignUpMutation = () => {
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationFn: async (input: SignUpInput) => {
-			const { data, error } = await supabase.auth.signUp({
-				email: input.email,
-				password: input.password,
-			});
-			if (error) throw error;
-			return data;
-		},
-		onSuccess: async (data) => {
-			if (data.user && data.session) {
-				queryClient.setQueryData(authKeys.me(), {
-					id: data.user.id,
-					email: data.user.email ?? "",
-					createdAt: data.user.created_at,
-				});
-			}
 			await queryClient.invalidateQueries({ queryKey: authKeys.me() });
 		},
 	});

@@ -17,6 +17,16 @@ const ResearchGapsPage = () => {
 };
 
 export const Route = createFileRoute("/{-$locale}/_marketing/research/gaps")({
+	head: () => ({
+		meta: [
+			{ title: "Research Gaps — D2AI Lab" },
+			{
+				name: "description",
+				content:
+					"Open challenges and bottlenecks in AI research tackled through collaborative science.",
+			},
+		],
+	}),
 	loader: async ({ context }) => {
 		await context.queryClient.query(researchGapsQueryOptions());
 	},

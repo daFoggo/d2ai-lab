@@ -1,6 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as z from "zod";
-import type { TSeminar, TSeminarAdminItem, TSeminarDetail } from "./schemas";
+import type {
+	TPaginatedAdminSeminars,
+	TPaginatedSeminars,
+	TSeminar,
+	TSeminarDetail,
+} from "./schemas";
 import {
 	getAdminSeminars,
 	getSeminarDetail,
@@ -10,9 +15,19 @@ import {
 
 const seminarIdValidator = z.string().min(1);
 
+const pageValidator = z.object({
+	page: z.coerce.number().int().min(1).default(1),
+	pageSize: z.coerce.number().int().min(1).max(50).default(10),
+});
+
 export const getSeminarsFn = createServerFn({
 	method: "GET",
-}).handler(async (): Promise<TSeminar[]> => getSeminars());
+})
+	.validator(pageValidator)
+	.handler(
+		async ({ data }): Promise<TPaginatedSeminars> =>
+			getSeminars(data.page, data.pageSize),
+	);
 
 export const getSeminarDetailFn = createServerFn({
 	method: "GET",
@@ -22,8 +37,13 @@ export const getSeminarDetailFn = createServerFn({
 
 export const getUpcomingSeminarFn = createServerFn({
 	method: "GET",
-}).handler(async (): Promise<TSeminar> => getUpcomingSeminar());
+}).handler(async (): Promise<TSeminar | null> => getUpcomingSeminar());
 
 export const getAdminSeminarsFn = createServerFn({
 	method: "GET",
-}).handler(async (): Promise<TSeminarAdminItem[]> => getAdminSeminars());
+})
+	.validator(pageValidator)
+	.handler(
+		async ({ data }): Promise<TPaginatedAdminSeminars> =>
+			getAdminSeminars(data.page, data.pageSize),
+	);

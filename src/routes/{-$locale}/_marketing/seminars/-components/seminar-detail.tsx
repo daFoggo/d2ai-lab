@@ -25,6 +25,7 @@ import type {
 	TSeminarSpeaker,
 	TSeminarStatus,
 } from "@/features/seminars";
+import { DEFAULT_LOCALE } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const STATUS_VARIANT: Record<
@@ -53,7 +54,18 @@ const SpeakerSocialIcon = ({ href }: { href: string }) => {
 	return <Icon className="size-4" />;
 };
 
-const SpeakerPortrait = ({ speaker }: { speaker: TSeminarSpeaker }) => {
+const SpeakerPortrait = ({ speaker }: { speaker?: TSeminarSpeaker }) => {
+	if (!speaker) {
+		return (
+			<div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-primary p-6 text-center text-primary-foreground">
+				<IconRobot className="size-12 text-primary-foreground/25" />
+				<span className="font-mono text-xs tracking-wider text-primary-foreground/50 uppercase">
+					To be announced
+				</span>
+			</div>
+		);
+	}
+
 	const initials = speaker.name
 		.split(/\s+/)
 		.map((part) => part.charAt(0))
@@ -96,6 +108,8 @@ export const SeminarSpeakers = ({
 	className,
 }: ISeminarSpeakersProps) => {
 	const [activeId, setActiveId] = useState(speakers[0]?.id ?? "");
+	if (speakers.length === 0) return null;
+
 	const active =
 		speakers.find((speaker) => speaker.id === activeId) ?? speakers[0];
 
@@ -188,6 +202,9 @@ export const SeminarDetail = ({
 	className,
 }: ISeminarDetailProps) => {
 	const registerLabel = "Register to attend";
+	const localeParams = {
+		locale: locale === DEFAULT_LOCALE ? undefined : locale,
+	};
 
 	const handleRegister = () => {
 		if (seminar.registrationUrl) {
@@ -207,6 +224,12 @@ export const SeminarDetail = ({
 			: []),
 	];
 
+	const speakersLabel =
+		seminar.speakers.length > 0
+			? seminar.speakers.map((s) => s.name).join(", ")
+			: "To be announced";
+	const speakerFirstRole = seminar.speakers[0]?.role;
+
 	return (
 		<section
 			className={cn("w-full pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32", className)}
@@ -216,7 +239,7 @@ export const SeminarDetail = ({
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink
-								render={<Link to="/{-$locale}" params={{ locale }} />}
+								render={<Link to="/{-$locale}" params={localeParams} />}
 							>
 								Home
 							</BreadcrumbLink>
@@ -224,7 +247,9 @@ export const SeminarDetail = ({
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink
-								render={<Link to="/{-$locale}/seminars" params={{ locale }} />}
+								render={
+									<Link to="/{-$locale}/seminars" params={localeParams} />
+								}
 							>
 								Seminars
 							</BreadcrumbLink>
@@ -249,11 +274,13 @@ export const SeminarDetail = ({
 							<div className="flex items-center gap-2 text-sm text-muted-foreground sm:text-base">
 								<IconUsers className="size-4 text-muted-foreground" />
 								<p className="text-muted-foreground">
-									{seminar.speakers.map((speaker) => speaker.name).join(", ")}
-									<span className="text-muted-foreground/70">
-										{" · "}
-										{seminar.speakers[0].role}
-									</span>
+									{speakersLabel}
+									{speakerFirstRole && (
+										<span className="text-muted-foreground/70">
+											{" · "}
+											{speakerFirstRole}
+										</span>
+									)}
 								</p>
 							</div>
 
@@ -272,11 +299,13 @@ export const SeminarDetail = ({
 						</header>
 
 						{/* Speakers (Vercel-style spotlight) */}
-						<SeminarSpeakers
-							title="Featured speakers"
-							speakers={seminar.speakers}
-							className="mt-6"
-						/>
+						{seminar.speakers.length > 0 && (
+							<SeminarSpeakers
+								title="Featured speakers"
+								speakers={seminar.speakers}
+								className="mt-6"
+							/>
+						)}
 					</div>
 
 					{/* Right rail: details */}

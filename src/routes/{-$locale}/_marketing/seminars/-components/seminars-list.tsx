@@ -11,6 +11,8 @@ export interface ISeminarsProps {
 	description?: string;
 	seminars: TSeminar[];
 	className?: string;
+	/* Nội dung render sau danh sách (vd pagination) — trong cùng container. */
+	footer?: React.ReactNode;
 }
 
 const STATUS_VARIANT: Record<
@@ -66,6 +68,7 @@ export const Seminars = ({
 	description,
 	seminars,
 	className,
+	footer,
 }: ISeminarsProps) => {
 	return (
 		<section
@@ -79,6 +82,8 @@ export const Seminars = ({
 						<SeminarRow key={seminar.id} seminar={seminar} />
 					))}
 				</ul>
+
+				{footer}
 			</div>
 		</section>
 	);
