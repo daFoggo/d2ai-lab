@@ -10,18 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
-import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
-import { Route as Char123LocaleChar125CareersIndexRouteImport } from './routes/{-$locale}/careers/index'
-import { Route as Char123LocaleChar125CareersIdRouteImport } from './routes/{-$locale}/careers/$id'
-import { Route as Char123LocaleChar125ProjectsIndexRouteImport } from './routes/{-$locale}/projects/index'
-import { Route as Char123LocaleChar125PublicationsIndexRouteImport } from './routes/{-$locale}/publications/index'
-import { Route as Char123LocaleChar125PublicationsIdRouteImport } from './routes/{-$locale}/publications/$id'
-import { Route as Char123LocaleChar125ResearchAreasRouteImport } from './routes/{-$locale}/research/areas'
-import { Route as Char123LocaleChar125ResearchDirectionsRouteImport } from './routes/{-$locale}/research/directions'
-import { Route as Char123LocaleChar125ResearchGapsRouteImport } from './routes/{-$locale}/research/gaps'
-import { Route as Char123LocaleChar125SeminarsIndexRouteImport } from './routes/{-$locale}/seminars/index'
-import { Route as Char123LocaleChar125SeminarsIdRouteImport } from './routes/{-$locale}/seminars/$id'
-import { Route as Char123LocaleChar125TeamsIndexRouteImport } from './routes/{-$locale}/teams/index'
+import { Route as Char123LocaleChar125DashboardRouteRouteImport } from './routes/{-$locale}/_dashboard/route'
+import { Route as Char123LocaleChar125MarketingRouteRouteImport } from './routes/{-$locale}/_marketing/route'
+import { Route as Char123LocaleChar125MarketingIndexRouteImport } from './routes/{-$locale}/_marketing/index'
+import { Route as Char123LocaleChar125DashboardAdminIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/index'
+import { Route as Char123LocaleChar125MarketingCareersIndexRouteImport } from './routes/{-$locale}/_marketing/careers/index'
+import { Route as Char123LocaleChar125MarketingCareersIdRouteImport } from './routes/{-$locale}/_marketing/careers/$id'
+import { Route as Char123LocaleChar125MarketingProjectsIndexRouteImport } from './routes/{-$locale}/_marketing/projects/index'
+import { Route as Char123LocaleChar125MarketingPublicationsIndexRouteImport } from './routes/{-$locale}/_marketing/publications/index'
+import { Route as Char123LocaleChar125MarketingPublicationsIdRouteImport } from './routes/{-$locale}/_marketing/publications/$id'
+import { Route as Char123LocaleChar125MarketingResearchAreasRouteImport } from './routes/{-$locale}/_marketing/research/areas'
+import { Route as Char123LocaleChar125MarketingResearchDirectionsRouteImport } from './routes/{-$locale}/_marketing/research/directions'
+import { Route as Char123LocaleChar125MarketingResearchGapsRouteImport } from './routes/{-$locale}/_marketing/research/gaps'
+import { Route as Char123LocaleChar125MarketingSeminarsIndexRouteImport } from './routes/{-$locale}/_marketing/seminars/index'
+import { Route as Char123LocaleChar125MarketingSeminarsIdRouteImport } from './routes/{-$locale}/_marketing/seminars/$id'
+import { Route as Char123LocaleChar125MarketingTeamsIndexRouteImport } from './routes/{-$locale}/_marketing/teams/index'
+import { Route as Char123LocaleChar125DashboardAdminCareersIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/careers/index'
+import { Route as Char123LocaleChar125DashboardAdminProjectsIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/projects/index'
+import { Route as Char123LocaleChar125DashboardAdminPublicationsIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/publications/index'
+import { Route as Char123LocaleChar125DashboardAdminSeminarsIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/seminars/index'
+import { Route as Char123LocaleChar125DashboardAdminSeminarsNewRouteImport } from './routes/{-$locale}/_dashboard/admin/seminars/new'
+import { Route as Char123LocaleChar125DashboardAdminSettingsIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/settings/index'
+import { Route as Char123LocaleChar125DashboardAdminTeamsIndexRouteImport } from './routes/{-$locale}/_dashboard/admin/teams/index'
+import { Route as Char123LocaleChar125DashboardAdminSeminarsIdEditRouteImport } from './routes/{-$locale}/_dashboard/admin/seminars/$id/edit'
 
 const Char123LocaleChar125RouteRoute =
   Char123LocaleChar125RouteRouteImport.update({
@@ -29,123 +40,216 @@ const Char123LocaleChar125RouteRoute =
     path: '/{-$locale}',
     getParentRoute: () => rootRouteImport,
   } as any)
-const Char123LocaleChar125IndexRoute =
-  Char123LocaleChar125IndexRouteImport.update({
+const Char123LocaleChar125DashboardRouteRoute =
+  Char123LocaleChar125DashboardRouteRouteImport.update({
+    id: '/_dashboard',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125MarketingRouteRoute =
+  Char123LocaleChar125MarketingRouteRouteImport.update({
+    id: '/_marketing',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125MarketingIndexRoute =
+  Char123LocaleChar125MarketingIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125CareersIndexRoute =
-  Char123LocaleChar125CareersIndexRouteImport.update({
+const Char123LocaleChar125DashboardAdminIndexRoute =
+  Char123LocaleChar125DashboardAdminIndexRouteImport.update({
+    id: '/admin/',
+    path: '/admin/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125MarketingCareersIndexRoute =
+  Char123LocaleChar125MarketingCareersIndexRouteImport.update({
     id: '/careers/',
     path: '/careers/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125CareersIdRoute =
-  Char123LocaleChar125CareersIdRouteImport.update({
+const Char123LocaleChar125MarketingCareersIdRoute =
+  Char123LocaleChar125MarketingCareersIdRouteImport.update({
     id: '/careers/$id',
     path: '/careers/$id',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125ProjectsIndexRoute =
-  Char123LocaleChar125ProjectsIndexRouteImport.update({
+const Char123LocaleChar125MarketingProjectsIndexRoute =
+  Char123LocaleChar125MarketingProjectsIndexRouteImport.update({
     id: '/projects/',
     path: '/projects/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125PublicationsIndexRoute =
-  Char123LocaleChar125PublicationsIndexRouteImport.update({
+const Char123LocaleChar125MarketingPublicationsIndexRoute =
+  Char123LocaleChar125MarketingPublicationsIndexRouteImport.update({
     id: '/publications/',
     path: '/publications/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125PublicationsIdRoute =
-  Char123LocaleChar125PublicationsIdRouteImport.update({
+const Char123LocaleChar125MarketingPublicationsIdRoute =
+  Char123LocaleChar125MarketingPublicationsIdRouteImport.update({
     id: '/publications/$id',
     path: '/publications/$id',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125ResearchAreasRoute =
-  Char123LocaleChar125ResearchAreasRouteImport.update({
+const Char123LocaleChar125MarketingResearchAreasRoute =
+  Char123LocaleChar125MarketingResearchAreasRouteImport.update({
     id: '/research/areas',
     path: '/research/areas',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125ResearchDirectionsRoute =
-  Char123LocaleChar125ResearchDirectionsRouteImport.update({
+const Char123LocaleChar125MarketingResearchDirectionsRoute =
+  Char123LocaleChar125MarketingResearchDirectionsRouteImport.update({
     id: '/research/directions',
     path: '/research/directions',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125ResearchGapsRoute =
-  Char123LocaleChar125ResearchGapsRouteImport.update({
+const Char123LocaleChar125MarketingResearchGapsRoute =
+  Char123LocaleChar125MarketingResearchGapsRouteImport.update({
     id: '/research/gaps',
     path: '/research/gaps',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125SeminarsIndexRoute =
-  Char123LocaleChar125SeminarsIndexRouteImport.update({
+const Char123LocaleChar125MarketingSeminarsIndexRoute =
+  Char123LocaleChar125MarketingSeminarsIndexRouteImport.update({
     id: '/seminars/',
     path: '/seminars/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125SeminarsIdRoute =
-  Char123LocaleChar125SeminarsIdRouteImport.update({
+const Char123LocaleChar125MarketingSeminarsIdRoute =
+  Char123LocaleChar125MarketingSeminarsIdRouteImport.update({
     id: '/seminars/$id',
     path: '/seminars/$id',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
   } as any)
-const Char123LocaleChar125TeamsIndexRoute =
-  Char123LocaleChar125TeamsIndexRouteImport.update({
+const Char123LocaleChar125MarketingTeamsIndexRoute =
+  Char123LocaleChar125MarketingTeamsIndexRouteImport.update({
     id: '/teams/',
     path: '/teams/',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
+    getParentRoute: () => Char123LocaleChar125MarketingRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminCareersIndexRoute =
+  Char123LocaleChar125DashboardAdminCareersIndexRouteImport.update({
+    id: '/admin/careers/',
+    path: '/admin/careers/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminProjectsIndexRoute =
+  Char123LocaleChar125DashboardAdminProjectsIndexRouteImport.update({
+    id: '/admin/projects/',
+    path: '/admin/projects/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminPublicationsIndexRoute =
+  Char123LocaleChar125DashboardAdminPublicationsIndexRouteImport.update({
+    id: '/admin/publications/',
+    path: '/admin/publications/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminSeminarsIndexRoute =
+  Char123LocaleChar125DashboardAdminSeminarsIndexRouteImport.update({
+    id: '/admin/seminars/',
+    path: '/admin/seminars/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminSeminarsNewRoute =
+  Char123LocaleChar125DashboardAdminSeminarsNewRouteImport.update({
+    id: '/admin/seminars/new',
+    path: '/admin/seminars/new',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminSettingsIndexRoute =
+  Char123LocaleChar125DashboardAdminSettingsIndexRouteImport.update({
+    id: '/admin/settings/',
+    path: '/admin/settings/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminTeamsIndexRoute =
+  Char123LocaleChar125DashboardAdminTeamsIndexRouteImport.update({
+    id: '/admin/teams/',
+    path: '/admin/teams/',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
+  } as any)
+const Char123LocaleChar125DashboardAdminSeminarsIdEditRoute =
+  Char123LocaleChar125DashboardAdminSeminarsIdEditRouteImport.update({
+    id: '/admin/seminars/$id/edit',
+    path: '/admin/seminars/$id/edit',
+    getParentRoute: () => Char123LocaleChar125DashboardRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
-  '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
-  '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
-  '/{-$locale}/research/areas': typeof Char123LocaleChar125ResearchAreasRoute
-  '/{-$locale}/research/directions': typeof Char123LocaleChar125ResearchDirectionsRoute
-  '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
-  '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
-  '/{-$locale}/careers/': typeof Char123LocaleChar125CareersIndexRoute
-  '/{-$locale}/projects/': typeof Char123LocaleChar125ProjectsIndexRoute
-  '/{-$locale}/publications/': typeof Char123LocaleChar125PublicationsIndexRoute
-  '/{-$locale}/seminars/': typeof Char123LocaleChar125SeminarsIndexRoute
-  '/{-$locale}/teams/': typeof Char123LocaleChar125TeamsIndexRoute
+  '/{-$locale}/': typeof Char123LocaleChar125MarketingIndexRoute
+  '/{-$locale}/careers/$id': typeof Char123LocaleChar125MarketingCareersIdRoute
+  '/{-$locale}/publications/$id': typeof Char123LocaleChar125MarketingPublicationsIdRoute
+  '/{-$locale}/research/areas': typeof Char123LocaleChar125MarketingResearchAreasRoute
+  '/{-$locale}/research/directions': typeof Char123LocaleChar125MarketingResearchDirectionsRoute
+  '/{-$locale}/research/gaps': typeof Char123LocaleChar125MarketingResearchGapsRoute
+  '/{-$locale}/seminars/$id': typeof Char123LocaleChar125MarketingSeminarsIdRoute
+  '/{-$locale}/admin/': typeof Char123LocaleChar125DashboardAdminIndexRoute
+  '/{-$locale}/careers/': typeof Char123LocaleChar125MarketingCareersIndexRoute
+  '/{-$locale}/projects/': typeof Char123LocaleChar125MarketingProjectsIndexRoute
+  '/{-$locale}/publications/': typeof Char123LocaleChar125MarketingPublicationsIndexRoute
+  '/{-$locale}/seminars/': typeof Char123LocaleChar125MarketingSeminarsIndexRoute
+  '/{-$locale}/teams/': typeof Char123LocaleChar125MarketingTeamsIndexRoute
+  '/{-$locale}/admin/seminars/new': typeof Char123LocaleChar125DashboardAdminSeminarsNewRoute
+  '/{-$locale}/admin/careers/': typeof Char123LocaleChar125DashboardAdminCareersIndexRoute
+  '/{-$locale}/admin/projects/': typeof Char123LocaleChar125DashboardAdminProjectsIndexRoute
+  '/{-$locale}/admin/publications/': typeof Char123LocaleChar125DashboardAdminPublicationsIndexRoute
+  '/{-$locale}/admin/seminars/': typeof Char123LocaleChar125DashboardAdminSeminarsIndexRoute
+  '/{-$locale}/admin/settings/': typeof Char123LocaleChar125DashboardAdminSettingsIndexRoute
+  '/{-$locale}/admin/teams/': typeof Char123LocaleChar125DashboardAdminTeamsIndexRoute
+  '/{-$locale}/admin/seminars/$id/edit': typeof Char123LocaleChar125DashboardAdminSeminarsIdEditRoute
 }
 export interface FileRoutesByTo {
-  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
-  '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
-  '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
-  '/{-$locale}/research/areas': typeof Char123LocaleChar125ResearchAreasRoute
-  '/{-$locale}/research/directions': typeof Char123LocaleChar125ResearchDirectionsRoute
-  '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
-  '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
-  '/{-$locale}/careers': typeof Char123LocaleChar125CareersIndexRoute
-  '/{-$locale}/projects': typeof Char123LocaleChar125ProjectsIndexRoute
-  '/{-$locale}/publications': typeof Char123LocaleChar125PublicationsIndexRoute
-  '/{-$locale}/seminars': typeof Char123LocaleChar125SeminarsIndexRoute
-  '/{-$locale}/teams': typeof Char123LocaleChar125TeamsIndexRoute
+  '/{-$locale}': typeof Char123LocaleChar125MarketingIndexRoute
+  '/{-$locale}/careers/$id': typeof Char123LocaleChar125MarketingCareersIdRoute
+  '/{-$locale}/publications/$id': typeof Char123LocaleChar125MarketingPublicationsIdRoute
+  '/{-$locale}/research/areas': typeof Char123LocaleChar125MarketingResearchAreasRoute
+  '/{-$locale}/research/directions': typeof Char123LocaleChar125MarketingResearchDirectionsRoute
+  '/{-$locale}/research/gaps': typeof Char123LocaleChar125MarketingResearchGapsRoute
+  '/{-$locale}/seminars/$id': typeof Char123LocaleChar125MarketingSeminarsIdRoute
+  '/{-$locale}/admin': typeof Char123LocaleChar125DashboardAdminIndexRoute
+  '/{-$locale}/careers': typeof Char123LocaleChar125MarketingCareersIndexRoute
+  '/{-$locale}/projects': typeof Char123LocaleChar125MarketingProjectsIndexRoute
+  '/{-$locale}/publications': typeof Char123LocaleChar125MarketingPublicationsIndexRoute
+  '/{-$locale}/seminars': typeof Char123LocaleChar125MarketingSeminarsIndexRoute
+  '/{-$locale}/teams': typeof Char123LocaleChar125MarketingTeamsIndexRoute
+  '/{-$locale}/admin/seminars/new': typeof Char123LocaleChar125DashboardAdminSeminarsNewRoute
+  '/{-$locale}/admin/careers': typeof Char123LocaleChar125DashboardAdminCareersIndexRoute
+  '/{-$locale}/admin/projects': typeof Char123LocaleChar125DashboardAdminProjectsIndexRoute
+  '/{-$locale}/admin/publications': typeof Char123LocaleChar125DashboardAdminPublicationsIndexRoute
+  '/{-$locale}/admin/seminars': typeof Char123LocaleChar125DashboardAdminSeminarsIndexRoute
+  '/{-$locale}/admin/settings': typeof Char123LocaleChar125DashboardAdminSettingsIndexRoute
+  '/{-$locale}/admin/teams': typeof Char123LocaleChar125DashboardAdminTeamsIndexRoute
+  '/{-$locale}/admin/seminars/$id/edit': typeof Char123LocaleChar125DashboardAdminSeminarsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
-  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
-  '/{-$locale}/careers/$id': typeof Char123LocaleChar125CareersIdRoute
-  '/{-$locale}/publications/$id': typeof Char123LocaleChar125PublicationsIdRoute
-  '/{-$locale}/research/areas': typeof Char123LocaleChar125ResearchAreasRoute
-  '/{-$locale}/research/directions': typeof Char123LocaleChar125ResearchDirectionsRoute
-  '/{-$locale}/research/gaps': typeof Char123LocaleChar125ResearchGapsRoute
-  '/{-$locale}/seminars/$id': typeof Char123LocaleChar125SeminarsIdRoute
-  '/{-$locale}/careers/': typeof Char123LocaleChar125CareersIndexRoute
-  '/{-$locale}/projects/': typeof Char123LocaleChar125ProjectsIndexRoute
-  '/{-$locale}/publications/': typeof Char123LocaleChar125PublicationsIndexRoute
-  '/{-$locale}/seminars/': typeof Char123LocaleChar125SeminarsIndexRoute
-  '/{-$locale}/teams/': typeof Char123LocaleChar125TeamsIndexRoute
+  '/{-$locale}/_dashboard': typeof Char123LocaleChar125DashboardRouteRouteWithChildren
+  '/{-$locale}/_marketing': typeof Char123LocaleChar125MarketingRouteRouteWithChildren
+  '/{-$locale}/_marketing/': typeof Char123LocaleChar125MarketingIndexRoute
+  '/{-$locale}/_marketing/careers/$id': typeof Char123LocaleChar125MarketingCareersIdRoute
+  '/{-$locale}/_marketing/publications/$id': typeof Char123LocaleChar125MarketingPublicationsIdRoute
+  '/{-$locale}/_marketing/research/areas': typeof Char123LocaleChar125MarketingResearchAreasRoute
+  '/{-$locale}/_marketing/research/directions': typeof Char123LocaleChar125MarketingResearchDirectionsRoute
+  '/{-$locale}/_marketing/research/gaps': typeof Char123LocaleChar125MarketingResearchGapsRoute
+  '/{-$locale}/_marketing/seminars/$id': typeof Char123LocaleChar125MarketingSeminarsIdRoute
+  '/{-$locale}/_dashboard/admin/': typeof Char123LocaleChar125DashboardAdminIndexRoute
+  '/{-$locale}/_marketing/careers/': typeof Char123LocaleChar125MarketingCareersIndexRoute
+  '/{-$locale}/_marketing/projects/': typeof Char123LocaleChar125MarketingProjectsIndexRoute
+  '/{-$locale}/_marketing/publications/': typeof Char123LocaleChar125MarketingPublicationsIndexRoute
+  '/{-$locale}/_marketing/seminars/': typeof Char123LocaleChar125MarketingSeminarsIndexRoute
+  '/{-$locale}/_marketing/teams/': typeof Char123LocaleChar125MarketingTeamsIndexRoute
+  '/{-$locale}/_dashboard/admin/seminars/new': typeof Char123LocaleChar125DashboardAdminSeminarsNewRoute
+  '/{-$locale}/_dashboard/admin/careers/': typeof Char123LocaleChar125DashboardAdminCareersIndexRoute
+  '/{-$locale}/_dashboard/admin/projects/': typeof Char123LocaleChar125DashboardAdminProjectsIndexRoute
+  '/{-$locale}/_dashboard/admin/publications/': typeof Char123LocaleChar125DashboardAdminPublicationsIndexRoute
+  '/{-$locale}/_dashboard/admin/seminars/': typeof Char123LocaleChar125DashboardAdminSeminarsIndexRoute
+  '/{-$locale}/_dashboard/admin/settings/': typeof Char123LocaleChar125DashboardAdminSettingsIndexRoute
+  '/{-$locale}/_dashboard/admin/teams/': typeof Char123LocaleChar125DashboardAdminTeamsIndexRoute
+  '/{-$locale}/_dashboard/admin/seminars/$id/edit': typeof Char123LocaleChar125DashboardAdminSeminarsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -158,11 +262,20 @@ export interface FileRouteTypes {
     | '/{-$locale}/research/directions'
     | '/{-$locale}/research/gaps'
     | '/{-$locale}/seminars/$id'
+    | '/{-$locale}/admin/'
     | '/{-$locale}/careers/'
     | '/{-$locale}/projects/'
     | '/{-$locale}/publications/'
     | '/{-$locale}/seminars/'
     | '/{-$locale}/teams/'
+    | '/{-$locale}/admin/seminars/new'
+    | '/{-$locale}/admin/careers/'
+    | '/{-$locale}/admin/projects/'
+    | '/{-$locale}/admin/publications/'
+    | '/{-$locale}/admin/seminars/'
+    | '/{-$locale}/admin/settings/'
+    | '/{-$locale}/admin/teams/'
+    | '/{-$locale}/admin/seminars/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/{-$locale}'
@@ -172,26 +285,46 @@ export interface FileRouteTypes {
     | '/{-$locale}/research/directions'
     | '/{-$locale}/research/gaps'
     | '/{-$locale}/seminars/$id'
+    | '/{-$locale}/admin'
     | '/{-$locale}/careers'
     | '/{-$locale}/projects'
     | '/{-$locale}/publications'
     | '/{-$locale}/seminars'
     | '/{-$locale}/teams'
+    | '/{-$locale}/admin/seminars/new'
+    | '/{-$locale}/admin/careers'
+    | '/{-$locale}/admin/projects'
+    | '/{-$locale}/admin/publications'
+    | '/{-$locale}/admin/seminars'
+    | '/{-$locale}/admin/settings'
+    | '/{-$locale}/admin/teams'
+    | '/{-$locale}/admin/seminars/$id/edit'
   id:
     | '__root__'
     | '/{-$locale}'
-    | '/{-$locale}/'
-    | '/{-$locale}/careers/$id'
-    | '/{-$locale}/publications/$id'
-    | '/{-$locale}/research/areas'
-    | '/{-$locale}/research/directions'
-    | '/{-$locale}/research/gaps'
-    | '/{-$locale}/seminars/$id'
-    | '/{-$locale}/careers/'
-    | '/{-$locale}/projects/'
-    | '/{-$locale}/publications/'
-    | '/{-$locale}/seminars/'
-    | '/{-$locale}/teams/'
+    | '/{-$locale}/_dashboard'
+    | '/{-$locale}/_marketing'
+    | '/{-$locale}/_marketing/'
+    | '/{-$locale}/_marketing/careers/$id'
+    | '/{-$locale}/_marketing/publications/$id'
+    | '/{-$locale}/_marketing/research/areas'
+    | '/{-$locale}/_marketing/research/directions'
+    | '/{-$locale}/_marketing/research/gaps'
+    | '/{-$locale}/_marketing/seminars/$id'
+    | '/{-$locale}/_dashboard/admin/'
+    | '/{-$locale}/_marketing/careers/'
+    | '/{-$locale}/_marketing/projects/'
+    | '/{-$locale}/_marketing/publications/'
+    | '/{-$locale}/_marketing/seminars/'
+    | '/{-$locale}/_marketing/teams/'
+    | '/{-$locale}/_dashboard/admin/seminars/new'
+    | '/{-$locale}/_dashboard/admin/careers/'
+    | '/{-$locale}/_dashboard/admin/projects/'
+    | '/{-$locale}/_dashboard/admin/publications/'
+    | '/{-$locale}/_dashboard/admin/seminars/'
+    | '/{-$locale}/_dashboard/admin/settings/'
+    | '/{-$locale}/_dashboard/admin/teams/'
+    | '/{-$locale}/_dashboard/admin/seminars/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -207,130 +340,268 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/{-$locale}/': {
-      id: '/{-$locale}/'
+    '/{-$locale}/_dashboard': {
+      id: '/{-$locale}/_dashboard'
+      path: ''
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardRouteRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/_marketing': {
+      id: '/{-$locale}/_marketing'
+      path: ''
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125MarketingRouteRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/_marketing/': {
+      id: '/{-$locale}/_marketing/'
       path: '/'
       fullPath: '/{-$locale}/'
-      preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/careers/': {
-      id: '/{-$locale}/careers/'
+    '/{-$locale}/_dashboard/admin/': {
+      id: '/{-$locale}/_dashboard/admin/'
+      path: '/admin'
+      fullPath: '/{-$locale}/admin/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_marketing/careers/': {
+      id: '/{-$locale}/_marketing/careers/'
       path: '/careers'
       fullPath: '/{-$locale}/careers/'
-      preLoaderRoute: typeof Char123LocaleChar125CareersIndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingCareersIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/careers/$id': {
-      id: '/{-$locale}/careers/$id'
+    '/{-$locale}/_marketing/careers/$id': {
+      id: '/{-$locale}/_marketing/careers/$id'
       path: '/careers/$id'
       fullPath: '/{-$locale}/careers/$id'
-      preLoaderRoute: typeof Char123LocaleChar125CareersIdRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingCareersIdRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/projects/': {
-      id: '/{-$locale}/projects/'
+    '/{-$locale}/_marketing/projects/': {
+      id: '/{-$locale}/_marketing/projects/'
       path: '/projects'
       fullPath: '/{-$locale}/projects/'
-      preLoaderRoute: typeof Char123LocaleChar125ProjectsIndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingProjectsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/publications/': {
-      id: '/{-$locale}/publications/'
+    '/{-$locale}/_marketing/publications/': {
+      id: '/{-$locale}/_marketing/publications/'
       path: '/publications'
       fullPath: '/{-$locale}/publications/'
-      preLoaderRoute: typeof Char123LocaleChar125PublicationsIndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingPublicationsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/publications/$id': {
-      id: '/{-$locale}/publications/$id'
+    '/{-$locale}/_marketing/publications/$id': {
+      id: '/{-$locale}/_marketing/publications/$id'
       path: '/publications/$id'
       fullPath: '/{-$locale}/publications/$id'
-      preLoaderRoute: typeof Char123LocaleChar125PublicationsIdRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingPublicationsIdRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/research/areas': {
-      id: '/{-$locale}/research/areas'
+    '/{-$locale}/_marketing/research/areas': {
+      id: '/{-$locale}/_marketing/research/areas'
       path: '/research/areas'
       fullPath: '/{-$locale}/research/areas'
-      preLoaderRoute: typeof Char123LocaleChar125ResearchAreasRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingResearchAreasRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/research/directions': {
-      id: '/{-$locale}/research/directions'
+    '/{-$locale}/_marketing/research/directions': {
+      id: '/{-$locale}/_marketing/research/directions'
       path: '/research/directions'
       fullPath: '/{-$locale}/research/directions'
-      preLoaderRoute: typeof Char123LocaleChar125ResearchDirectionsRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingResearchDirectionsRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/research/gaps': {
-      id: '/{-$locale}/research/gaps'
+    '/{-$locale}/_marketing/research/gaps': {
+      id: '/{-$locale}/_marketing/research/gaps'
       path: '/research/gaps'
       fullPath: '/{-$locale}/research/gaps'
-      preLoaderRoute: typeof Char123LocaleChar125ResearchGapsRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingResearchGapsRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/seminars/': {
-      id: '/{-$locale}/seminars/'
+    '/{-$locale}/_marketing/seminars/': {
+      id: '/{-$locale}/_marketing/seminars/'
       path: '/seminars'
       fullPath: '/{-$locale}/seminars/'
-      preLoaderRoute: typeof Char123LocaleChar125SeminarsIndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingSeminarsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/seminars/$id': {
-      id: '/{-$locale}/seminars/$id'
+    '/{-$locale}/_marketing/seminars/$id': {
+      id: '/{-$locale}/_marketing/seminars/$id'
       path: '/seminars/$id'
       fullPath: '/{-$locale}/seminars/$id'
-      preLoaderRoute: typeof Char123LocaleChar125SeminarsIdRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingSeminarsIdRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
     }
-    '/{-$locale}/teams/': {
-      id: '/{-$locale}/teams/'
+    '/{-$locale}/_marketing/teams/': {
+      id: '/{-$locale}/_marketing/teams/'
       path: '/teams'
       fullPath: '/{-$locale}/teams/'
-      preLoaderRoute: typeof Char123LocaleChar125TeamsIndexRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
+      preLoaderRoute: typeof Char123LocaleChar125MarketingTeamsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125MarketingRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/careers/': {
+      id: '/{-$locale}/_dashboard/admin/careers/'
+      path: '/admin/careers'
+      fullPath: '/{-$locale}/admin/careers/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminCareersIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/projects/': {
+      id: '/{-$locale}/_dashboard/admin/projects/'
+      path: '/admin/projects'
+      fullPath: '/{-$locale}/admin/projects/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminProjectsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/publications/': {
+      id: '/{-$locale}/_dashboard/admin/publications/'
+      path: '/admin/publications'
+      fullPath: '/{-$locale}/admin/publications/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminPublicationsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/seminars/': {
+      id: '/{-$locale}/_dashboard/admin/seminars/'
+      path: '/admin/seminars'
+      fullPath: '/{-$locale}/admin/seminars/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminSeminarsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/seminars/new': {
+      id: '/{-$locale}/_dashboard/admin/seminars/new'
+      path: '/admin/seminars/new'
+      fullPath: '/{-$locale}/admin/seminars/new'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminSeminarsNewRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/settings/': {
+      id: '/{-$locale}/_dashboard/admin/settings/'
+      path: '/admin/settings'
+      fullPath: '/{-$locale}/admin/settings/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminSettingsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/teams/': {
+      id: '/{-$locale}/_dashboard/admin/teams/'
+      path: '/admin/teams'
+      fullPath: '/{-$locale}/admin/teams/'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminTeamsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
+    }
+    '/{-$locale}/_dashboard/admin/seminars/$id/edit': {
+      id: '/{-$locale}/_dashboard/admin/seminars/$id/edit'
+      path: '/admin/seminars/$id/edit'
+      fullPath: '/{-$locale}/admin/seminars/$id/edit'
+      preLoaderRoute: typeof Char123LocaleChar125DashboardAdminSeminarsIdEditRouteImport
+      parentRoute: typeof Char123LocaleChar125DashboardRouteRoute
     }
   }
 }
 
+interface Char123LocaleChar125DashboardRouteRouteChildren {
+  Char123LocaleChar125DashboardAdminIndexRoute: typeof Char123LocaleChar125DashboardAdminIndexRoute
+  Char123LocaleChar125DashboardAdminSeminarsNewRoute: typeof Char123LocaleChar125DashboardAdminSeminarsNewRoute
+  Char123LocaleChar125DashboardAdminCareersIndexRoute: typeof Char123LocaleChar125DashboardAdminCareersIndexRoute
+  Char123LocaleChar125DashboardAdminProjectsIndexRoute: typeof Char123LocaleChar125DashboardAdminProjectsIndexRoute
+  Char123LocaleChar125DashboardAdminPublicationsIndexRoute: typeof Char123LocaleChar125DashboardAdminPublicationsIndexRoute
+  Char123LocaleChar125DashboardAdminSeminarsIndexRoute: typeof Char123LocaleChar125DashboardAdminSeminarsIndexRoute
+  Char123LocaleChar125DashboardAdminSettingsIndexRoute: typeof Char123LocaleChar125DashboardAdminSettingsIndexRoute
+  Char123LocaleChar125DashboardAdminTeamsIndexRoute: typeof Char123LocaleChar125DashboardAdminTeamsIndexRoute
+  Char123LocaleChar125DashboardAdminSeminarsIdEditRoute: typeof Char123LocaleChar125DashboardAdminSeminarsIdEditRoute
+}
+
+const Char123LocaleChar125DashboardRouteRouteChildren: Char123LocaleChar125DashboardRouteRouteChildren =
+  {
+    Char123LocaleChar125DashboardAdminIndexRoute:
+      Char123LocaleChar125DashboardAdminIndexRoute,
+    Char123LocaleChar125DashboardAdminSeminarsNewRoute:
+      Char123LocaleChar125DashboardAdminSeminarsNewRoute,
+    Char123LocaleChar125DashboardAdminCareersIndexRoute:
+      Char123LocaleChar125DashboardAdminCareersIndexRoute,
+    Char123LocaleChar125DashboardAdminProjectsIndexRoute:
+      Char123LocaleChar125DashboardAdminProjectsIndexRoute,
+    Char123LocaleChar125DashboardAdminPublicationsIndexRoute:
+      Char123LocaleChar125DashboardAdminPublicationsIndexRoute,
+    Char123LocaleChar125DashboardAdminSeminarsIndexRoute:
+      Char123LocaleChar125DashboardAdminSeminarsIndexRoute,
+    Char123LocaleChar125DashboardAdminSettingsIndexRoute:
+      Char123LocaleChar125DashboardAdminSettingsIndexRoute,
+    Char123LocaleChar125DashboardAdminTeamsIndexRoute:
+      Char123LocaleChar125DashboardAdminTeamsIndexRoute,
+    Char123LocaleChar125DashboardAdminSeminarsIdEditRoute:
+      Char123LocaleChar125DashboardAdminSeminarsIdEditRoute,
+  }
+
+const Char123LocaleChar125DashboardRouteRouteWithChildren =
+  Char123LocaleChar125DashboardRouteRoute._addFileChildren(
+    Char123LocaleChar125DashboardRouteRouteChildren,
+  )
+
+interface Char123LocaleChar125MarketingRouteRouteChildren {
+  Char123LocaleChar125MarketingIndexRoute: typeof Char123LocaleChar125MarketingIndexRoute
+  Char123LocaleChar125MarketingCareersIdRoute: typeof Char123LocaleChar125MarketingCareersIdRoute
+  Char123LocaleChar125MarketingPublicationsIdRoute: typeof Char123LocaleChar125MarketingPublicationsIdRoute
+  Char123LocaleChar125MarketingResearchAreasRoute: typeof Char123LocaleChar125MarketingResearchAreasRoute
+  Char123LocaleChar125MarketingResearchDirectionsRoute: typeof Char123LocaleChar125MarketingResearchDirectionsRoute
+  Char123LocaleChar125MarketingResearchGapsRoute: typeof Char123LocaleChar125MarketingResearchGapsRoute
+  Char123LocaleChar125MarketingSeminarsIdRoute: typeof Char123LocaleChar125MarketingSeminarsIdRoute
+  Char123LocaleChar125MarketingCareersIndexRoute: typeof Char123LocaleChar125MarketingCareersIndexRoute
+  Char123LocaleChar125MarketingProjectsIndexRoute: typeof Char123LocaleChar125MarketingProjectsIndexRoute
+  Char123LocaleChar125MarketingPublicationsIndexRoute: typeof Char123LocaleChar125MarketingPublicationsIndexRoute
+  Char123LocaleChar125MarketingSeminarsIndexRoute: typeof Char123LocaleChar125MarketingSeminarsIndexRoute
+  Char123LocaleChar125MarketingTeamsIndexRoute: typeof Char123LocaleChar125MarketingTeamsIndexRoute
+}
+
+const Char123LocaleChar125MarketingRouteRouteChildren: Char123LocaleChar125MarketingRouteRouteChildren =
+  {
+    Char123LocaleChar125MarketingIndexRoute:
+      Char123LocaleChar125MarketingIndexRoute,
+    Char123LocaleChar125MarketingCareersIdRoute:
+      Char123LocaleChar125MarketingCareersIdRoute,
+    Char123LocaleChar125MarketingPublicationsIdRoute:
+      Char123LocaleChar125MarketingPublicationsIdRoute,
+    Char123LocaleChar125MarketingResearchAreasRoute:
+      Char123LocaleChar125MarketingResearchAreasRoute,
+    Char123LocaleChar125MarketingResearchDirectionsRoute:
+      Char123LocaleChar125MarketingResearchDirectionsRoute,
+    Char123LocaleChar125MarketingResearchGapsRoute:
+      Char123LocaleChar125MarketingResearchGapsRoute,
+    Char123LocaleChar125MarketingSeminarsIdRoute:
+      Char123LocaleChar125MarketingSeminarsIdRoute,
+    Char123LocaleChar125MarketingCareersIndexRoute:
+      Char123LocaleChar125MarketingCareersIndexRoute,
+    Char123LocaleChar125MarketingProjectsIndexRoute:
+      Char123LocaleChar125MarketingProjectsIndexRoute,
+    Char123LocaleChar125MarketingPublicationsIndexRoute:
+      Char123LocaleChar125MarketingPublicationsIndexRoute,
+    Char123LocaleChar125MarketingSeminarsIndexRoute:
+      Char123LocaleChar125MarketingSeminarsIndexRoute,
+    Char123LocaleChar125MarketingTeamsIndexRoute:
+      Char123LocaleChar125MarketingTeamsIndexRoute,
+  }
+
+const Char123LocaleChar125MarketingRouteRouteWithChildren =
+  Char123LocaleChar125MarketingRouteRoute._addFileChildren(
+    Char123LocaleChar125MarketingRouteRouteChildren,
+  )
+
 interface Char123LocaleChar125RouteRouteChildren {
-  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
-  Char123LocaleChar125CareersIdRoute: typeof Char123LocaleChar125CareersIdRoute
-  Char123LocaleChar125PublicationsIdRoute: typeof Char123LocaleChar125PublicationsIdRoute
-  Char123LocaleChar125ResearchAreasRoute: typeof Char123LocaleChar125ResearchAreasRoute
-  Char123LocaleChar125ResearchDirectionsRoute: typeof Char123LocaleChar125ResearchDirectionsRoute
-  Char123LocaleChar125ResearchGapsRoute: typeof Char123LocaleChar125ResearchGapsRoute
-  Char123LocaleChar125SeminarsIdRoute: typeof Char123LocaleChar125SeminarsIdRoute
-  Char123LocaleChar125CareersIndexRoute: typeof Char123LocaleChar125CareersIndexRoute
-  Char123LocaleChar125ProjectsIndexRoute: typeof Char123LocaleChar125ProjectsIndexRoute
-  Char123LocaleChar125PublicationsIndexRoute: typeof Char123LocaleChar125PublicationsIndexRoute
-  Char123LocaleChar125SeminarsIndexRoute: typeof Char123LocaleChar125SeminarsIndexRoute
-  Char123LocaleChar125TeamsIndexRoute: typeof Char123LocaleChar125TeamsIndexRoute
+  Char123LocaleChar125DashboardRouteRoute: typeof Char123LocaleChar125DashboardRouteRouteWithChildren
+  Char123LocaleChar125MarketingRouteRoute: typeof Char123LocaleChar125MarketingRouteRouteWithChildren
 }
 
 const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
   {
-    Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
-    Char123LocaleChar125CareersIdRoute: Char123LocaleChar125CareersIdRoute,
-    Char123LocaleChar125PublicationsIdRoute:
-      Char123LocaleChar125PublicationsIdRoute,
-    Char123LocaleChar125ResearchAreasRoute:
-      Char123LocaleChar125ResearchAreasRoute,
-    Char123LocaleChar125ResearchDirectionsRoute:
-      Char123LocaleChar125ResearchDirectionsRoute,
-    Char123LocaleChar125ResearchGapsRoute:
-      Char123LocaleChar125ResearchGapsRoute,
-    Char123LocaleChar125SeminarsIdRoute: Char123LocaleChar125SeminarsIdRoute,
-    Char123LocaleChar125CareersIndexRoute:
-      Char123LocaleChar125CareersIndexRoute,
-    Char123LocaleChar125ProjectsIndexRoute:
-      Char123LocaleChar125ProjectsIndexRoute,
-    Char123LocaleChar125PublicationsIndexRoute:
-      Char123LocaleChar125PublicationsIndexRoute,
-    Char123LocaleChar125SeminarsIndexRoute:
-      Char123LocaleChar125SeminarsIndexRoute,
-    Char123LocaleChar125TeamsIndexRoute: Char123LocaleChar125TeamsIndexRoute,
+    Char123LocaleChar125DashboardRouteRoute:
+      Char123LocaleChar125DashboardRouteRouteWithChildren,
+    Char123LocaleChar125MarketingRouteRoute:
+      Char123LocaleChar125MarketingRouteRouteWithChildren,
   }
 
 const Char123LocaleChar125RouteRouteWithChildren =

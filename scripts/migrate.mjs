@@ -75,11 +75,33 @@ const runMigration = async () => {
 	}
 
 	try {
-		for (const file of files) {
+		// Tracking: chỉ chạy migration chưa áp dụng (schema có thể đổi qua các phiên).
+		await connectedClient.query(`
+			CREATE TABLE IF NOT EXISTS public.schema_migrations (
+				name        TEXT PRIMARY KEY,
+				applied_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+			);
+		`);
+		const { rows: appliedRows } = await connectedClient.query(
+			"SELECT name FROM public.schema_migrations",
+		);
+		const applied = new Set(appliedRows.map((row) => row.name));
+		const pending = files.filter((file) => !applied.has(file));
+
+		if (pending.length === 0) {
+			console.log("\n✅ Không có migration mới — tất cả đã được áp dụng.");
+			return;
+		}
+
+		for (const file of pending) {
 			const filePath = path.join(migrationsDir, file);
 			console.log(`\n🚀 Đang thực thi migration: ${file}...`);
 			const sqlContent = fs.readFileSync(filePath, "utf-8");
 			await connectedClient.query(sqlContent);
+			await connectedClient.query(
+				"INSERT INTO public.schema_migrations (name) VALUES ($1)",
+				[file],
+			);
 			console.log(`✅ Hoàn thành file: ${file}`);
 		}
 

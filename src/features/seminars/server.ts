@@ -1,225 +1,180 @@
 import "@tanstack/react-start/server-only";
 
-import type { TSeminar, TSeminarDetail } from "./schemas";
+import { notFound } from "@tanstack/react-router";
+import { supabase } from "@/utils/supabase";
+import type { TSeminar, TSeminarAdminItem, TSeminarDetail } from "./schemas";
 
 /*
  * Query contract: trả data hợp lệ hoặc throw, không bao giờ trả fallback che lỗi.
+ * Reads dùng supabase client (RLS cho phép public SELECT); writes nằm ở
+ * queries.ts (client-side, RLS 'researcher' là security boundary).
+ * DB lưu starts_at/ends_at (timestamptz); `date`/`time` public là display.
  */
 
-/* Giả lập độ trễ mạng để demo loading state; bỏ khi có backend thật. */
-const MOCK_LATENCY_MS = 120;
+const formatDate = (iso: string): string =>
+	new Date(iso)
+		.toLocaleDateString("en-US", { month: "short", day: "2-digit" })
+		.toUpperCase();
 
-const delay = () =>
-	new Promise((resolve) => setTimeout(resolve, MOCK_LATENCY_MS));
+const formatTime = (iso: string): string =>
+	new Date(iso).toLocaleTimeString(undefined, {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	});
 
-const SEMINARS: TSeminarDetail[] = [
-	{
-		id: "sem-1",
-		title: "From Chain-of-Evidence to verifiable autonomous science",
-		speaker: "Prof. Sarah Chen",
-		role: "University of Toronto",
-		date: "SEP 18",
-		status: "UPCOMING",
-		time: "14:00 - 15:30",
-		location: "Main Auditorium & Online",
-		description:
-			"Autonomous research agents risk hallucinating evidence and producing unverifiable claims. This seminar walks through the Chain-of-Evidence framework that traces every scientific claim back to an auditable source, and how it can be used to build trustworthy self-driving research pipelines.",
-		speakers: [
-			{
-				id: "sp-1",
-				name: "Ms. Sarah Chen",
-				role: "Professor, University of Toronto",
-				photo: "/demo-seminar/dat.jpg",
-				socials: [
-					{ type: "x", label: "X profile", href: "https://x.com" },
-					{
-						type: "linkedin",
-						label: "LinkedIn profile",
-						href: "https://linkedin.com",
-					},
-				],
-			},
-			{
-				id: "sp-2",
-				name: "Mr. James Wright",
-				role: "Postdoc Researcher, D2AI Lab",
-				photo: "/demo-seminar/quang.jpg",
-				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
-			},
-			{
-				id: "sp-3",
-				name: "Dr. Elisa Moreau",
-				role: "Associate Professor, Sorbonne",
-				socials: [
-					{
-						type: "linkedin",
-						label: "LinkedIn profile",
-						href: "https://linkedin.com",
-					},
-				],
-			},
-			{
-				id: "sp-4",
-				name: "Prof. Nguyen Minh Khoa",
-				role: "Head of AI, D2AI Lab",
-				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
-			},
-			{
-				id: "sp-5",
-				name: "Dr. Aman Sethi",
-				role: "Senior Researcher, Google DeepMind",
-				socials: [
-					{ type: "x", label: "X profile", href: "https://x.com" },
-					{
-						type: "linkedin",
-						label: "LinkedIn profile",
-						href: "https://linkedin.com",
-					},
-				],
-			},
-		],
-		registrationUrl: "https://forms.gle/example",
-	},
-	{
-		id: "sem-2",
-		title: "Learning in the wild: robustness of foundation models",
-		speaker: "Dr. Michael Ross",
-		role: "Google DeepMind",
-		date: "SEP 25",
-		status: "UPCOMING",
-		time: "16:00 - 17:30",
-		location: "Room B204",
-		description:
-			"Foundation models are deployed in shifting, uncontrolled environments. We examine fragility under distribution shift, the sources of spurious correlations, and practical robustness techniques that keep models reliable when the data changes under our feet.",
-		speakers: [
-			{
-				id: "sp-3",
-				name: "Mr. Michael Ross",
-				role: "Research Scientist, Google DeepMind",
-				socials: [
-					{ type: "x", label: "X profile", href: "https://x.com" },
-					{
-						type: "linkedin",
-						label: "LinkedIn profile",
-						href: "https://linkedin.com",
-					},
-				],
-			},
-		],
-		registrationUrl: "https://forms.gle/example",
-	},
-	{
-		id: "sem-3",
-		title: "Adaptive education at scale: diagnostics and generative curricula",
-		speaker: "Prof. Nguyen Thi An",
-		role: "D2AI Lab",
-		date: "AUG 28",
-		status: "PAST",
-		time: "09:00 - 10:30",
-		location: "Main Auditorium",
-		description:
-			"Cognitive diagnostics are typically static. We close the loop between student state estimation and generative lesson planning, producing curricula that adapt to learners in real time, and share lessons from deploying at scale.",
-		speakers: [
-			{
-				id: "sp-4",
-				name: "Prof. Nguyen Thi An",
-				role: "Professor, D2AI Lab",
-				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
-			},
-		],
-	},
-	{
-		id: "sem-4",
-		title: "Privacy-preserving machine learning for ambient IoT",
-		speaker: "Dr. Tran Minh Duc",
-		role: "D2AI Lab",
-		date: "AUG 14",
-		status: "PAST",
-		time: "14:00 - 15:30",
-		location: "Room C101",
-		description:
-			"Ambient IoT produces rich telemetry but risks surveillance. We design on-device inference and differential privacy so intelligence is derived without raw data offboarding.",
-		speakers: [
-			{
-				id: "sp-5",
-				name: "Dr. Tran Minh Duc",
-				role: "Research Fellow, D2AI Lab",
-				socials: [
-					{
-						type: "linkedin",
-						label: "LinkedIn profile",
-						href: "https://linkedin.com",
-					},
-				],
-			},
-		],
-	},
-	{
-		id: "sem-5",
-		title:
-			"Evaluating AI in public governance: benchmarks and human-in-the-loop",
-		speaker: "Pham Thu Trang",
-		role: "D2AI Lab",
-		date: "JUL 30",
-		status: "PAST",
-		time: "10:00 - 11:30",
-		location: "Main Auditorium",
-		description:
-			"Automated triage of civic documents needs rigorous benchmarks. We build annotated corpora and human-in-the-loop evaluation for governance AI.",
-		speakers: [
-			{
-				id: "sp-6",
-				name: "Pham Thu Trang",
-				role: "Senior Researcher, D2AI Lab",
-				socials: [{ type: "x", label: "X profile", href: "https://x.com" }],
-			},
-		],
-	},
-];
+const dateIsoOf = (iso: string): string => {
+	const date = new Date(iso);
+	const y = date.getFullYear();
+	const m = String(date.getMonth() + 1).padStart(2, "0");
+	const d = String(date.getDate()).padStart(2, "0");
+	return `${y}-${m}-${d}`;
+};
 
-/* List page chỉ cần subset — map từ full detail để tránh duplicate data. */
+/* Status KHÔNG lưu DB — derive từ starts_at. */
+const deriveStatus = (startsAt: string): "UPCOMING" | "PAST" =>
+	new Date(startsAt).getTime() <= Date.now() ? "PAST" : "UPCOMING";
+
+interface SeminarRow {
+	id: string;
+	title: string;
+	starts_at: string;
+	seminar_speakers?: { name: string; role: string }[];
+}
+
 const toSeminar = ({
 	id,
 	title,
-	speaker,
-	role,
-	date,
-	status,
-	href,
-}: TSeminarDetail): TSeminar => ({
-	id,
-	title,
-	speaker,
-	role,
-	date,
-	status,
-	href,
-});
+	starts_at,
+	seminar_speakers,
+}: SeminarRow): TSeminar => {
+	const first = seminar_speakers?.[0];
+	return {
+		id,
+		title,
+		speaker: first?.name ?? "TBA",
+		role: first?.role ?? "TBA",
+		date: formatDate(starts_at),
+		status: deriveStatus(starts_at),
+	};
+};
 
 export async function getSeminars(): Promise<TSeminar[]> {
-	await delay();
-	return SEMINARS.map(toSeminar);
+	const { data, error } = await supabase
+		.from("seminars")
+		.select("id, title, starts_at, seminar_speakers(name, role)")
+		.order("starts_at", { ascending: false })
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
+
+	if (error) throw error;
+	return (data ?? []).map((row) => toSeminar(row as SeminarRow));
+}
+
+export async function getUpcomingSeminar(): Promise<TSeminar> {
+	const { data, error } = await supabase
+		.from("seminars")
+		.select("id, title, starts_at, seminar_speakers(name, role)")
+		.gt("starts_at", new Date().toISOString())
+		.order("starts_at", { ascending: true })
+		.limit(1)
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
+
+	if (error) throw error;
+	const row = (data ?? [])[0];
+	if (!row) {
+		throw new Error("No upcoming seminar");
+	}
+	return toSeminar(row as SeminarRow);
+}
+
+interface SpeakerRow {
+	id: string;
+	name: string;
+	role: string;
+	photo_url: string | null;
+	sort_order: number;
+	/* Mỗi URL 1 dòng (text) — UI detect platform. */
+	socials: string | null;
+}
+
+interface SeminarDetailRow {
+	id: string;
+	title: string;
+	starts_at: string;
+	description: string;
+	location: string | null;
+	registration_url: string | null;
+	seminar_speakers?: SpeakerRow[];
 }
 
 export async function getSeminarDetail(id: string): Promise<TSeminarDetail> {
-	await delay();
-	const seminar = SEMINARS.find((item) => item.id === id);
-	if (!seminar) {
-		throw new Error(`Seminar not found: ${id}`);
+	const { data, error } = await supabase
+		.from("seminars")
+		.select("*, seminar_speakers(*)")
+		.eq("id", id)
+		.single();
+
+	if (error) {
+		if (error.code === "PGRST116") {
+			throw notFound();
+		}
+		throw error;
 	}
-	return seminar;
+
+	const seminar = data as SeminarDetailRow;
+
+	const speakers = (seminar.seminar_speakers ?? [])
+		.sort((a, b) => a.sort_order - b.sort_order)
+		.map((speaker) => ({
+			id: speaker.id,
+			name: speaker.name,
+			role: speaker.role,
+			photo: speaker.photo_url ?? undefined,
+			socials: (speaker.socials ?? "")
+				.split("\n")
+				.map((line) => line.trim())
+				.filter(Boolean),
+		}));
+
+	const base = toSeminar({
+		id: seminar.id,
+		title: seminar.title,
+		starts_at: seminar.starts_at,
+		seminar_speakers: seminar.seminar_speakers?.map((s) => ({
+			name: s.name,
+			role: s.role,
+		})),
+	});
+
+	return {
+		...base,
+		description: seminar.description,
+		location: seminar.location ?? undefined,
+		time: formatTime(seminar.starts_at),
+		speakers,
+		registrationUrl: seminar.registration_url ?? undefined,
+		dateIso: dateIsoOf(seminar.starts_at),
+		startsAtIso: seminar.starts_at,
+	};
 }
 
-const UPCOMING_SEMINAR: TSeminar = {
-	id: "sem-1",
-	title: "From Chain-of-Evidence to verifiable autonomous science",
-	speaker: "Prof. Sarah Chen",
-	role: "University of Toronto",
-	date: "SEP 18",
-	status: "UPCOMING",
-};
+/* Admin list — kèm số lượng speaker + startsAtIso (sort/table). */
+export async function getAdminSeminars(): Promise<TSeminarAdminItem[]> {
+	const { data, error } = await supabase
+		.from("seminars")
+		.select("id, title, starts_at, location, seminar_speakers(name, role)")
+		.order("starts_at", { ascending: false })
+		.order("sort_order", { foreignTable: "seminar_speakers", ascending: true });
 
-export async function getUpcomingSeminar(): Promise<TSeminar> {
-	await delay();
-	return UPCOMING_SEMINAR;
+	if (error) throw error;
+	return (data ?? []).map((row) => {
+		const rowData = row as SeminarRow & { location: string | null };
+		const speakers = rowData.seminar_speakers ?? [];
+		return {
+			...toSeminar(rowData),
+			speakerCount: speakers.length,
+			startsAtIso: rowData.starts_at,
+			location: rowData.location ?? undefined,
+		};
+	});
 }

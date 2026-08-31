@@ -7,6 +7,8 @@ export interface IPageHeaderProps {
 	description?: string;
 	children?: ReactNode;
 	className?: string;
+	/* compact: dành cho vùng làm việc (dashboard) — title nhỏ, không eyebrow/desc. */
+	size?: "default" | "compact";
 }
 
 export const PageHeader = ({
@@ -15,18 +17,24 @@ export const PageHeader = ({
 	description,
 	children,
 	className,
+	size = "default",
 }: IPageHeaderProps) => {
 	return (
 		<header className={cn("flex flex-col gap-3", className)}>
-			{eyebrow && (
+			{size === "default" && eyebrow && (
 				<span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
 					{eyebrow}
 				</span>
 			)}
-			<h1 className="font-title text-3xl font-semibold tracking-tight text-primary text-balance sm:text-4xl md:text-5xl">
+			<h1
+				className={cn(
+					"font-title font-semibold tracking-tight text-primary text-balance",
+					size === "compact" ? "text-2xl" : "text-3xl sm:text-4xl md:text-5xl",
+				)}
+			>
 				{title}
 			</h1>
-			{description && (
+			{size === "default" && description && (
 				<p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
 					{description}
 				</p>

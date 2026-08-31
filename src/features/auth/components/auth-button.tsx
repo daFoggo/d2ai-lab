@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useI18n } from "@/lib/i18n";
+import { DEFAULT_LOCALE, useI18n } from "@/lib/i18n";
 import { getMeQueryOptions } from "../queries";
 import type { AuthDialogTab } from "./auth-dialog";
 import { AuthDialog } from "./auth-dialog";
@@ -27,10 +27,10 @@ export const AuthButton = ({
 	variant = "default",
 	size = "default",
 	className,
-	dashboardHref = "/dashboard",
+	dashboardHref = "/admin",
 }: AuthButtonProps) => {
 	const { data: user, isLoading } = useQuery(getMeQueryOptions());
-	const { t } = useI18n("auth");
+	const { t, locale } = useI18n("auth");
 
 	const [dialogOpen, setDialogOpen] = React.useState(false);
 	const [defaultTab, setDefaultTab] = React.useState<AuthDialogTab>("signin");
@@ -46,9 +46,12 @@ export const AuthButton = ({
 
 	// 1. Authenticated State: Simple "Go to dashboard" button
 	if (user) {
+		const dashboardPath = `${
+			locale === DEFAULT_LOCALE ? "" : `/${locale}`
+		}${dashboardHref}`;
 		return (
 			<Button
-				render={<Link to={dashboardHref} />}
+				render={<Link to={dashboardPath} />}
 				nativeButton={false}
 				variant="default"
 				size={size}

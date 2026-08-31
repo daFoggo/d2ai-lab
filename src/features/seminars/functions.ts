@@ -1,7 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as z from "zod";
-import type { TSeminar, TSeminarDetail } from "./schemas";
-import { getSeminarDetail, getSeminars, getUpcomingSeminar } from "./server";
+import type { TSeminar, TSeminarAdminItem, TSeminarDetail } from "./schemas";
+import {
+	getAdminSeminars,
+	getSeminarDetail,
+	getSeminars,
+	getUpcomingSeminar,
+} from "./server";
 
 const seminarIdValidator = z.string().min(1);
 
@@ -18,3 +23,7 @@ export const getSeminarDetailFn = createServerFn({
 export const getUpcomingSeminarFn = createServerFn({
 	method: "GET",
 }).handler(async (): Promise<TSeminar> => getUpcomingSeminar());
+
+export const getAdminSeminarsFn = createServerFn({
+	method: "GET",
+}).handler(async (): Promise<TSeminarAdminItem[]> => getAdminSeminars());

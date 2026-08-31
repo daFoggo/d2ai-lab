@@ -116,6 +116,11 @@ export const Route = createRootRouteWithContext<IRouterContext>()({
 			],
 			scripts: [
 				{
+					// Zero-FOUC sidebar: áp trạng thái lưu (width + collapsed) trước paint,
+					// tránh flash expanded→collapsed khi reload dashboard.
+					children: `(function(){try{var r=localStorage.getItem("d2ai-dash-sidebar");var d=document.documentElement;var w=256,c=false;if(r){var p=JSON.parse(r);if(typeof p.width==="number")w=Math.max(240,Math.min(p.width,400));if(p.collapsed===true)c=true;}d.style.setProperty("--sidebar-width",c?"48px":w+"px");if(c)d.classList.add("sidebar-collapsed");}catch(e){}})();`,
+				},
+				{
 					type: "application/ld+json",
 					children: JSON.stringify({
 						"@context": "https://schema.org",
