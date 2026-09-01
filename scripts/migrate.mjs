@@ -75,15 +75,24 @@ const runMigration = async () => {
 	}
 
 	try {
-		// Tracking: chỉ chạy migration chưa áp dụng (schema có thể đổi qua các phiên).
+		// Tracking: chỉ chạy migration chưa áp dụng (schema private, không expose qua PostgREST).
+		// Tự động kế thừa bảng tracking cũ public.schema_migrations nếu còn.
 		await connectedClient.query(`
-			CREATE TABLE IF NOT EXISTS public.schema_migrations (
+			CREATE SCHEMA IF NOT EXISTS app_migrations;
+			CREATE TABLE IF NOT EXISTS app_migrations.applied (
 				name        TEXT PRIMARY KEY,
 				applied_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 			);
+			DO $$ BEGIN
+				IF to_regclass('public.schema_migrations') IS NOT NULL THEN
+					INSERT INTO app_migrations.applied (name, applied_at)
+					SELECT name, applied_at FROM public.schema_migrations
+					ON CONFLICT (name) DO NOTHING;
+				END IF;
+			END $$;
 		`);
 		const { rows: appliedRows } = await connectedClient.query(
-			"SELECT name FROM public.schema_migrations",
+			"SELECT name FROM app_migrations.applied",
 		);
 		const applied = new Set(appliedRows.map((row) => row.name));
 		const pending = files.filter((file) => !applied.has(file));
@@ -99,7 +108,7 @@ const runMigration = async () => {
 			const sqlContent = fs.readFileSync(filePath, "utf-8");
 			await connectedClient.query(sqlContent);
 			await connectedClient.query(
-				"INSERT INTO public.schema_migrations (name) VALUES ($1)",
+				"INSERT INTO app_migrations.applied (name) VALUES ($1)",
 				[file],
 			);
 			console.log(`✅ Hoàn thành file: ${file}`);
